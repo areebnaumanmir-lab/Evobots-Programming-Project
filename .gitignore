@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+*.pyz
+.pytest_cache/
+.ruff_cache/
+.numba_cache/
+
+# Data: never commit downloaded raw data, the built store or the hold-out (CLAUDE.md §5.3)
+data/raw/
+data/inbox/
+data/store/
+data/holdout/
+data/cache/
+*.npy
+
+# Local settings, including the contact email for polite downloading (§5.4)
+config/local.toml
+
+# Run outputs (checkpoints, archives, deployable bots)
+runs/
+
+# Test artefacts
+tests/screenshots/
+playwright-report/
+test-results/
