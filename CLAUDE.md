@@ -18,6 +18,20 @@ This prompt is your full briefing. It contains:
 
 Treat it as the source of truth until the repository's own `docs/decisions_log.md` and `docs/design_spec.md` supersede it. When they disagree, ask me which is right.
 
+**Revision history of this briefing** (details in `docs/change_ledger.md`):
+- Round 17 (2026-10-23): the four §17.1 decisions answered (§17.1).
+- Round 18 (2026-10-23): MISO rules researched; see `docs/market_rules.md`.
+- **Round 19 (2026-10-23): reviewed against 20 questions** (`docs/rounds/round19_prompt_review.md`). Changed or added:
+  - the trader as an organism with its own generated source code (§9.1);
+  - identity, names and lineage (§9.4); founders (§9.5); mutation operators (§9.6);
+  - **default death = out of money**, other career layers optional (§10.1);
+  - reproduction and selection pressure (§11.2); compute time vs market time and Life mode (§11.3);
+  - "best bot" defined (§11.4); Refine runs (§11.5); the grid map explained (§11.6);
+  - the sealed test in practice (§12.4);
+  - who controls which setting (§13.1); data and input status (§7.0, §8);
+  - the change ledger and complete documentation (§14.2); UI separation and visual style (§14.5); app buttons and explanations (§15).
+  - Open round-19 choices are in §17.3.
+
 **First session, in order:**
 1. Read this whole prompt.
 2. Take stock of the folder (§4). List what's present, missing or unexpected. Don't move or rename anything yet.
@@ -35,7 +49,7 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
 
 ### 1.2 What it became after 16 rounds
 A system that **evolves a diverse archive of small, readable trading bots** for **virtual (financial) bidding in MISO**, the US Midwest electricity market (Midcontinent Independent System Operator).
-- It judges each bot the way a real trading career would: bots carry simulated money and **die** when a real trader would stop.
+- It judges each bot the way a real trading career would: bots carry simulated money and **die when they run out of money** (round 19 default; optional career layers can make them stop earlier, as a real trader might, §10.1).
 - It reports **how deployable** each bot is (a report card with statistical gates).
 - It can hand over **a deployable bot at any moment**: the best bot that passes the gates, or "do nothing" if none does.
 - The showcase method is **MAP-Elites**, a quality-diversity algorithm that keeps the best bot in each behaviour niche rather than one overall winner.
@@ -113,6 +127,8 @@ For every substantive decision or milestone:
 | `docs/capital_sizing.md` plus CSVs and figures | the full record behind the capital defaults |
 
 **Empty:** `data/`, `features/`, `market/`, `bots/`, `simulate/`, `career/`, `qd/`, `assess/`, `deploy/`, `app/`. No M1 data builder yet. The only data so far is a calibration sample: 8 hubs, 2019-01 → 2025-09, plus a 2015–2018 check and 33 days of cleared bids. It was built inside Claude Science's sandbox and **was not carried over**. Only the summary CSVs exist. You will re-download.
+
+**Status in the repository (round 19, obs.):** none of the files in the table above has arrived yet, and **no market data has been imported**. What exists: this briefing, tooling config, `docs/market_rules.md`, `docs/glossary.md`, the round docs, probe and fetch scripts in `tools/`, and a link-checker test. Every answer about traders, evolution or the app below describes the **design**, not working software.
 
 **Known problems:**
 1. `capital_explorer.html` has a JavaScript syntax error: an unescaped apostrophe in "MISO's" inside a single-quoted string, which probably stops the whole script. It was never opened in a browser. Fix it in M0 and add a headless browser test.
@@ -226,7 +242,10 @@ pnl       = cleared * q * direction * (RT[n,h] - DA[n,h]) - fees(q, cleared)
 - **Volume:** a median hour clears about 11,800 MW of DEC and 11,600 MW of INC across all locations. A single participant at a hub-hour clears a median of 8 MW. MISO's minimum bid is 0.1 MW.
 - **Cleared-bids report:** `YYYYMMDD_bids_cb.zip`, exists from 2023. Columns include `Type of Bid` (D = DEC, I = INC), `MW` (the cleared amount; 0 = not cleared), `MW1..MW9` / `PRICE1..PRICE9` (the bid curve), `LMP`, `Region` and an anonymous `Market Participant Code`. It has no location field. Its LMP is the DA **ex-ante** price (`YYYYMMDD_da_exante_lmp.csv`). About 7.9M rows on the sample days are placeholder rows with no curve and 0 MW; exclude them.
 - **Price-taker assumption:** our bids don't move prices. This is enforced by a cap per location-hour and stated in every report.
-- **Costs [verify at M0]:** a per-MWh administration fee on cleared virtuals, plus the **Revenue Sufficiency Guarantee (RSG)** uplift allocation. Model both from MISO's published rates, and double them in stress tests.
+- **Costs (researched in round 18; `docs/market_rules.md` §3):** a per-MWh administration fee on cleared virtuals (Schedules 17 and 24), plus the **Revenue Sufficiency Guarantee (RSG)** uplift allocation. Double them in stress tests.
+  - **Measured from MISO's documents:** which charges apply, and how they net (admin fees and day-ahead RSG on the net position per node-hour; real-time RSG on net virtual supply summed over all nodes per hour); RSG on virtual supply had three eras (none before 2008-11; high 2008-11 → 2011-03; much lower from 2011-04).
+  - **Estimated:** the rates themselves. Schedule 17 + 24 ≈ $0.090/MWh in October 2026 is from search-index quotes [verify]; the RSG rate history is missing until MISO's Rates Factors file is in `data/inbox/`.
+  - **Costs vary with time.** `fees.py` reads a cost table by month (hour for RSG) and era, never one constant. Every rate is labelled "measured" or "estimate" in every report.
 
 ### 6.3 Credit and eligibility (checked in documents, round 16)
 - **Collateral** (MISO Tariff Attachment L, section IV): `collateral = daily Virtual MWh Limit × MPD × VMEW`, where VMEW = 2 days.
@@ -240,15 +259,21 @@ pnl       = cleared * q * direction * (RT[n,h] - DA[n,h]) - fees(q, cleared)
 
 | Time (Eastern) | Event |
 |---|---|
-| D−1, bid deadline (**10:30 [verify]**) | DA bids for D close. **The bot decides here.** |
-| D−1 afternoon [verify] | DA prices for D published |
+| D−1, bid deadline: **10:30 EPT since 2016-11-05; 11:00 EST (noon clock time in summer) before** (round 18) | DA bids for D close. **The bot decides here**, at 10:30 EPT for every year if round-18 decision D1 = A |
+| D−1, 13:30 EPT since 2016 (15:00 EST before) | DA prices for D published |
 | D | RT prices for D produced |
 | about D+5 (obs.: on 2026-09-26 the newest *final* RT file was 2026-09-21) | final RT prices for D published |
 
 - Every data column carries an `available_at` timestamp. One function, `visible(column, decision_time)`, is the **only** way features read data.
 - With the 5-day lag, on decision day D−1 the newest operating day with known P&L is **D−6** (already encoded in `sizing.py`).
-- Whether *preliminary* RT prices are archived back to 2005 is [verify]; the MISO server didn't answer that probe. If they are, the lag shortens for those years.
+- *Preliminary* RT prices are **not archived**: only the last ~3 days exist on the server (obs., round 18, `tools/probe_rt_archive.py`). The lag stays.
 - **Look-ahead test:** change all data on or after a decision time; no feature at that decision time may change.
+
+**What a bot sees at each decision (round 19):**
+- **Past electricity prices: yes.** DA prices up to and including day D−1's (published the afternoon before the decision) and final RT prices up to D−6, through features 1–7 (§8).
+- **Futures quotes and past futures prices: no.** EIA's free gas futures stop on 2024-04-05; MISO power futures data is not free [verify]; and §7.1 requires every input for 2005–2026 from one keyless source. They stay out unless I supply such a source (§17.3 R19-5).
+- **Outside factors:** gas (Henry Hub spot), policy uncertainty (EPU), weather forecasts, wind and solar capacity, calendar (§8). GPR, oil and the World Bank series are reporting only.
+- **Proof for the user:** the Trader page has a **"What did it see?"** panel: pick any day and it shows the exact input values the trader saw at 10:30 EPT on D−1 and the bids it made.
 
 ### 6.5 Access risk
 MISO announced that its public pricing reports would stop updating from 12 December 2025, in favour of its account-based Data Exchange. Its July 2026 page said they stay available while a new timeline is reviewed, and files were still updating on 2026-09-24 (obs.). Consequences:
@@ -259,6 +284,18 @@ MISO announced that its public pricing reports would stop updating from 12 Decem
 ---
 
 ## 7. Data
+
+### 7.0 Import status (round 19)
+**Nothing has been imported into the repository yet** (obs.). Known coverage on the sources' servers:
+
+| Data | Available on the server (obs.) | Known gaps and quirks |
+|---|---|---|
+| MISO DA / RT LMP | 2005-04 → today (final RT 2026-10-19 on 2026-10-23) in three file eras (§7.3) | 2005 files have no value-type column (no MCC/MLC); components "from at least 2010" [verify 2005–2009]; 2015-02 split across two styles; hub set changes 4 → 8; public reports may stop (§6.5) |
+| MISO preliminary RT | last ~3 days only | not archived |
+| MISO cleared bids | 2023 → | none before 2023 |
+| NWS forecasts, Henry Hub, EPU, GPR, EIA-860M | as in §7.4–7.8 (seen in Claude Science) | not re-checked in this environment |
+
+The M1 build writes **`docs/data_coverage.md`** and a coverage map on the Data page (source × month), listing every missing day or file. Gaps are never filled silently: a missing day is missing.
 
 ### 7.1 Principles
 - **Consistent:** every input must exist for the whole 2005–2026 span and come from one source and procedure. Inputs that start late (MISO load forecasts, 2015+) or stop (EIA gas futures, 2024-04) are excluded from bot inputs.
@@ -447,6 +484,7 @@ Explored in Claude Science and then **dropped** (don't download): `data.binance.
 - **Missing** makes any comparison false, so the bot doesn't trade on that input that day.
 - **Constants** are drawn from each feature's historical range.
 - Known trade-off: $30/MWh in 2005 isn't $30/MWh in 2025. The report shows whether a bot relies on level thresholds.
+- **Populated status (round 19):** none of the 25 features has data in the repository yet. The catalogue gets a "populated" field that the build fills in (first day, last day, share of missing days), shown on the Data page.
 
 | # | Code name | Level | Unit | Meaning |
 |---|---|---|---|---|
@@ -483,9 +521,39 @@ Explored in Claude Science and then **dropped** (don't download): `data.binance.
 
 ---
 
-## 9. The bot
+## 9. The bot (the trader)
 
-### 9.1 Skeleton (every bot has exactly these slots)
+"Bot" and "trader" mean the same thing; the app says **trader**.
+
+### 9.1 The trader as an organism (round 19)
+A trader has three parts:
+
+| Part | What it is | Where you see it |
+|---|---|---|
+| **Genome** | its slot trees (§9.2–9.3) and numeric genes, as canonical JSON; this is what evolution changes | Trader page → "Tree" |
+| **Source code** | a standalone, standard-library Python module `trader_<id>.py`, **generated from the genome when the trader is born**. It is the literal executable code: `python trader_7c2e9a41.py --inputs day.csv` prints that day's bids | Trader page → **View code** (syntax-highlighted, Download) |
+| **Life** | its account, bids, equity curve, offspring, and death cause and date if it died | Trader page → "Life" |
+
+- **Code and engine agree exactly.** The fast engine (NumPy/Numba) is an optimisation; the generated file is the reference. An equivalence test on many random days checks they give identical bids. This test moves from M9 to **M4**; the generator in M4 is the same one `export-bot` uses (§14.6).
+- **Why evolution edits the tree and not the text:** a random edit to Python text almost never gives a program that runs. Editing typed syntax trees guarantees every child is a valid, well-typed program (strongly typed GP: Montana 1995, *Evolutionary Computation* 3(2), doi 10.1162/evco.1995.3.2.199). The code is printed from the tree, so the two are always the same organism.
+- The generated file starts with a header: id, name, parents, the operator that created it, birth evaluation and run, the input list with units, and a plain-English reading of each slot.
+
+Example of the generated form (illustrative, not a real trader):
+```python
+"""Trader 7c2e9a41 "amber-heron". Generated by evobots 0.1 from genome sha256 7c2e9a41….
+Parents: 1f03b2c7 (subtree mutation of `score`). Born at evaluation 18,402 of run 2026-11-02-a.
+"""
+def decide(row):
+    """Return (side, limit_price_usd_per_mwh, size_mw) for one location-hour, or None."""
+    is_where = row.loc_type in {"Hub", "Loadzone"} and row.spread_std_28d > 18.0
+    is_when = 14 <= row.hour <= 19 and not row.holiday
+    if not (is_where and is_when):
+        return None
+    score = row.spread_mean_28d - 0.4 * row.cdd_fcst
+    ...
+```
+
+### 9.2 Skeleton (every bot has exactly these slots)
 ```
 Bot "7c2e"
   where : loc_type in {Hub, Loadzone} and spread_std_28d > 18.0 $/MWh     boolean formula
@@ -500,7 +568,7 @@ Bot "7c2e"
 - Every bot prints exactly like this, in two modes (display names by default, code names optionally), and saves as JSON. JSON must round-trip exactly.
 - **No learning inside a bot.** It adapts only through its trailing inputs. Evolution does the learning.
 
-### 9.2 Formulas
+### 9.3 Formulas
 - **Strongly typed GP trees of at most about 15 nodes per slot.**
 - **Primitives:**
   - feature names and constants;
@@ -509,13 +577,56 @@ Bot "7c2e"
   - `if … then … else`.
 - **Unit checking:** `+ − > <` need matching units; `× ÷` combine units. `spread + temperature` can't be built.
 - **Evaluation:** vectorised over (day, hour, location), with sub-expression caching across the population.
-- **Operators:**
-  - type-safe, size-limited subtree crossover and mutation;
-  - Gaussian mutation of constants within the unit's range;
-  - categorical mutation of set members.
+- **Operators:** see §9.6.
 - **Why not neural nets or a linear weight vector:** opacity and overfitting with about 20 years of data, versus no "only when" conditions (round 9).
 
-### 9.3 Size gene: proposed, not adopted
+### 9.4 Identity, names and lineage (round 19)
+- **Id:** the first 8 hex characters of the SHA-256 of the canonical genome JSON. Identical code gives the identical id. The full hash is stored and collisions are checked.
+- **Name:** two words generated deterministically from the id from fixed word lists (e.g. `7c2e9a41 amber-heron`). The name is for people; the id is authoritative.
+- **Birth record** for every evaluated trader, in `runs/<run>/lineage.sqlite`: id, name, run, evaluation number, **generation** (lineage depth = 1 + the deepest parent's), parent ids, operator, the random seed of the operation, founder origin, the training window, fitness, niche, offspring count, alive/dead, death cause and date. About 200 bytes per trader.
+- **Genomes stored** for every trader that ever entered the archive and all of its ancestors. Any other trader is **regenerated exactly** from its parents, operator and seed (runs are deterministic, §11.1), so nothing is lost.
+- **Lineage crosses runs:** a Refine run (§11.5) records the parent run's trader as a parent.
+- **Traders page:** search by id prefix, name, feature used, founder, operator, niche, generation, alive/dead and fitness range.
+- **Trader page:** View code, tree, life, "What did it see?" (§6.4), parents (clickable), a descendants tree, and the family's improvement history (each step where a descendant beat its ancestor, and which mutation did it).
+
+### 9.5 Starting population: founders (round 19; R19-3 in §17.3)
+Recommended: **mixed**, about 90 % random and 10 % named founders.
+- **Random:** well-typed trees by ramped half-and-half (mixed depths, full and sparse trees), the standard GP start [verify: Koza 1992].
+- **Founders:** hand-written traders, each tagged `founder:<name>` with its reason:
+
+| Founder | Rule | Why |
+|---|---|---|
+| `always_inc` | INC at every hub-hour | mean DA − RT is slightly positive at every hub (§13); a DA premium persists in MISO (Birge, Hortaçsu, Mercadal & Pavlin 2017, MIT CEEPR WP 2017-003, read in round 18) |
+| `always_dec` | DEC at every hub-hour | the mirror; profits in RT spikes |
+| `persistence` | repeat the sign of the last visible spread | baseline (§12.1) |
+| `premium_follow` | side = sign of `spread_mean_28d` | bets the recent average premium continues |
+| `premium_fade` | the opposite | bets it reverses |
+| `heat_dec` | DEC on high-`cdd_fcst` afternoons | hypothesis: hot days surprise RT upward [unverified] |
+| `wind_inc` | INC when `wind_fcst × wind_cap_region` is high | hypothesis: windy days push RT down [unverified] |
+
+- Founders are small (a few nodes) so the parsimony penalty treats them fairly.
+- The report shows whether the winning lineages descend from founders or from random trees. That says whether human ideas helped.
+- The O2 optimizer joins as a further seed later (§20.5).
+
+### 9.6 Mutation and crossover (round 19)
+
+| Part of the genome | Operator | How random |
+|---|---|---|
+| tree structure (`where`, `when`, `score`) | **subtree mutation**: replace a random subtree by a new random well-typed subtree | node chosen at random; new subtree by ramped half-and-half |
+| single nodes | **point mutation**: swap a node for one of the same type and arity (`>`↔`<`, `+`↔`−`, a feature for another with the same unit) | uniform over the allowed swaps |
+| tree size | **hoist / shrink**: replace a subtree by one of its own subtrees, removing code | bloat control (Luke & Panait 2006 compare methods, *Evolutionary Computation* 14(3), doi 10.1162/evco.2006.14.3.309) |
+| two parents | **subtree crossover** in the same slot, types matched | Montana 1995; Koza 1992 [verify] |
+| constants in trees | **Gaussian**, σ = 10 % of the feature's historical inter-quantile range (proposal), clipped to its range | |
+| category sets | add or remove one member | |
+| numeric genes (side thresholds, price offset, size scale, risk settings) | Gaussian within bounds; optional **iso+line-DD**, a step along the line between two elites (Vassiliades & Mouret 2018, arXiv 1804.03906) | |
+| (later) all continuous genes | **CMA-ME** emitter (Fontaine, Togelius, Nikolaidis & Hoover 2019, arXiv 1912.02400) | |
+
+- **Never mutated:** hard caps (MW cap, out-of-money rule, data visibility), the skeleton shape, the type and unit system.
+- **Randomness is seeded:** NumPy PCG64, one stream per worker; the seed of each operation is stored with the child, so every mutation is random and exactly reproducible.
+- **Operator probabilities** are a config table. Proposed defaults: subtree 0.25, point 0.20, constant 0.30, hoist 0.10, crossover 0.15. Tuned in M6, with the result documented.
+- **Size limit** about 15 nodes per slot, plus the parsimony term in F (§10.2).
+
+### 9.7 Size gene: proposed, not adopted
 - **Proposal:** g ∈ [0.05, 1], with `MW = floor_to_0.1(g × position_scale × cap)`, and 0 if below 0.1 MW.
 - Mixed-direction bots would need sizing on their own trailing p99. Their tail is up to 1.56× the single-direction benchmark (full sample; median 1.41×, maximum 8.79× trailing).
 - **Not added**, because F rises monotonically in g for always-INC (0.126 at g = 0.1 … 0.540 at g = 1), so the gene would likely saturate at 1.
@@ -525,16 +636,33 @@ Bot "7c2e"
 
 ## 10. Career model (when a bot dies) and fitness
 
-### 10.1 Default career: an individual (my decision, round 13)
+### 10.1 Default career: an individual (round 13; death rule changed in round 19)
 A one-person trading company that meets MISO's entry rules. Prop trader and hedge fund are optional presets in `configs/careers/`.
 
-| Layer | Real-world cause | Rule | Basis |
+**Default death = out of money (my decision, round 19).** A trader dies when it can no longer post MISO's collateral for even the smallest possible bid (0.1 MW for one hour; `market_rules.md` §4). In practice that is equity at or near zero.
+- When equity is positive but too small for the bids a trader wants, the bids are **cut to what its credit allows**. It is not killed.
+- **Every other layer below is optional and off by default.** It can be switched on in the config or in a career preset.
+- The exact definition is R19-4 in §17.3: recommended (a) above; alternatives (b) equity ≤ 0, or (c) a "MISO-eligible" preset that also kills below MISO's minimum capitalization ($500k tangible net worth for a non-FTR trader, Attachment L §III.C).
+- **Consequences:**
+  - with proportional sizing (§13), equity shrinks towards zero rather than through it, so deaths come mainly from single storm days (Elliott cost 31.2 % at full size);
+  - far fewer traders die than under the old 2/3 floor;
+  - log-growth fitness (§10.2) still punishes deep drawdowns, because ln(W) falls fast as W shrinks;
+  - `capital_sizing.md`'s headroom and "lowest $50k step" numbers used the 2/3 floor, so they now describe the optional floor preset;
+  - M0 step zero still runs the 40 tests unchanged; the default changes afterwards, with test updates logged.
+
+**Capital floor vs drawdown limit: two different controls.**
+- A **capital floor** is about the **level** of wealth: "below $X I may not, or should not, trade." Example: MISO's minimum capitalization. It ignores the path.
+- A **drawdown limit** is about the **path**: "stop after losing Y % from my peak." It is self-discipline relative to the high-water mark.
+- Example: a trader that grew to $3M and falls to $2M is down 33 % from its peak. It trips a 30 % drawdown limit while still far above a $1M floor.
+
+| Layer | Real-world cause | Rule | Default |
 |---|---|---|---|
-| **L1 Collateral and ruin floor** | losses exhaust credit, or equity hits the floor | equity ≤ `effective_ruin_floor_usd()` → **death**. Default relative floor = 2/3 of starting capital (33.3 % drawdown); optional absolute `ruin_floor_usd` (e.g. $1M, "inspired by MISO's eligibility rule"); an absolute floor leaving < 10 % headroom is rejected. The virtual MW limit scales with collateral. | Attachment L §III.B; the floor fraction is a design choice |
-| **L2 Personal loss limit** | "stop if I lose 40 %" | hard stop at an evolved drawdown limit, capped at the floor | self-imposed |
-| **L3 Quitting after poor results** | family, stress, doubt | monthly hazard `h = logistic(β0 + β1·cumPnL + β2·R6m + β3·DD + β4·Age)`. Fit β so that a population of *losing* baseline bots (random bots after costs) reproduces about **44 % / 24 % / 15 % survival at 1 / 2 / 3 years**. Poor results raise h; long survival lowers it. A `persistence` parameter models a stubborn trader. | Barber, Lee, Liu, Odean & Zhang (2020), *Learning, Fast or Slow* (Taiwanese day traders) [verify numbers in the paper] |
-| **L4 Opportunity cost and overspecialisation** | the edge is gone; T-bills pay better after fixed costs | Page's CUSUM on monthly returns in excess of (risk-free + fixed costs ÷ capital); a signal retires the bot (it also catches regime-specific bots) | sequential analysis |
-| **L5 Peers** | – | **off** for individuals; on for prop trader and hedge fund | – |
+| **L0 Out of money** | can't post collateral | as above → **death** | **on** |
+| **L1 Capital floor** | eligibility or prudence | equity ≤ `effective_ruin_floor_usd()` → death. Relative floor (e.g. 2/3 of starting capital) or absolute `ruin_floor_usd` (e.g. MISO's $500k minimum capitalization); an absolute floor leaving < 10 % headroom is rejected. Basis: Attachment L §III.B–C (`market_rules.md` §5) | off |
+| **L2 Personal loss limit** | "stop if I lose 40 % from my peak" | hard stop at an evolved drawdown limit | off |
+| **L3 Quitting after poor results** | family, stress, doubt | monthly hazard `h = logistic(β0 + β1·cumPnL + β2·R6m + β3·DD + β4·Age)`. Fit β so that a population of *losing* baseline bots (random bots after costs) reproduces about **44 % / 24 % / 15 % survival at 1 / 2 / 3 years**. Poor results raise h; long survival lowers it. A `persistence` parameter models a stubborn trader. | off. Basis: Barber, Lee, Liu, Odean & Zhang (2020), *Learning, Fast or Slow* (Taiwanese day traders) [verify numbers in the paper] |
+| **L4 Opportunity cost and overspecialisation** | the edge is gone; T-bills pay better after fixed costs | Page's CUSUM on monthly returns in excess of (risk-free + fixed costs ÷ capital); a signal retires the bot (it also catches regime-specific bots) | off. Basis: sequential analysis |
+| **L5 Peers** | – | other traders' behaviour | off for individuals; on for prop trader and hedge fund |
 
 - **Fixed yearly costs** of running the company (audit, accounting, MISO admin charges, data): $50k/year **assumed**. M0 estimates the real amount: MISO's published participant fees (hard numbers) plus clearly labelled assumptions for the rest.
 - **L3 caveat** (state it in reports): the data are Taiwanese stock day traders, not capitalised power traders. We calibrate the direction and speed of quitting, not their overconfidence.
@@ -546,7 +674,7 @@ A one-person trading company that meets MISO's entry rules. Prop trader and hedg
 $$F = \mathbb{E}_{\text{career}}\big[\ln(W_T/W_0)\big] - r_f T - \mu\cdot\text{size}$$
 - Expected log-growth of the account in excess of the risk-free rate, under the career model, minus a small parsimony penalty on formula size.
 - **Log-growth punishes over-leverage by itself:** growth ≈ μ − σ²/2, so excess growth is zero at 2× Kelly and negative beyond.
-- **L3 enters as an expected survival probability** `S = ∏(1 − h_t)`, so fitness stays deterministic. L1, L2 and L4 are hard stops.
+- **L3 enters as an expected survival probability** `S = ∏(1 − h_t)`, so fitness stays deterministic (when L3 is switched on). L0 and, when switched on, L1, L2 and L4 are hard stops.
 - **QD gives choice, not protection.** Risk control comes from fitness and the career model.
 - **Storm sensitivity** (reporting only, `storms.py`): F with and without Uri (2021-02-15..19) and Elliott (2022-12-23..25).
 
@@ -563,7 +691,8 @@ $$F = \mathbb{E}_{\text{career}}\big[\ln(W_T/W_0)\big] - r_f T - \mu\cdot\text{s
 archive = {}                                  # cell → best bot
 seed with N random bots
 repeat until the evaluation budget is used or the session time ends:
-    children = [mutate_or_crossover(random elite) for _ in range(batch)]
+    children = [mutate_or_crossover(select_parents(archive, selection_pressure))   # §11.2
+                for _ in range(batch)]
     for child in evaluate_parallel(children, window):     # current rolling window
         if child.dead: continue                            # natural selection
         cell = descriptor_to_cell(child)
@@ -581,6 +710,52 @@ repeat until the evaluation budget is used or the session time ends:
 - **Progress is counted in evaluations**, not wall-clock.
 - **Deployable bot at any time:** after each checkpoint, quick gates (G1, G2, G4, G6) run on the top elites. The best passing bot goes to `runs/<id>/deployable/current_bot.json`; if none passes, the file says **"do nothing"**.
 - **Overfitting guard that grows with compute:** the deflated Sharpe uses the true evaluation count, and the hold-out is opened once.
+
+### 11.2 Reproduction: who gets offspring (round 19; R19-1 in §17.3)
+- **Plain MAP-Elites** (Mouret & Clune 2015, arXiv 1504.04909) picks parents **uniformly at random** from the elites, and a child takes a cell only if it beats the incumbent. Profit then matters only through being an elite or not: an elite with ten times another's profit gets **no more offspring**.
+- **Recommended: rank-weighted selection with a selection-pressure knob p ∈ [0, 1].**
+  - P(elite i is chosen) = (1 − p) · uniform + p · rank weight, where the rank weight grows with the elite's fitness rank.
+  - p = 0 is plain MAP-Elites; proposed default p = 0.5.
+  - More profitable traders then get more offspring. The Trader page shows each trader's offspring count.
+- Alternatives: uniform only; "curiosity" (favour elites whose children tend to enter the archive), one of the variants in Cully & Demiris 2017 (arXiv 1708.09251) [verify details]; and wealth-driven reproduction in market time (Life mode, §11.3).
+- **When and how often:** continuously, in batches (§11 loop) for as long as the run lasts. O8 compares uniform and rank-weighted selection at equal budget.
+
+### 11.3 Compute time vs market time; how many generations (round 19)
+- **Evolution runs in compute time, not market time.** Each evaluation replays one trader over a rolling ~1-year window of history (plus the next period for walk-forward). The window steps through 2005–2025 as the run goes on. A single trader does not live through decades or reproduce mid-history.
+- **Why decades take seconds** (explanation; numbers are estimates until the M3/M6 benchmarks):
+  - history is recorded, so nothing waits for markets;
+  - traders are price-takers and don't interact, so each replays independently and in parallel;
+  - a hub trader-year is 8 × 24 × 365 = 70,080 location-hours of simple vectorised arithmetic.
+  - The target of 100,000 trader-years per hour on 20 cores (§14.3) is about 28 per second.
+- **Generations.** MAP-Elites has no strict generations, so the app shows two counters, both explained on screen:
+  - **batches done** (about 100 per hour at the target speed with ~1,000 children per batch on 1-year windows; estimate);
+  - **lineage depth**, the longest chain of ancestors (§9.4).
+- **Life mode (proposed M6b; R19-2):** a market-time ecology.
+  - A population lives through 2005-04 → 2025-09 day by day. Each trader trades every day it is alive and dies when out of money (§10.1).
+  - It **reproduces when its equity reaches k × its starting capital** (proposal k = 2), handing starting capital to a mutated child.
+  - A child trades only from the day after its birth, so its whole career is out-of-sample relative to its creation.
+  - Generations are limited by market time: a trader that doubles every 2–5 years gets about 4–10 generations in 20 years (arithmetic, not measured). That is too few for search, but it is the literal natural selection of §1.1 and an honest realism check.
+  - Related work: the Santa Fe artificial stock market (Arthur, Holland, LeBaron, Palmer & Tayler 1997, doi 10.2139/ssrn.2252), whose traders interact (ours don't); Lo 2004, *The Adaptive Markets Hypothesis* (doi 10.3905/jpm.2004.442611).
+  - MAP-Elites stays the search engine; Life mode is a showcase and a comparison on the leaderboard.
+
+### 11.4 The best bot (round 19)
+- **Best** = the highest **out-of-sample** (walk-forward) fitness F among elites that pass the quick deployment gates G1, G2, G4 and G6; ties go to the smaller program. It is **not** the highest in-sample profit, which is usually the most overfitted trader.
+- A **Best bot** button in the top bar of every page opens its Trader page, with a table of why it beat the next five candidates.
+- If none passes, the page says **"Do nothing: no trader passes the gates"**, and names the nearest candidate and the gate it failed. `current_bot.json` holds the same thing (§11.1).
+
+### 11.5 Refine runs (round 19)
+- A **Refine** button on any Trader page starts a new run seeded with that trader and mutants of it, on the evolution period **2005-04 → 2025-09 only**. Options: stay in its niche, or open the whole map.
+- Lineage continues across runs (§9.4).
+- **Trial counts carry over:** the deflated Sharpe counts every trial in the parent and child runs, because refining is more searching.
+- **If the trader's sealed test was already opened** (§12.4), the refine run is labelled **"hold-out already used"**: its sealed-test result no longer counts as clean. The only clean test left is forward data (2026-09-22 onward, growing daily), via the **Forward test** button.
+
+### 11.6 The grid map explained (round 19)
+- **Horizontal axis:** net direction, from −1 (only INC: always selling in DA, betting DA > RT) to +1 (only DEC).
+- **Vertical axis:** selectivity, the share of available location-hours the trader bids on, log scale from 0.1 % to 100 %.
+- **Each cell** holds the best surviving trader of that kind. **Colour** = its fitness F on a colour-blind-safe sequential scale. A **blank (white) cell** means no surviving trader of that kind has been found yet.
+- **Click** opens the trader; **hover** shows name, F, profit and trades per day.
+- A switch recolours by profit, maximum drawdown, lineage depth or founder origin.
+- **What it tells you:** how many different kinds of strategy survive, where the profitable ones are (e.g. "selective INC traders"), and which kinds are empty. A legend and a short "how to read this map" note sit next to it.
 
 ---
 
@@ -634,6 +809,19 @@ Only two model fees or uplift; the rest use the raw spread, which flatters resul
 - compare against random-rule and bootstrap nulls;
 - edges decay, so use walk-forward.
 
+### 12.4 The sealed 12-month test in practice (round 19)
+- **Button:** **Final test (sealed 12 months)** on the Trader page of a run's chosen trader (normally the best bot, §11.4).
+  - A confirmation explains that it can be used once per run and is logged.
+  - The result page puts sealed-test metrics next to the walk-forward metrics, with the "What happened" summary (§15.2).
+- **Separation from training, enforced in code:**
+  1. the hold-out (2025-09-22 → 2026-09-21) is a separate file under `data/holdout/`;
+  2. only the `final_test` module knows its path;
+  3. evolution workers are given a data root that doesn't contain it;
+  4. a test fails if any other module imports the hold-out reader or opens that path;
+  5. every opening is logged (who, when, run, trader).
+- **Status is visible:** the Home page shows "Sealed: never opened" or "Opened on <date> for <trader> in <run>".
+- **Once seen, it's spent for that lineage:** a run that refines a trader whose sealed test was opened is labelled "hold-out already used" (§11.5). The **Forward test** (2026-09-22 onward) stays clean and grows every day.
+
 ---
 
 ## 13. Capital and sizing (built; reproduce these numbers)
@@ -667,6 +855,22 @@ Only two model fees or uplift; the rest use the raw spread, which flatters resul
   - fixed cost per MWh at $1.5M: $0.146 (full volume), $0.203 (72.1 % cleared), $0.585 (25 %);
   - explorer expected values: `capital_sizing.md` §10.
 
+### 13.1 Who sets each value (round 19)
+Every value in the app and the config carries one of three badges. Only **Your choice** values are editable.
+
+| Value | Badge | Note |
+|---|---|---|
+| `starting_capital_usd` | **Your choice** | |
+| `daily_risk_budget` | **Your choice** | how much risk to take per day |
+| `credit_share` | **Your choice** | exact meaning to be checked in `capital.py` when it arrives [verify] |
+| `max_mw_per_hub_hour` | **Your choice** for the 5 MW cap and the 5 % share; **From market data** for each hub's median cleared MW | |
+| `ruin_floor_fraction`, `ruin_floor_usd`, drawdown limit, quit hazard, CUSUM | **Your choice**, off by default | §10.1 |
+| `mpd_usd_per_mwh` | **From market data** (was a user input) | computed by Attachment L's formula: 50th-percentile DA−RT differential over the prior 12 months, reset each May 1, floor $12 (`market_rules.md` §4.1) |
+| Schedule 17/24 fees, RSG rates | **From market data** (were constants) | cost table by month and era (§6.2); "estimate" until the Rates Factors file arrives |
+| Risk-free rate | **From market data** | needs a keyless T-bill series [verify source; Fed H.15 was dropped in Claude Science] |
+| Fixed yearly costs ($50k) | **Your choice**, labelled **assumption** | round 18 found no fixed MISO fee; it covers audit, accounting, legal |
+| Collateral, Virtual MWh Limit, position scale, trailing p99 loss | **From the trader's account** | computed from its own bids and P&L |
+
 ---
 
 ## 14. Engineering standards (apply to every milestone)
@@ -697,6 +901,17 @@ Only two model fees or uplift; the rest use the raw spread, which flatters resul
 - **Every public function** has a fixed-format docstring: summary; arguments with units; return value with unit; "Maths:" and "Decision:" pointers; an example. Comments explain why and cite their source.
 - **Formula ↔ function ↔ test are linked three ways.** The test's numbers are `maths.md`'s worked example.
 - **Docs are tested:** doctests in modules and in `*.md`, an internal-link checker, and ruff docstring rules.
+
+**Complete documentation and the change ledger (my decision, round 19):**
+- **`docs/change_ledger.md`:** one row per change (date, round, commit, what changed, why, files, decision link), updated with every commit. A test checks that every round doc is listed.
+- **Every module, class and function, public and private,** has a docstring in the fixed format above.
+- **Every constant** has a comment: meaning, unit, source.
+- **Every config key** is in `config_reference.md`.
+- **Every library** is in `docs/dependencies.md`: purpose, licence, version.
+- **Every input and output file** is in `data_sources.md` or the file-format reference.
+- **Every dataclass field** is documented.
+- **A generated symbol index** (`docs/reference/`) lists every module, function, class and constant with its purpose. A test fails when one lacks documentation.
+- **Local variables** are explained by full-word names (§14.1) plus comments where not obvious, not by one doc entry each (R19-6 in §17.3): one entry per local would roughly double the code and drift out of date.
 
 ### 14.3 Efficiency
 - Measure, don't guess: `benchmarks/run.py` appends to `benchmarks/results.csv` every milestone. Profile before optimising.
@@ -734,6 +949,21 @@ Only two model fees or uplift; the rest use the raw spread, which flatters resul
   - keyboard access;
   - a screenshot per page on each test run.
 - **Not Streamlit or Gradio:** full reruns, limited layout, telemetry and font workarounds.
+
+**UI separated from everything else (my decision, round 19):**
+- All presentation lives in `src/evobots/app/`: `server.py`, templates, `theme.css`, page scripts, `pages.toml`, vendored files.
+- **Enforced by an import test:** `evobots.app` may import only `evobots.service`; no trading, accounting, data or evolution module may import `evobots.app`. Templates and page scripts contain no formulas (§18).
+- `docs/how_to/change_the_ui.md` says which single file to edit for each kind of change (colour, font, spacing, label, page, chart, navigation).
+
+**Visual style (my decision, round 19):**
+- **I will supply a visual reference;** none has been supplied yet. It goes in `docs/design/visual_reference/`, and the `theme.css` tokens are taken from it (R19-7).
+- Until then, and in any case:
+  - **white page and card backgrounds; no grey backgrounds or grey surfaces;**
+  - separate areas with whitespace and thin lines, not filled panels;
+  - a generous spacing scale and clear type sizes;
+  - one accent colour plus a colour-blind-safe data palette;
+  - a top navigation of at most seven items plus the **Best bot** button;
+  - every value is a named token in `theme.css`, in light and dark versions.
 
 ### 14.6 Single-file deliverables (proposed; needs my confirmation)
 1. **Engine:** `evobots build-single-file` → `evobots-<version>-<os>.pyz`, built with `shiv` (code, dependencies, bundled data).
@@ -779,7 +1009,8 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 | Settings | M1.5, grows | edits config with the CLI's validation |
 | Data | M2 | coverage, prices, feature distributions with units |
 | Simulator | M3 | baselines against `capital_sizing.md`'s numbers |
-| Bots | M4 | printed rules, trees, features read, JSON; export (M9) |
+| Traders | M4 (lineage from M6) | search by id, name, feature, founder, operator, niche, generation, alive/dead, fitness (§9.4) |
+| Trader | M4, grows | View code, tree, printed rules, life, "What did it see?", parents and descendants, offspring; buttons Refine, Final test, Forward test, Download |
 | Career | M5 | survival-curve fit, outcomes, storm sensitivity |
 | Evolution | M6 | start/resume/stop, progress, heatmap, deployable bot |
 | Report card | M7 | gates and charts; export to one HTML file |
@@ -790,6 +1021,28 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 | Battery | O4 | storage policies: state of charge, profit vs the perfect-foresight bound |
 | Risk | O5 | VaR/ES estimators side by side, backtest test results, tail plots |
 | Methods leaderboard | O7–O8 | every strategy class on the same windows, costs and gates |
+| Life | M6b (if R19-2 = add) | the market-time ecology: population over 2005–2025, births, deaths, family trees |
+
+### 15.1 Buttons that must be obvious (round 19)
+
+| Button | Where | Does |
+|---|---|---|
+| **Best bot** | top bar, every page | opens the best bot's Trader page (§11.4), or the "Do nothing" page |
+| **View code** | Trader page | shows the generated source file (§9.1); Download |
+| **What did it see?** | Trader page | inputs and bids for any chosen day (§6.4) |
+| **Parents / Descendants** | Trader page | lineage navigation (§9.4) |
+| **Refine** | Trader page | new run seeded with this trader (§11.5) |
+| **Final test (sealed 12 months)** | Trader page of a run's chosen trader | the once-per-run sealed test (§12.4) |
+| **Forward test** | Trader page | scores on data after 2026-09-21, always allowed |
+
+### 15.2 Explaining results and controls (round 19)
+- **Every metric, setting and outcome** has:
+  - a plain-English one-liner, its unit and why it matters;
+  - a formula link into `maths.md`;
+  - a "?" tooltip fed from `docs/glossary.md`. One source, so the app and the docs never disagree.
+- Every setting shows its badge (§13.1).
+- **"What happened"** opens every result page (trader, run, report card, sealed test). It is a paragraph written from templates by Python: deterministic, no language model, no formulas in JavaScript. Example of the form: "amber-heron made $412k over 2019–2024; 70 % came from INC bids at Indiana hub on summer afternoons; it died on 2022-12-23 (Winter Storm Elliott) when …"
+- Every chart has a one-sentence "how to read this" note (e.g. the grid map, §11.6).
 
 - The CLI stays a full alternative.
 - A desktop window via pywebview is optional and later.
@@ -825,7 +1078,7 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 
 **M1.5. App shell.** Needs M1 and my UI decision.
 - `service.py`, `server.py`, templates, `theme.css`, vendored libraries.
-- Pages: Home, Capital, Docs, Gallery, Settings.
+- Pages: Home, Capital, Docs, Gallery, Settings. Theme from the visual reference if supplied (§14.5), white surfaces, the badges of §13.1 and the explanations of §15.2 from the first page on.
 - `serve`, `--dev`, the worker scaffold, offline browser tests, `architecture.md`, UI how-to guides.
 - **Done when:** I change a colour and a label myself and see both change.
 
@@ -838,20 +1091,29 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 - **Done when:** the baselines reproduce `capital_sizing.md` §4 and §7b, and the speed benchmark is recorded.
 
 **M4. Bot representation**
-- Units, primitives, trees, skeleton, printing, JSON, operators, the Bots page.
-- **Done when:** the planted-signal test passes (the GP recovers a planted rule and finds nothing in pure noise), and JSON round-trips exactly.
+- Units, primitives, trees, skeleton, printing, JSON, operators (§9.6), the Traders and Trader pages.
+- Round 19 additions: the **source-code generator** and its equivalence test (§9.1); ids and names (§9.4); the founders (§9.5); the View code and "What did it see?" panels.
+- **Done when:**
+  - the planted-signal test passes (the GP recovers a planted rule and finds nothing in pure noise);
+  - JSON round-trips exactly;
+  - every trader's generated file gives exactly the engine's bids on many random days.
 
 **M5. Career model and fitness**
-- Loss limit, quit hazard (fitted, with the fit quality reported), CUSUM (documented threshold), presets as frozen dataclasses, fitness, the Career page.
-- **Done when:** losing baselines give about 44 / 24 / 15 % survival, and fitness is deterministic.
+- **Out-of-money death (L0, the default)** and credit-limited bid cutting (§10.1); the optional layers: capital floor, loss limit, quit hazard (fitted, with the fit quality reported), CUSUM (documented threshold); presets as frozen dataclasses; fitness; the Career page.
+- **Done when:** with only L0 on, out-of-money deaths are reported with their dates and causes; with the quit hazard on, losing baselines give about 44 / 24 / 15 % survival; fitness is deterministic.
 
 **M6. MAP-Elites**
 - Archive, descriptors, operators, loop, checkpoints; the worker process; the Evolution page; `qd_explained.md`.
+- Round 19 additions: the lineage store (§9.4), parent selection with the pressure knob (§11.2), the batch and lineage-depth counters (§11.3), the Best bot button (§11.4), Refine runs (§11.5), the explained grid map (§11.6).
 - **Done when:**
   - a short hub run fills the archive;
+  - any trader's ancestors and descendants can be browsed, and a non-stored trader regenerates exactly from its birth record;
   - resume is byte-identical;
   - `current_bot.json` updates, with "do nothing" as the fallback;
   - the UI stays responsive during a run.
+
+**M6b. Life mode (proposed, R19-2).** The market-time ecology of §11.3, its page, and a leaderboard row.
+- **Done when:** a population runs through 2005-04 → 2025-09 with births, deaths and family trees recorded, deterministically.
 
 **M7. Report card**
 - `windows.py`, `bootstrap.py`, `deflated_sharpe.py`, `pbo.py`, `stress.py`, `report_card.py` (JSON); the Report page; HTML export.
@@ -884,13 +1146,15 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 3. **Single-file deliverables:** accept the `.pyz` engine and the standard-library bot file (§14.6), or tell me what I mean instead.
 4. **Performance targets** (§14.3): accept or adjust.
 
+**Answered in round 17:** 1 → A (FastAPI + Jinja2 + one `theme.css`); 2 → (a); 3 → exported bots are standalone standard-library files, the equivalence test applies, and whether the engine ships as a `.pyz` is asked at M9; 4 → accepted.
+
 ### 17.2 To resolve during the work (propose with evidence, then ask)
 - The M0 [verify] list (§16, M0).
 - The hub→NWS office table (§7.4).
 - The CINERGY→INDIANA rename date and node-set check.
 - The CUSUM threshold and L3 β fit (M5); the bootstrap block length (M7); the clustering threshold for stage D (M8).
 - The report renderer change (one JSON → app and HTML export, replacing matplotlib `report.html`).
-- Size gene: stays out until the tests in §9.3 justify it.
+- Size gene: stays out until the tests in §9.7 justify it.
 - Whether to add any further input; it must exist 2005–2026, be point-in-time and keyless. Keep the count at 25 unless I agree to a swap.
 - **ORFE track (§20):**
   - battery parameters (power, energy, efficiency, degradation cost);
@@ -898,6 +1162,20 @@ service.py  the single bridge: validates input, calls the core, returns plain da
   - whether a better tail estimator (O5) should replace the trailing empirical p99 in the sizing rule (a change to a decided design point);
   - whether the optimization bidder and the CVaR portfolio become candidates for `current_bot.json`, or stay benchmarks only;
   - solver choices.
+
+### 17.3 Round 19 choices (`docs/rounds/round19_prompt_review.md` §21)
+
+| # | Question | Options | Recommendation |
+|---|---|---|---|
+| R19-1 | How profit affects offspring (§11.2) | A uniform MAP-Elites; **B** rank-weighted with a selection-pressure knob; C curiosity | **B**, default pressure 0.5, compared with A in O8 |
+| R19-2 | Market-time Life mode (§11.3) | **add as M6b**; skip | **add** |
+| R19-3 | Starting population (§9.5) | **mixed 90 % random / 10 % founders**; random only; founders only | **mixed** |
+| R19-4 | Exact "out of money" (§10.1) | **(a)** can't post collateral for the smallest bid; (b) equity ≤ 0; (c) below MISO's minimum capitalization | **(a)**, with (c) as a "MISO-eligible" preset |
+| R19-5 | Futures as inputs (§6.4) | **keep out**; find a source | **keep out** unless a keyless 2005–2026 source exists |
+| R19-6 | Documenting local variables (§14.2) | **names + comments**; one doc entry per variable | **names + comments** |
+| R19-7 | Visual reference (§14.5) | add images to `docs/design/visual_reference/` | – |
+
+Still open from round 18 (`docs/rounds/round18_m0_market_rules.md` §4): D1 decision time, D2 holiday rule, D3 placeholder fees; request R1, MISO's Rates Factors file.
 
 ---
 
@@ -917,6 +1195,12 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 - Don't use a commercial or licence-keyed solver (Gurobi, CPLEX, Mosek, Knitro). Everything must run offline with open-source solvers (§20.2).
 - Don't let an optimization model see more than a bot would. Scenario sets, forecasts and fitted parameters all come through `visible()`; perfect-foresight models are labelled "upper bound, not a strategy".
 - Don't compare methods on different windows, costs or trial counts. The leaderboard (§20.11) uses one protocol for everything.
+- Don't let a trader's generated source code and the engine disagree; the equivalence test is the referee (§9.1).
+- Don't present a value computed from market data or from the trader's account as an editable setting (§13.1).
+- Don't call a trader "best" on in-sample profit (§11.4).
+- Don't let a refine run hide that its lineage's sealed test was already opened (§11.5).
+- Don't put grey backgrounds or grey surfaces in the UI (§14.5).
+- Don't commit without a row in `docs/change_ledger.md` (§14.2).
 
 ---
 
@@ -949,6 +1233,15 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 | DC-OPF | DC optimal power flow: the linearised grid-dispatch problem whose duals give LMPs |
 | ARL | average run length: expected time before a sequential test (e.g. CUSUM) raises an alarm |
 | Pareto front | the set of solutions no other solution beats on every objective |
+| trader (bot) | one evolved strategy: genome + generated source code + life (§9.1) |
+| genome | the trader's slot trees and numeric genes; what evolution changes |
+| founder | a hand-written starting trader with a stated reason (§9.5) |
+| lineage, generation | a trader's ancestors and descendants; generation = lineage depth (§9.4) |
+| selection pressure | how strongly fitness raises a trader's share of offspring (§11.2) |
+| out of money | can't post collateral for the smallest bid: the default death (§10.1) |
+| capital floor / drawdown limit | stop at a wealth level / stop after a fall from the peak (§10.1) |
+| best bot | highest out-of-sample fitness among traders passing the deployment gates (§11.4) |
+| Life mode | the market-time ecology: traders live, reproduce and die day by day through history (§11.3) |
 
 ---
 

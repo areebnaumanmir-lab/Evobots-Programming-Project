@@ -36,8 +36,17 @@ The project's dictionary: one word per idea (`CLAUDE.md` §14.1). Code, docs and
 
 | Term | Meaning |
 |---|---|
-| ruin floor | the equity at which a career ends |
-| career | the rules under which a bot stops trading (L1–L5) |
+| trader (bot) | one evolved strategy: genome + generated source code + life (`CLAUDE.md` §9.1) |
+| genome | the trader's slot trees and numeric genes; what evolution changes |
+| founder | a hand-written starting trader with a stated reason (§9.5) |
+| lineage, generation | a trader's ancestors and descendants; generation = lineage depth (§9.4) |
+| selection pressure | how strongly fitness raises a trader's share of offspring (§11.2) |
+| out of money | can't post collateral for the smallest bid: the default death (§10.1) |
+| ruin floor (capital floor) | an optional wealth level at which a career ends; off by default since round 19 |
+| drawdown limit | an optional stop after a given fall from the trader's peak equity |
+| career | the rules under which a bot stops trading (L0 out of money by default; L1–L5 optional) |
+| best bot | highest out-of-sample fitness among traders passing the deployment gates (§11.4) |
+| Life mode | the market-time ecology: traders live, reproduce and die day by day through history (§11.3) |
 | elite, niche | the best bot in one cell of the MAP-Elites map, and that cell |
 | hold-out | the sealed 12 months, scored once per run |
 | (obs.) / [verify] | observed in this project / not yet checked |

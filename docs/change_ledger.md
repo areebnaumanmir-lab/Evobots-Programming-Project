@@ -1,0 +1,18 @@
+# Change ledger
+
+One row per change, newest first (`CLAUDE.md` §14.2). Every commit adds a row; `tests/test_change_ledger.py` checks that every round doc in `docs/rounds/` is listed here.
+
+Columns:
+- **Date:** when the change was made.
+- **Round:** the round doc that explains it.
+- **Commit:** the commit that made it ("this commit" until the hash is known, then filled in at the next change).
+- **What changed:** the change itself.
+- **Why:** the reason.
+- **Files:** what was touched.
+- **Decision:** the decision it records or still needs.
+
+| Date | Round | Commit | What changed | Why | Files | Decision |
+|---|---|---|---|---|---|---|
+| 2026-10-23 | [round 19](rounds/round19_prompt_review.md) | this commit | Briefing reviewed against 20 questions and revised: trader as organism with generated source code; ids, names, lineage; founders; mutation operators with sources; out-of-money death by default; reproduction and selection pressure; compute vs market time and Life mode; best bot, Refine, sealed test in practice, grid map; setting badges; data and input status; documentation and ledger rules; UI separation and white visual style. Ledger and ledger test started. | Areeb's 20 review questions | `CLAUDE.md`, `docs/rounds/round19_prompt_review.md`, `docs/change_ledger.md`, `docs/glossary.md`, `tests/test_change_ledger.py` | Decided: out-of-money death, buttons, UI separation, ledger, documentation, white style. Open: R19-1 … R19-7 |
+| 2026-10-23 | [round 18](rounds/round18_m0_market_rules.md) | `bfd9f50` | MISO market rules researched from 13 documents; probe and fetch scripts; glossary; doc link checker; local config template with the contact email kept out of git | M0 [verify] list; network policy now allowed the data domains | `docs/market_rules.md`, `docs/rounds/round18_m0_market_rules.md`, `docs/glossary.md`, `tools/*.py`, `tests/test_doc_links.py`, `config/local.example.toml` | Open: D1–D3, R1–R2 |
+| 2026-10-23 | [round 17](rounds/round17_m0_kickoff.md) | `1085133` | Briefing saved as `CLAUDE.md`; stocktake; environment and domain probe; tooling config (`pyproject.toml`, `uv.lock`, `.gitignore`) | M0 kickoff | `CLAUDE.md`, `docs/rounds/round17_m0_kickoff.md`, `pyproject.toml`, `uv.lock`, `.gitignore` | Decided: the four §17.1 questions |
