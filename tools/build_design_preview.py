@@ -42,33 +42,33 @@ def monthly_mean_spreads(hub):
     return {month: total / count for month, (total, count) in sorted(totals.items())}
 
 
-def line_chart_svg(points, y_label_format="{:.0f}", is_zero_line=True):
+def line_chart_svg(points, axis_label_format="{:.0f}", is_zero_line=True):
     """Inline SVG line chart in ink with hairline axes. points: [(x_label, value)]."""
     values = [value for _, value in points]
     low, high = min(values + [0.0]), max(values + [0.0])
     plot_width = CHART_WIDTH - CHART_MARGIN_LEFT
     plot_height = CHART_HEIGHT - CHART_MARGIN_BOTTOM
 
-    def x_position(index):
+    def horizontal_position(index):
         return CHART_MARGIN_LEFT + index * plot_width / max(len(points) - 1, 1)
 
-    def y_position(value):
+    def vertical_position(value):
         return 8 + (high - value) * (plot_height - 16) / (high - low or 1)
 
     parts = [f'<svg viewBox="0 0 {CHART_WIDTH} {CHART_HEIGHT}" width="100%" role="img">']
     for tick in (low, (low + high) / 2, high):
         parts.append(
-            f'<line x1="{CHART_MARGIN_LEFT}" x2="{CHART_WIDTH}" y1="{y_position(tick):.1f}" '
-            f'y2="{y_position(tick):.1f}" stroke="var(--colour-hairline)"/>'
-            f'<text x="0" y="{y_position(tick) + 4:.1f}">{y_label_format.format(tick)}</text>'
+            f'<line x1="{CHART_MARGIN_LEFT}" x2="{CHART_WIDTH}" y1="{vertical_position(tick):.1f}" '
+            f'y2="{vertical_position(tick):.1f}" stroke="var(--colour-hairline)"/>'
+            f'<text x="0" y="{vertical_position(tick) + 4:.1f}">{axis_label_format.format(tick)}</text>'
         )
     if is_zero_line:
         parts.append(
-            f'<line x1="{CHART_MARGIN_LEFT}" x2="{CHART_WIDTH}" y1="{y_position(0):.1f}" '
-            f'y2="{y_position(0):.1f}" stroke="var(--colour-ink)" stroke-width="0.5"/>'
+            f'<line x1="{CHART_MARGIN_LEFT}" x2="{CHART_WIDTH}" y1="{vertical_position(0):.1f}" '
+            f'y2="{vertical_position(0):.1f}" stroke="var(--colour-ink)" stroke-width="0.5"/>'
         )
     path = " ".join(
-        f"{'M' if index == 0 else 'L'}{x_position(index):.1f},{y_position(value):.1f}"
+        f"{'M' if index == 0 else 'L'}{horizontal_position(index):.1f},{vertical_position(value):.1f}"
         for index, (_, value) in enumerate(points)
     )
     parts.append(f'<path d="{path}" fill="none" stroke="var(--colour-ink)" stroke-width="1.2"/>')
@@ -76,7 +76,9 @@ def line_chart_svg(points, y_label_format="{:.0f}", is_zero_line=True):
     for index, (label, _) in enumerate(points):
         year = label[:4]
         if year != previous_label and int(year) % 2 == 1:
-            parts.append(f'<text x="{x_position(index):.1f}" y="{CHART_HEIGHT - 4}">{year}</text>')
+            parts.append(
+                f'<text x="{horizontal_position(index):.1f}" y="{CHART_HEIGHT - 4}">{year}</text>'
+            )
         previous_label = year
     parts.append("</svg>")
     return "".join(parts)
@@ -89,23 +91,23 @@ def hub_timeline_svg(hub_spans, first_day, last_day):
     span_days = (last_day - first_day).days
     left = 120
 
-    def x_position(day_text):
+    def horizontal_position(day_text):
         day = datetime.date.fromisoformat(day_text)
         return left + (day - first_day).days * (CHART_WIDTH - left) / span_days
 
     parts = [f'<svg viewBox="0 0 {CHART_WIDTH} {height}" width="100%" role="img">']
     for index, (hub, first, last) in enumerate(hub_spans):
-        y = 12 + index * row_height
+        row_top = 12 + index * row_height
         parts.append(
-            f'<text x="0" y="{y + 4}">{html.escape(hub.replace(".HUB", ""))}</text>'
-            f'<line x1="{x_position(first):.1f}" x2="{x_position(last):.1f}" y1="{y}" y2="{y}" '
+            f'<text x="0" y="{row_top + 4}">{html.escape(hub.replace(".HUB", ""))}</text>'
+            f'<line x1="{horizontal_position(first):.1f}" x2="{horizontal_position(last):.1f}" y1="{row_top}" y2="{row_top}" '
             f'stroke="var(--colour-ink)" stroke-width="2"/>'
         )
     for year in range(first_day.year + 1, last_day.year + 1, 3):
-        x = x_position(f"{year}-01-01")
+        year_position = horizontal_position(f"{year}-01-01")
         parts.append(
-            f'<line x1="{x:.1f}" x2="{x:.1f}" y1="0" y2="{height - 18}" '
-            f'stroke="var(--colour-hairline)"/><text x="{x - 14:.1f}" y="{height - 4}">{year}</text>'
+            f'<line x1="{year_position:.1f}" x2="{year_position:.1f}" y1="0" y2="{height - 18}" '
+            f'stroke="var(--colour-hairline)"/><text x="{year_position - 14:.1f}" y="{height - 4}">{year}</text>'
         )
     parts.append("</svg>")
     return "".join(parts)

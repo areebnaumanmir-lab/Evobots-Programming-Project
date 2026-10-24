@@ -223,10 +223,10 @@ def write_threshold_figure(trailing, days):
     plot_width = FIGURE_WIDTH - FIGURE_MARGIN_LEFT
     plot_height = FIGURE_HEIGHT - FIGURE_MARGIN_BOTTOM
 
-    def x_position(index):
+    def horizontal_position(index):
         return FIGURE_MARGIN_LEFT + index * plot_width / (len(points) - 1)
 
-    def y_position(value):
+    def vertical_position(value):
         return 8 + (high - value) * (plot_height - 16) / (high - low)
 
     parts = [
@@ -235,35 +235,35 @@ def write_threshold_figure(trailing, days):
         f'<rect width="{FIGURE_WIDTH}" height="{FIGURE_HEIGHT}" fill="#ffffff"/>',
     ]
     for tick in (0, 500_000, 1_000_000, 1_500_000, 2_000_000):
-        y = y_position(tick)
+        tick_position = vertical_position(tick)
         parts.append(
-            f'<line x1="{FIGURE_MARGIN_LEFT}" x2="{FIGURE_WIDTH}" y1="{y:.1f}" y2="{y:.1f}" '
-            f'stroke="#e4e4e4"/><text x="0" y="{y + 4:.1f}" fill="#5f5f5f">${tick / 1e6:.1f}M</text>'
+            f'<line x1="{FIGURE_MARGIN_LEFT}" x2="{FIGURE_WIDTH}" y1="{tick_position:.1f}" y2="{tick_position:.1f}" '
+            f'stroke="#e4e4e4"/><text x="0" y="{tick_position + 4:.1f}" fill="#5f5f5f">${tick / 1e6:.1f}M</text>'
         )
     full_sample = REFERENCE_BENCHMARK["always_inc_p99_daily_loss_usd"] / DAILY_RISK_BUDGET
     parts.append(
-        f'<line x1="{FIGURE_MARGIN_LEFT}" x2="{FIGURE_WIDTH}" y1="{y_position(full_sample):.1f}" '
-        f'y2="{y_position(full_sample):.1f}" stroke="#111111" stroke-dasharray="4 4" stroke-width="0.8"/>'
-        f'<text x="{FIGURE_MARGIN_LEFT + 8}" y="{y_position(full_sample) - 6:.1f}" fill="#5f5f5f">'
+        f'<line x1="{FIGURE_MARGIN_LEFT}" x2="{FIGURE_WIDTH}" y1="{vertical_position(full_sample):.1f}" '
+        f'y2="{vertical_position(full_sample):.1f}" stroke="#111111" stroke-dasharray="4 4" stroke-width="0.8"/>'
+        f'<text x="{FIGURE_MARGIN_LEFT + 8}" y="{vertical_position(full_sample) - 6:.1f}" fill="#5f5f5f">'
         "full-sample constant $1.39M (calibration only)</text>"
     )
     path = " ".join(
-        f"{'M' if index == 0 else 'L'}{x_position(index):.1f},{y_position(value):.1f}"
+        f"{'M' if index == 0 else 'L'}{horizontal_position(index):.1f},{vertical_position(value):.1f}"
         for index, (_, value) in enumerate(points)
     )
     parts.append(f'<path d="{path}" fill="none" stroke="#111111" stroke-width="1.2"/>')
     point_days = [day for day, _ in points]
     for day, label in STORM_MARKERS.items():
-        x = x_position(point_days.index(day))
+        storm_position = horizontal_position(point_days.index(day))
         parts.append(
-            f'<line x1="{x:.1f}" x2="{x:.1f}" y1="8" y2="{plot_height:.1f}" stroke="#a3271f" '
-            f'stroke-width="0.8"/><text x="{x + 4:.1f}" y="20" fill="#a3271f">{label}</text>'
+            f'<line x1="{storm_position:.1f}" x2="{storm_position:.1f}" y1="8" y2="{plot_height:.1f}" stroke="#a3271f" '
+            f'stroke-width="0.8"/><text x="{storm_position + 4:.1f}" y="20" fill="#a3271f">{label}</text>'
         )
     previous_year = None
     for index, day in enumerate(point_days):
         if day[:4] != previous_year:
             parts.append(
-                f'<text x="{x_position(index):.1f}" y="{FIGURE_HEIGHT - 6}" fill="#5f5f5f">{day[:4]}</text>'
+                f'<text x="{horizontal_position(index):.1f}" y="{FIGURE_HEIGHT - 6}" fill="#5f5f5f">{day[:4]}</text>'
             )
             previous_year = day[:4]
     parts.append("</svg>")

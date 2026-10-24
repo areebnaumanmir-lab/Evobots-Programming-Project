@@ -65,5 +65,8 @@ The project's dictionary: one word per idea (`CLAUDE.md` §14.1). Code, docs and
 | state of charge (SoC) | energy stored in a battery, MWh |
 | shadow price / dual | how much the optimal objective changes per unit relaxation of a constraint; an LMP is the shadow price of power balance at a location |
 | DC-OPF | DC optimal power flow: the linearised grid-dispatch problem whose duals give LMPs |
+| PTDF | power transfer distribution factor: the share of 1 MW, injected at a bus and withdrawn at the reference bus, that flows on a line ([maths.md](maths.md) §2.1) |
+| reference bus | the bus whose price is the energy component of every LMP; the split of an LMP into energy and congestion depends on it, the LMP itself does not |
+| MEC, MCC, MLC | the energy, congestion and loss components of an LMP, as MISO publishes them; LMP = MEC + MCC + MLC |
 | ARL | average run length: expected time before a sequential test (e.g. CUSUM) raises an alarm |
 | Pareto front | the set of solutions no other solution beats on every objective |

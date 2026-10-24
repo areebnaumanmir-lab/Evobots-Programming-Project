@@ -14,6 +14,14 @@ s(D) = min(1, b · W(D−1) / L₉₉(D)), and s = 0 when L₉₉ is not yet ava
   - at W = $1.5M: s = min(1, 30,000 / 27,897) = 1;
   - at W = $250k: s = 5,000 / 27,897 = 0.1792.
 - **Function:** `evobots.sizing.position_scale`; `CapitalSettings.full_size_capital_usd`.
+- **Run as a doctest** (`pytest` collects the examples in this file):
+
+  ```python
+  >>> from evobots.sizing import position_scale
+  >>> round(position_scale(250_000, 27_897, 0.02), 4)
+  0.1792
+
+  ```
 - **Tests:** `tests/test_sizing.py::test_position_scale_rules`, `tests/test_calibration_tables.py::test_capital_sweep`.
 
 ### 1.2 Caps, footprint and benchmark P&L
@@ -45,7 +53,7 @@ L₉₉(D) = max( Q₉₉(−x), Q₉₉(x) ) over x_t for t ∈ [D−6−364, D
   - on Uri's worst day, D = 2021-02-18, L₉₉ = $12,261 (the storm is not yet visible);
   - on 2021-02-25 it is $18,777.
 - **Function:** `evobots.sizing.trailing_p99_daily_loss`, `trailing_p99_series`.
-- **Tests:** `tests/test_sizing.py::test_trailing_p99_equals_claude_science_on_every_day`, `::test_section_4b_table`, `::test_look_ahead_changing_d_minus_5_onwards_changes_nothing`, `::test_breach_rate_by_year_2015_2025`.
+- **Tests:** `tests/test_sizing.py::test_trailing_p99_equals_claude_science_on_every_day`, `::test_section_4b_table`, `::test_look_ahead_changing_the_five_newest_days_changes_nothing`, `::test_breach_rate_by_year_2015_2025`.
 
 ### 1.5 The worst k-day loss as a share of equity
 worst = max over i of ( −Σ_{t=i}^{i+k−1} p_t ) / W_i, where p_t is the sized P&L and W_i the equity before day i; k = 20.
@@ -71,7 +79,61 @@ F = ln(W_T / W_0) − r_f · T. Returns are r_t = p_t / W_{t−1}, compounded as
 - **Function:** `evobots.calibration.fixed_cost_usd_per_cleared_mwh`, `capital_floor_for_fixed_costs`.
 - **Tests:** `tests/test_calibration_tables.py::test_fixed_cost_capital_floor`, `::test_capital_sweep`.
 
-## 2. Still to write
+## 2. Why prices differ by location: the DC optimal power flow (O0)
+
+Notation: buses n, lines l, generators k with marginal cost c_k ($/MWh) and capacity Ḡ_k (MW); demand d_n (MW); line limits F_l (MW); line reactances x_l. The walk-through is in [explanations/lmp_from_opf.md](explanations/lmp_from_opf.md).
+
+### 2.1 Power transfer distribution factors
+With a reference bus r, the DC power flow gives bus angles θ = B_r⁻¹ p, where B is the susceptance matrix (B_nn = Σ 1/x_l over the lines at n; B_nm = −1/x_l for the line n–m), with the reference row and column removed. The flow on line l from i to j is (θ_i − θ_j) / x_l. So PTDF[l, n] = (X[i, n] − X[j, n]) / x_l, with X = B_r⁻¹ padded with zeros at r.
+- **Worked example:** a triangle A–B–C of equal reactances, reference C. 1 MW injected at A splits 2/3 on the direct line A–C and 1/3 on the path A–B–C. So the PTDFs of lines (A–B, A–C, B–C) are (1/3, 2/3, 1/3) for bus A and (−1/3, 1/3, 2/3) for bus B.
+- **Function:** `evobots.orfe.dc_opf.ptdf_matrix`.
+- **Tests:** the docstring example; `tests/test_dc_opf.py::test_ptdf_flows_satisfy_kirchhoff`.
+
+### 2.2 The linear program and its duals
+minimise Σ_k c_k g_k over 0 ≤ g_k ≤ Ḡ_k, subject to
+- power balance: Σ_k g_k = Σ_n d_n, with dual λ;
+- line limits: −F_l ≤ Σ_n PTDF[l, n] (G_n − d_n) ≤ F_l, with duals μ_l, where G_n is the output at bus n.
+
+**LMP:** LMP_n = ∂cost/∂d_n = λ + Σ_l μ_l PTDF[l, n].
+- With μ_l the signed dual of line l, λ is the **energy component**, the price at the reference bus.
+- Σ_l μ_l PTDF[l, n] is the **congestion component**, MISO's MCC. It is zero at every bus when no line binds.
+- The DC model is lossless, so there is no loss component (MLC).
+- The LMPs do not depend on the reference bus. The split into energy and congestion does.
+
+**Function:** `evobots.orfe.dc_opf.solve_dc_opf` (HiGHS through `scipy.optimize.linprog`; duals from its marginals).
+
+### 2.3 Worked example (the three-bus network)
+- **Network:**
+  - generator at A: $20/MWh;
+  - generator at B: $50/MWh;
+  - load 150 MW at C;
+  - limit 80 MW on line A–C.
+- **Without the limit:** A would supply all 150 MW, sending 100 MW on A–C, so the limit binds.
+- **Flow on A–C:** (2/3)g_A + (1/3)g_B = 50 + g_A/3 ≤ 80. So g_A = 90, g_B = 60, and the cost is 90·20 + 60·50 = **$4,800**.
+- **Duals:** both generators are marginal, so
+  - 20 = λ − μ·(2/3) and 50 = λ − μ·(1/3);
+  - hence μ = 90 (the line's shadow price, $ per MW of extra limit) and λ = 80.
+- **LMPs:**
+  - **A: $20/MWh** (congestion −60);
+  - **B: $50/MWh** (−30);
+  - **C: $80/MWh** (0).
+- **Check:** one more MW at C needs g_A = 89 and g_B = 62, so the cost rises by exactly $80. That is the price at C, above both generators' costs.
+- **Run as a doctest:**
+
+  ```python
+  >>> from evobots.orfe.dc_opf import THREE_BUS_EXAMPLE, solve_dc_opf
+  >>> result = solve_dc_opf(THREE_BUS_EXAMPLE)
+  >>> [round(price, 2) for price in result["lmp_usd_per_mwh"]], round(result["total_cost_usd"])
+  ([20.0, 50.0, 80.0], 4800)
+
+  ```
+- **Tests:** `tests/test_dc_opf.py`:
+  - `::test_three_bus_hand_derivation`;
+  - `::test_lmp_equals_cost_of_one_more_mw` (re-solves with +1 MW at each bus);
+  - `::test_line_shadow_price_equals_saving_from_one_more_mw_of_limit`;
+  - `::test_prices_do_not_depend_on_the_reference_bus`.
+
+## 3. Still to write
 - The market simulator (M3);
 - fitness under the career model (M5);
 - MAP-Elites (M6);

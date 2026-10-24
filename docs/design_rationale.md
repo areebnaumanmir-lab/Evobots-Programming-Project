@@ -223,7 +223,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 - **Missing decisions:** deployment levels L0–L3 (D-05); the two-fidelity simulator (D-07, superseded); multi-instrument scope (D-02, superseded); the persistent universe (D-23, superseded); the round-4 look-ahead rule (D-17, superseded); the `credit_share` meaning (D-42); the round-13 capitalization question and its round-18 answer (D-36).
 - **No conflicts** were found between the log and the current briefing: every difference is a later round replacing an earlier one, recorded above.
 
-## Part D. Rounds 17–23
+## Part D. Rounds 17–24
 
 | ID | Decision (round) | Status | Logic |
 |---|---|---|---|
@@ -244,6 +244,9 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-74 | Hub → NWS office by the nearest-load rule (23) | Areeb | one office per hub keeps each regional feature tied to one forecast; MISO's Illinois and Texas load sit in ILX's and LCH's areas, and Chicago is PJM. A two-office blend was rejected because it mixes in non-MISO weather |
 | D-75 | Every day of cleared bids (23) | Areeb | liquidity caps measured on ~1,000 days instead of 33; O9 needs enough hub-hours for confidence intervals |
 | D-76 | Stop only at the §2.4 check-ins (23) | Areeb | keeps momentum; the check-ins are where Areeb can test something real |
+| D-77 | Capital explorer as a static page of Python-computed values (24, R24-1) | delegated | one formula source for the CLI, the explorer and the future Capital page; nothing to drift between Python and JavaScript |
+| D-78 | "Well above full size" at ≥ 2× (24, R24-2) | delegated, assumption | the only threshold consistent with `capital_sizing.md` §10's expected warnings that is also a round number |
+| D-79 | MISO data: build locally, never redistribute (24) | proposed | MISO's terms could not be read; the summary seen forbids redistribution; other sources are public domain or CC BY |
 
 ## Part E. Visual design (Q20)
 

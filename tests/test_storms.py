@@ -37,7 +37,7 @@ def test_always_dec_at_1_5m_is_ruined_on_2022_01_21():
     assert result["ruined_on"] == "2022-01-21"
 
 
-def test_hand_example_minus_10_percent_storm_day():
+def test_hand_example_storm_day_losing_a_tenth():
     fitness, _ = compounded_fitness([-0.1, 0.0], ["2021-02-15", "2021-03-01"], 100.0, set())
     assert fitness == pytest.approx(math.log(0.9))
     flat, _ = compounded_fitness([-0.1, 0.0], ["2021-02-15", "2021-03-01"], 100.0, {"2021-02-15"})

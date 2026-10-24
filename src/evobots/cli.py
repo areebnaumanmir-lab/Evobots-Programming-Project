@@ -2,6 +2,7 @@
 
 import argparse
 
+from evobots.capital_summary import capital_summary
 from evobots.config import load_capital
 from evobots.config.capital import MINIMUM_MPD_USD_PER_MWH, VIRTUAL_EXPOSURE_WINDOW_DAYS
 
@@ -9,34 +10,52 @@ from evobots.config.capital import MINIMUM_MPD_USD_PER_MWH, VIRTUAL_EXPOSURE_WIN
 # USD (capital_sizing.md §4; reproduced in round 21). CALIBRATION ONLY: it contains every storm
 # of the sample, so simulation code must never use it; tests/test_sizing.py enforces that.
 CALIBRATION_ONLY_FULL_SAMPLE_P99_USD = 27_897
+# Worst 20-day full-size loss over the same sample (always-INC, ending in Winter Storm Elliott),
+# USD (capital_sizing.md §5; reproduced in round 22). CALIBRATION ONLY, as above.
+CALIBRATION_ONLY_FULL_SAMPLE_WORST_20_DAY_LOSS_USD = 484_372
+
+
+def calibration_capital_summary(settings, cleared_share_fraction=0.72):
+    """capital_summary at the full-sample calibration losses (for display, never simulation).
+
+    Example:
+        >>> from evobots.config.capital import CapitalSettings
+        >>> round(calibration_capital_summary(CapitalSettings())["full_size_capital_usd"])
+        1394850
+    """
+    return capital_summary(
+        settings,
+        CALIBRATION_ONLY_FULL_SAMPLE_P99_USD,
+        CALIBRATION_ONLY_FULL_SAMPLE_WORST_20_DAY_LOSS_USD,
+        cleared_share_fraction,
+    )
 
 
 def capital_report_lines(settings):
     """Plain-English lines describing a CapitalSettings, for the `capital` command."""
+    summary = calibration_capital_summary(settings)
     caps = settings.hub_caps_mw()
-    full_size_mwh = settings.full_size_mwh_per_day()
-    floor_usd = settings.effective_ruin_floor_usd()
-    full_size_capital_usd = settings.full_size_capital_usd(CALIBRATION_ONLY_FULL_SAMPLE_P99_USD)
-    collateral_usd = full_size_mwh * MINIMUM_MPD_USD_PER_MWH * VIRTUAL_EXPOSURE_WINDOW_DAYS
+    full_size_mwh = summary["full_size_mwh_per_day"]
     lines = [
         f"Starting capital: ${settings.starting_capital_usd:,.0f}",
         f"Daily risk budget: {settings.daily_risk_budget_fraction:.1%} of equity on a 1-in-100 day",
         "Per-hub caps (MW): " + ", ".join(f"{hub} {cap:g}" for hub, cap in caps.items()),
         f"Full size: {sum(caps.values()):g} MW x 24 h = {full_size_mwh:g} MWh per day",
-        f"Full size is reached at ${full_size_capital_usd:,.0f} (full-sample p99, calibration "
-        "only; point-in-time it varies, capital_sizing.md §4b)",
+        f"Full size is reached at ${summary['full_size_capital_usd']:,.0f} (full-sample p99, "
+        "calibration only; point-in-time it varies, capital_sizing.md §4b)",
         f"MISO collateral at full size: {full_size_mwh:g} MWh x ${MINIMUM_MPD_USD_PER_MWH:g} MPD x "
-        f"{VIRTUAL_EXPOSURE_WINDOW_DAYS} days = ${collateral_usd:,.0f}",
+        f"{VIRTUAL_EXPOSURE_WINDOW_DAYS} days = ${summary['collateral_at_full_size_usd']:,.0f}",
         "Virtual MWh Limit the pledged credit supports: "
-        f"{settings.virtual_mwh_limit():,.0f} MWh per day",
+        f"{summary['virtual_mwh_limit_mwh_per_day']:,.0f} MWh per day",
     ]
-    if floor_usd is None:
+    if summary["ruin_floor_usd"] is None:
         lines.append("Death: out of money (no capital floor set)")
     else:
         lines.append(
-            f"Capital floor: ${floor_usd:,.0f}; headroom {settings.headroom_fraction():.1%}"
+            f"Capital floor: ${summary['ruin_floor_usd']:,.0f}; "
+            f"headroom {summary['headroom_fraction']:.1%}"
         )
-    lines += [f"Warning: {message}" for message in settings.warnings()]
+    lines += [f"Warning: {message}" for message in summary["warnings"]]
     return lines
 
 

@@ -52,8 +52,11 @@ def test_capital_sweep(row):
         )
         assert cost == pytest.approx(float(row[f"fixed_cost_per_MWh_share_{share}"]), abs=5e-4)
     # Constant scale from starting capital; worst 20 days at full size is always-INC's.
-    worst_percent = 100 * scale * worst_20_day_full_size_loss_usd() / capital
-    assert worst_percent == pytest.approx(float(row["worst_20d_loss_pct_fullsample"]), abs=5e-4)
+    worst_fraction = scale * worst_20_day_full_size_loss_usd() / capital
+    # The CSV gives it in percent.
+    assert 100 * worst_fraction == pytest.approx(
+        float(row["worst_20d_loss_pct_fullsample"]), abs=5e-4
+    )
 
 
 @pytest.mark.parametrize(

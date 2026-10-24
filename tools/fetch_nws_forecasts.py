@@ -21,6 +21,7 @@ data/holdout/raw/nws/ and are never opened here except to hash them.
 import argparse
 import datetime
 import hashlib
+import http.client
 import json
 import ssl
 import sys
@@ -119,7 +120,8 @@ def fetch_forecast(office, decision_day, user_agent):
                 body = response.read()
             status = "downloaded" if b"PFM" in body[:400] else "missing"
             break
-        except (urllib.error.URLError, OSError) as error:
+        # A truncated chunked response raises IncompleteRead, an HTTPException.
+        except (urllib.error.URLError, http.client.HTTPException, OSError) as error:
             error_text = str(error)
         time.sleep(2 ** (attempt + 1))
     is_holdout = is_holdout_decision_day(decision_day)

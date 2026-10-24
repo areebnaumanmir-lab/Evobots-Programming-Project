@@ -99,7 +99,7 @@ def test_relative_floor_preset(capital_usd, floor_usd):
     assert settings.headroom_fraction() == pytest.approx(1 / 3)
 
 
-def test_absolute_floor_with_under_10_percent_headroom_is_rejected():
+def test_absolute_floor_leaving_under_a_tenth_to_lose_is_rejected():
     with pytest.raises(ValueError, match="4.8%"):
         CapitalSettings(starting_capital_usd=1_050_000, ruin_floor_usd=1_000_000)
 

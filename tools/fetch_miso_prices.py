@@ -31,6 +31,7 @@ newest 2026-07-25), so a recent 404 is retried for CLEARED_BIDS_RETRY_MISSING_DA
 import argparse
 import datetime
 import hashlib
+import http.client
 import json
 import ssl
 import sys
@@ -181,7 +182,8 @@ def download_file(planned_file, user_agent):
                 status = "missing"
                 break
             error_text = f"HTTP {error.code}"
-        except (urllib.error.URLError, OSError) as error:
+        # A truncated chunked response raises IncompleteRead, an HTTPException.
+        except (urllib.error.URLError, http.client.HTTPException, OSError) as error:
             error_text = str(error)
         time.sleep(2 ** (attempt + 1))
     record = {

@@ -1,0 +1,4 @@
+date,milestone,commit,machine,benchmark,items,item_unit,best_seconds,items_per_second
+2026-10-24,M0,c83f726+,Linux 4 cores Python 3.13.17,trailing_p99_series,3858,days,0.404325,9541.8
+2026-10-24,M0,c83f726+,Linux 4 cores Python 3.13.17,simulate_benchmark_equity,3858,days,0.001824,2115644.3
+2026-10-24,M0,c83f726+,Linux 4 cores Python 3.13.17,capital_summary,1,summaries,0.000016,61474.2

@@ -202,10 +202,10 @@ Saturday holidays stay on Saturday in both sources.
 
 | Item (`CLAUDE.md` §16) | Result | Status |
 |---|---|---|
-| Bid deadline | 10:30 EPT since 2016-11-05; 11:00 EST (noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 still [verify] (§2.1). Decision needed: option A or B |
+| Bid deadline | 10:30 EPT since 2016-11-05; 11:00 EST (noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 still [verify] (§2.1). **Decided round 20 (D1):** the bot decides at 10:30 EPT on D−1 in every year, never later than the real deadline, so the [verify] no longer affects results |
 | Admin fee | Schedule 17 + 24 ≈ $0.090/MWh (Oct 2026), on \|net\| per node-hour | **mechanics resolved**; rates [verify] (search-index source), history missing |
 | RSG rates | mechanics and eras resolved (§3); one historical average ($1.8/MWh RSG1, 2008–2012 data) | **rates missing**: need the Rates Factors file |
-| Holiday list | six NERC holidays | Sunday rule **conflicting** (§6); decision needed |
+| Holiday list | six NERC holidays | Sunday rule conflicting in the sources (§6); **decided round 20 (D2):** flag the Sunday and the following Monday |
 | Published MPD | $12 floor binds in recent years; formula confirmed | current published value and 2007–2023 history [verify] |
 | Settlement timing | S7 statement, weekly Tuesday invoices | **resolved** |
 | Preliminary RT archive depth | not archived (only the last ~3 days) | **resolved** (obs. probe) |

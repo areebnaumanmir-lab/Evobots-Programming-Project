@@ -94,14 +94,14 @@ def test_breach_rate_by_year_2015_2025():
             assert 100 * breaches / days == pytest.approx(float(row["breach_rate_pct"]), abs=0.005)
 
 
-def test_look_ahead_changing_d_minus_5_onwards_changes_nothing():
+def test_look_ahead_changing_the_five_newest_days_changes_nothing():
     operating_day = SAMPLE_DAYS.index("2022-12-23")
     changed = SAMPLE_PNL.copy()
     changed[operating_day - 5 :] = 1e9
     assert trailing_p99_daily_loss(changed, operating_day) == SAMPLE_P99[operating_day]
 
 
-def test_d_minus_6_is_visible():
+def test_six_days_before_the_operating_day_is_visible():
     operating_day = SAMPLE_DAYS.index("2022-12-23")
     changed = SAMPLE_PNL.copy()
     changed[operating_day - 6] = -1e9

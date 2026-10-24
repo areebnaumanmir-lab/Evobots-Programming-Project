@@ -225,3 +225,12 @@ Running record of what we have agreed. It references question numbers in decisio
 | Cleared bids | **Decided:** every day (recommended) | 2023-01-01 → newest (≈90-day publication lag), with DA ex-ante prices; ~5 GB |
 | Weather fetch | **Decided:** start now (recommended) | `tools/fetch_nws_forecasts.py` running, ~8 h |
 | Pacing | **Decided:** continue, stop at check-ins (recommended) | stop only at the §2.4 check-ins; questions asked as they come up |
+
+## Round 24 (2026-10-24): M0 finished; rounds/round24_m0_finish.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Capital explorer | – (delegated, R24-1) | static page; every value computed in Python by `capital_summary`, looked up by the page |
+| "Well above full size" warning | – (delegated, R24-2) | fires at ≥ 2× the full-size point (assumption) |
+| Abbreviations | – (delegated, R24-3) | DC, OPF, PTDF approved for the ORFE power-flow material |
+| MISO redistribution | **open** | proposal: build locally, never redistribute, until Areeb reads MISO's terms |
