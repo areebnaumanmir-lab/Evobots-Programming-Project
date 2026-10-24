@@ -223,7 +223,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 - **Missing decisions:** deployment levels L0–L3 (D-05); the two-fidelity simulator (D-07, superseded); multi-instrument scope (D-02, superseded); the persistent universe (D-23, superseded); the round-4 look-ahead rule (D-17, superseded); the `credit_share` meaning (D-42); the round-13 capitalization question and its round-18 answer (D-36).
 - **No conflicts** were found between the log and the current briefing: every difference is a later round replacing an earlier one, recorded above.
 
-## Part D. Rounds 17–20
+## Part D. Rounds 17–23
 
 | ID | Decision (round) | Status | Logic |
 |---|---|---|---|
@@ -241,6 +241,9 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-71 | Best bot, Refine, sealed test, grid map, badges, ledger, UI separation (19) | kept | |
 | D-72 | Visual style from the reference image (20) | Areeb | below |
 | D-73 | Build independently: rebuild missing files from the briefing and docs, prove them against the recorded numbers, ask directly (22) | Areeb | waiting blocked all milestones; `capital_sizing.md` specifies the slice well enough to rebuild and test it exactly |
+| D-74 | Hub → NWS office by the nearest-load rule (23) | Areeb | one office per hub keeps each regional feature tied to one forecast; MISO's Illinois and Texas load sit in ILX's and LCH's areas, and Chicago is PJM. A two-office blend was rejected because it mixes in non-MISO weather |
+| D-75 | Every day of cleared bids (23) | Areeb | liquidity caps measured on ~1,000 days instead of 33; O9 needs enough hub-hours for confidence intervals |
+| D-76 | Stop only at the §2.4 check-ins (23) | Areeb | keeps momentum; the check-ins are where Areeb can test something real |
 
 ## Part E. Visual design (Q20)
 

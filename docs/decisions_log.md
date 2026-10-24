@@ -216,3 +216,12 @@ Running record of what we have agreed. It references question numbers in decisio
 | Missing files | **Decided:** "make the project independently and ask all the questions you need directly here" | missing files are rebuilt from the briefing and docs and proven against recorded numbers; questions asked directly |
 | Capital slice | – | rebuilt from `capital_sizing.md`; 133 tests reproduce every recorded number (trailing p99 on all 2,456 days, breach rates, sweep, headroom, fixed-cost floors, storms) |
 | Naming | – | `daily_risk_budget_fraction`, `credit_share_fraction`, `liquidity_share_fraction` (§14.1); floors off by default; MPD no longer a setting |
+
+## Round 23 (2026-10-24): weather offices, cleared bids, pacing; rounds/round23_m0_data_and_pacing.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Hub → NWS office | **Decided:** nearest-load rule (recommended) | MINN→MPX, MICHIGAN→DTX, INDIANA→IND, ILLINOIS→ILX, ARKANSAS→LZK, MS→JAN, LOUISIANA→LIX, TEXAS→LCH; LOT feeds no hub |
+| Cleared bids | **Decided:** every day (recommended) | 2023-01-01 → newest (≈90-day publication lag), with DA ex-ante prices; ~5 GB |
+| Weather fetch | **Decided:** start now (recommended) | `tools/fetch_nws_forecasts.py` running, ~8 h |
+| Pacing | **Decided:** continue, stop at check-ins (recommended) | stop only at the §2.4 check-ins; questions asked as they come up |

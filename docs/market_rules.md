@@ -68,6 +68,7 @@ Measured on 2026-10-23 with `tools/probe_rt_archive.py` (obs. probe):
 - Preliminary RT prices are **not archived**. No preliminary file exists for 2005-04-01, 2010-06-01, 2015-03-01, 2020-01-01, 2023-01-01 or any day from 2025-01-01 to 2026-10-19 (binary search). So the [verify] in `CLAUDE.md` §6.4 is settled: **history can't use preliminary RT**, and the lag stays.
 - Claude Science saw a 5-day lag on 2026-09-26; today's probe saw 4 days. The design's rule (on decision day D−1 the newest day with known P&L is **D−6**) stays safe against both.
 - Paper-live mode (M9) could use preliminary RT for yesterday, but only going forward and only in reporting, since the bots were trained without it.
+- **Cleared bids are published about 90 days late** (obs., round 23: on 2026-10-24 the newest `{date}_bids_cb.zip` was 2026-07-25; 2026-07-31 was a 404; the first file is 2023-01-01). Anything computed from them, such as hub liquidity medians or the O9 price-impact estimate, may use only days at least ~90 days before the decision, if it is ever made point-in-time.
 
 ### 2.3 Settlement and cash timing
 

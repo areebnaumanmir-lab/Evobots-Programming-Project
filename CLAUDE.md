@@ -38,6 +38,7 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
   - the whole MISO DA/RT archive downloaded and parsed (§3, §7.0, §7.3);
   - the visual style from my reference image (§14.5).
 - **Round 22 (2026-10-24): build independently.** My instruction: "make the project independently and ask all the questions you need directly here". Missing files are now **rebuilt from this briefing and the docs**, not waited for (§4). The capital slice is rebuilt from `capital_sizing.md` and reproduces every one of its numbers (133 tests).
+- **Round 23 (2026-10-24): weather offices, cleared bids, pacing** (`docs/rounds/round23_m0_data_and_pacing.md`). Hub→office table by the nearest-load rule (§7.4); every day of cleared bids from 2023 (§7.0); the weather fetch started; work continues milestone by milestone and stops only at the §2.4 check-ins.
 - **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 
 **First session, in order:**
@@ -111,6 +112,7 @@ For every substantive decision or milestone:
 - End of M4: the planted-signal test.
 - End of M7: the first real report card.
 - End of M9: the tutorial on a clean machine, offline, plus a bot exported to a single file.
+- **Pacing (decided round 23):** work through the milestones in order, committing each round, and stop only at these check-ins. Ask questions in the conversation as they come up.
 
 ---
 
@@ -302,8 +304,9 @@ MISO announced that its public pricing reports would stop updating from 12 Decem
 | Parsed store (git-ignored) | `data/store/hub_prices.csv.gz` (day × hour × hub: DA/RT LMP, MCC, MLC), `locations.csv` (5,519 locations with first/last day), `daily_coverage.csv` (`tools/build_miso_hub_prices.py`) | the all-location memory-mapped store (§7.11) is still to build (M1/M8) |
 | Provenance | `data/manifest.toml`: URL, SHA-256, size, date for every file (committed) | |
 | MISO preliminary RT | last ~3 days only | not archived |
-| MISO cleared bids | not downloaded (2023 →, ~6 MB/day) | needed for O9 and the liquidity medians; fetch in M1 |
-| NWS forecasts, Henry Hub, EPU, GPR, EIA-860M | not downloaded yet | M1 |
+| MISO cleared bids | **every day from 2023-01-01** (decided round 23): `tools/fetch_miso_prices.py --report cleared_bids`, with the matching DA ex-ante prices; ~5 GB | published about **90 days late** (obs.: newest 2026-07-25 on 2026-10-24); needed for O9 and the liquidity medians |
+| NWS forecasts | **fetching** (round 23): 9 offices × 7,878 decision days, ~8 h at the polite rate | parser at M1 |
+| Henry Hub, EPU, GPR, EIA-860M | not downloaded yet | M1 |
 
 **Check against Claude Science (obs., round 21, `tools/check_against_claude_science.py` → `docs/data/claude_science_check.csv`):** from the downloaded archive, for 2019-01-01 → 2025-09-21:
 - **all 176 values** of `docs/data/hub_price_stats.csv` agree to rounding;
@@ -379,9 +382,8 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 - **Use:** the latest issue before the DA deadline.
 - **Size:** about 1.4 GB raw to fetch (one issue per office per day, about 20 KB each); the parsed table is about 16 MB.
 - **Plan:** fetch once, parse, and **bundle the parsed table** plus the script.
-- **Hub → office link:** an 8-row hand-written table, e.g. MINN→MPX, MICHIGAN→DTX, INDIANA→IND, ARKANSAS→LZK, MS→JAN.
-  - **Still to decide at M1:** ILLINOIS → ILX or LOT? LOUISIANA → LIX or LCH? TEXAS → LCH?
-  - Propose a rule (for example, the office whose forecast towns are nearest the hub's load centre) and ask me.
+- **Hub → office link (decided round 23, nearest-load rule):** MINN→MPX, MICHIGAN→DTX, INDIANA→IND, **ILLINOIS→ILX** (MISO's Illinois is Ameren's central and southern Illinois; Chicago is PJM), ARKANSAS→LZK, MS→JAN, **LOUISIANA→LIX**, **TEXAS→LCH**. LOT is fetched but feeds no hub. The town lists are checked against the load centres while parsing (M1).
+- **Fetch (round 23):** `tools/fetch_nws_forecasts.py`, one request per office per decision day for the newest issue in the 24 hours before 10:30 EPT on D−1; hold-out days go to `data/holdout/raw/nws/`.
 - **Set aside:**
   - GFS MOS machine forecasts (IEM `cgi-bin/request/mos.py`) only start 2007-05-03;
   - IEM **ASOS** airport observations (`cgi-bin/request/daily.py`, covers 2005) are for **reporting only**, to measure forecast skill. Bots never see same-day actuals.

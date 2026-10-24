@@ -3,11 +3,13 @@
 Usage:
     python tools/fetch_miso_prices.py [--config config/local.toml] [--start 2005-04-01]
                                       [--end YYYY-MM-DD] [--workers 2]
+                                      [--report prices|cleared_bids]
 
-Needs internet (about 5.5 GB). Resumable: files already on disk with a recorded SHA-256
-are skipped. Polite (CLAUDE.md §5.4): at most --workers parallel requests (≤ 4), 0.5 s
-between requests per worker, 3 retries with backoff, 404 recorded as "file doesn't exist",
-write-then-rename, and every file's URL, SHA-256, size and download time recorded.
+Needs internet (prices about 5.5 GB; cleared bids about 4 GB). Resumable: files already on
+disk with a recorded SHA-256 are skipped. Polite (CLAUDE.md §5.4): at most --workers parallel
+requests (≤ 4), 0.5 s between requests per worker, 3 retries with backoff, 404 recorded as
+"file doesn't exist", write-then-rename, and every file's URL, SHA-256, size and download
+time recorded.
 
 Sealed hold-out (CLAUDE.md §7.2): files whose operating day falls in 2025-09-22 → 2026-09-21
 are written to data/holdout/raw/miso/ and are never opened here except to hash them.
@@ -19,6 +21,11 @@ File eras (CLAUDE.md §7.3):
     2015-02             both {YYYYMM}_da_lmp_csv.zip and {YYYYMM}_da_expost_lmp_csv.zip
     2015-03 → 2022-12   {YYYYMM}_da_expost_lmp_csv.zip     {YYYYMM}_rt_lmp_final_csv.zip
     2023-01 → today     {YYYYMMDD}_da_expost_lmp.csv       {YYYYMMDD}_rt_lmp_final.csv
+
+--report cleared_bids (CLAUDE.md §6.2, §20.12): for every day from 2023-01-01, the cleared
+virtual bids {YYYYMMDD}_bids_cb.zip and the DA ex-ante prices {YYYYMMDD}_da_exante_lmp.csv
+used to attribute them to hubs. Cleared bids appear about 90 days late (obs., 2026-10-24:
+newest 2026-07-25), so a recent 404 is retried for CLEARED_BIDS_RETRY_MISSING_DAYS.
 """
 
 import argparse
@@ -51,6 +58,8 @@ TIMEOUT_SECONDS = 180
 MAX_WORKERS_PER_HOST = 4
 # A 404 for a day younger than this is retried later: the file may not be published yet.
 RETRY_MISSING_DAYS = 14
+# Cleared bids are published about 90 days after the operating day (obs., 2026-10-24).
+CLEARED_BIDS_RETRY_MISSING_DAYS = 150
 
 log_lock = threading.Lock()
 
@@ -96,6 +105,17 @@ def planned_files(first_day, last_day):
     return files
 
 
+def planned_cleared_bid_files(first_day, last_day):
+    """Return (file_name, market, first_operating_day, last_operating_day) for cleared bids."""
+    files = []
+    day = max(first_day, FIRST_DAILY_FILE_DAY)
+    while day <= last_day:
+        files.append((f"{day:%Y%m%d}_bids_cb.zip", "cleared_bids", day, day))
+        files.append((f"{day:%Y%m%d}_da_exante_lmp.csv", "da_exante", day, day))
+        day += datetime.timedelta(days=1)
+    return files
+
+
 def is_holdout_file(first_operating_day, last_operating_day):
     """True when any operating day in the file lies in the sealed hold-out."""
     return first_operating_day <= HOLDOUT_LAST_DAY and last_operating_day >= HOLDOUT_FIRST_DAY
@@ -114,8 +134,13 @@ def recorded_file_names(today):
             if line.strip():
                 record = json.loads(line)
                 last_day = datetime.date.fromisoformat(record["last_operating_day"])
+                retry_days = (
+                    CLEARED_BIDS_RETRY_MISSING_DAYS
+                    if record["market"] == "cleared_bids"
+                    else RETRY_MISSING_DAYS
+                )
                 is_settled_missing = (
-                    record["status"] == "missing" and (today - last_day).days > RETRY_MISSING_DAYS
+                    record["status"] == "missing" and (today - last_day).days > retry_days
                 )
                 if record["status"] == "downloaded" or is_settled_missing:
                     names.add(record["file_name"])
@@ -188,6 +213,7 @@ def main():
     parser.add_argument("--start", type=datetime.date.fromisoformat, default=MARKET_FIRST_DAY)
     parser.add_argument("--end", type=datetime.date.fromisoformat, default=datetime.date.today())
     parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--report", choices=("prices", "cleared_bids"), default="prices")
     arguments = parser.parse_args()
     if not 1 <= arguments.workers <= MAX_WORKERS_PER_HOST:
         sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (CLAUDE.md §5.4).")
@@ -196,9 +222,10 @@ def main():
     HOLDOUT_RAW_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
     already_done = recorded_file_names(datetime.date.today())
+    plan = planned_files if arguments.report == "prices" else planned_cleared_bid_files
     to_fetch = [
         planned_file
-        for planned_file in planned_files(arguments.start, arguments.end)
+        for planned_file in plan(arguments.start, arguments.end)
         if planned_file[0] not in already_done
     ]
     print(f"{len(to_fetch)} files to fetch ({len(already_done)} already recorded)", flush=True)
