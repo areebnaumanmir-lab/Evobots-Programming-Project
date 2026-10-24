@@ -208,3 +208,11 @@ Running record of what we have agreed. It references question numbers in decisio
 | Decisions log, `capital_sizing.md`, `capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv` | Uploaded | added to `docs/` and `docs/data/` |
 | Reproduction | – | **all 176 values** of `hub_price_stats.csv`, the 12 benchmark P&L numbers of §4 and the trailing-p99 table of §4b (with the 2.16 % breach rate by year) reproduced exactly from the round-20 archive (`tools/check_against_claude_science.py`) |
 | Reconciliation | – | `design_rationale.md` Part C rewritten from this log: 14 round attributions corrected, 7 missing decisions added; no conflicts with the briefing |
+
+## Round 22 (2026-10-24): build independently; rounds/round22_independent_build.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Missing files | **Decided:** "make the project independently and ask all the questions you need directly here" | missing files are rebuilt from the briefing and docs and proven against recorded numbers; questions asked directly |
+| Capital slice | – | rebuilt from `capital_sizing.md`; 133 tests reproduce every recorded number (trailing p99 on all 2,456 days, breach rates, sweep, headroom, fixed-cost floors, storms) |
+| Naming | – | `daily_risk_budget_fraction`, `credit_share_fraction`, `liquidity_share_fraction` (§14.1); floors off by default; MPD no longer a setting |

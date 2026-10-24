@@ -240,6 +240,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-70 | Mutation operators (19) | changed r20 (A4) | |
 | D-71 | Best bot, Refine, sealed test, grid map, badges, ledger, UI separation (19) | kept | |
 | D-72 | Visual style from the reference image (20) | Areeb | below |
+| D-73 | Build independently: rebuild missing files from the briefing and docs, prove them against the recorded numbers, ask directly (22) | Areeb | waiting blocked all milestones; `capital_sizing.md` specifies the slice well enough to rebuild and test it exactly |
 
 ## Part E. Visual design (Q20)
 

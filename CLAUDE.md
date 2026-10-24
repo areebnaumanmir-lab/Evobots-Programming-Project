@@ -37,6 +37,7 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
   - the round-18 and round-19 open choices decided under my delegation (§17.3);
   - the whole MISO DA/RT archive downloaded and parsed (§3, §7.0, §7.3);
   - the visual style from my reference image (§14.5).
+- **Round 22 (2026-10-24): build independently.** My instruction: "make the project independently and ask all the questions you need directly here". Missing files are now **rebuilt from this briefing and the docs**, not waited for (§4). The capital slice is rebuilt from `capital_sizing.md` and reproduces every one of its numbers (133 tests).
 - **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 
 **First session, in order:**
@@ -135,7 +136,7 @@ For every substantive decision or milestone:
 
 **Empty:** `data/`, `features/`, `market/`, `bots/`, `simulate/`, `career/`, `qd/`, `assess/`, `deploy/`, `app/`. No M1 data builder yet. The only data so far is a calibration sample: 8 hubs, 2019-01 → 2025-09, plus a 2015–2018 check and 33 days of cleared bids. It was built inside Claude Science's sandbox and **was not carried over**. Only the summary CSVs exist. You will re-download.
 
-**Status in the repository (round 21, obs.):** of the files in the table above, only `docs/capital_sizing.md` has arrived, together with `docs/decisions_log.md` and three of its CSVs (§4). The code, tests and the other docs are still missing, so step zero (the 40 tests) still can't run. **The full MISO day-ahead and real-time price archive for every location (2005-04-01 → today) has been downloaded and parsed** into a hub table, a location list and a coverage report (§7.0). What exists: this briefing, tooling config, `docs/market_rules.md`, `docs/glossary.md`, the round docs, probe and fetch scripts in `tools/`, and a link-checker test. Every answer about traders, evolution or the app below describes the **design**, not working software.
+**Status in the repository (round 22, obs.):** the capital slice in the table above is **rebuilt** and passes 133 tests that reproduce `capital_sizing.md` (§4). From Claude Science: `capital_sizing.md`, `decisions_log.md` and seven of its CSVs. Not yet rebuilt: `tools/capital_explorer.html` (replaced by the Capital page at M1.5, §15), `tools/build_hub_sample.py` and `fetch_2015_2018.py` (replaced by `tools/fetch_miso_prices.py` and `build_miso_hub_prices.py`), and the docs listed in `docs/rounds/round21_reconciliation.md` §4. **The full MISO day-ahead and real-time price archive for every location (2005-04-01 → today) has been downloaded and parsed** into a hub table, a location list and a coverage report (§7.0). What exists: this briefing, tooling config, `docs/market_rules.md`, `docs/glossary.md`, the round docs, probe and fetch scripts in `tools/`, and a link-checker test. Every answer about traders, evolution or the app below describes the **design**, not working software.
 
 **Known problems:**
 1. `capital_explorer.html` has a JavaScript syntax error: an unescaped apostrophe in "MISO's" inside a single-quoted string, which probably stops the whole script. It was never opened in a browser. Fix it in M0 and add a headless browser test.
@@ -145,7 +146,7 @@ For every substantive decision or milestone:
 
 ## 4. Files you should find
 
-I'll put the project files into this layout. If something is missing, list it and ask; don't recreate it from this prompt unless I say so.
+I'll put the project files into this layout. **Round 22: build the project independently.** Rebuild anything missing from this briefing and the docs, prove it against the recorded numbers, and ask me questions directly in the conversation instead of waiting for files. If an original file arrives later, compare it with the rebuild and report the differences.
 
 ```
 evobots/
@@ -181,6 +182,7 @@ Notes:
 - `tests/test_floor_caps_storms.py` reads `docs/hub_volume_stats.csv`. If the test's path differs from the layout above, fix the path, not the data.
 
 **Step zero of M0:** run the 40 tests as they are. They must pass before any rename or refactor. If they don't, report why (likely a path or packaging issue) and fix only that.
+**Round 22:** the original code and its 40 tests never arrived. Instead, the capital slice (`config/capital.py`, `config/__init__.py`, `sizing.py`, `storms.py`, `calibration.py`, `cli.py`, `configs/10_miso_hubs.toml`) was rebuilt from `capital_sizing.md`, and 133 tests check it against every recorded number: `hub_price_stats.csv`, `trailing_p99_daily_loss.csv` (2,456 days), `trailing_breach_rate_by_year_2015_2025.csv`, `capital_sweep.csv`, `headroom_trailing.csv`, `fixed_cost_capital_floor.csv`, and the storm-sensitivity values. Setting names follow §14.1 (`daily_risk_budget_fraction`, `credit_share_fraction`, `liquidity_share_fraction`); floors are off by default (§10.1). The tests read a committed daily benchmark series (`docs/data/benchmark_full_size_daily_pnl.csv`), so they run offline.
 
 ---
 
@@ -862,11 +864,11 @@ Only two model fees or uplift; the rest use the raw spread, which flatters resul
 | Setting | Default | Range / note |
 |---|---|---|
 | `starting_capital_usd` | $1,500,000 | $250k–$5M, step $50k (Stage A) |
-| `daily_risk_budget` | 0.02 | 0.005–0.05 |
-| `credit_share` | 0.25 | 0.05–0.80 |
-| `mpd_usd_per_mwh` | 12 | ≥ 12 |
+| `daily_risk_budget_fraction` (was `daily_risk_budget`) | 0.02 | 0.005–0.05 |
+| `credit_share_fraction` (was `credit_share`) | 0.25 | 0.05–0.80 |
+| MPD | from market data, ≥ 12 | no longer a setting (§13.1); collateral functions take it as an argument |
 | `max_mw_per_hub_hour` | 5.0 | |
-| `ruin_floor_fraction` | 2/3 | 0–0.9 |
+| `ruin_floor_fraction` | off (round 19; the round-16 preset is 2/3) | 0–0.9 |
 | `ruin_floor_usd` | none | optional absolute floor |
 
 - **Sizing rule:** `position_scale = min(1, daily_risk_budget × equity / trailing_p99_full_size_daily_loss)`.

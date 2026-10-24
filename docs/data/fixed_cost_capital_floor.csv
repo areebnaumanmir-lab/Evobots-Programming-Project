@@ -1,0 +1,6 @@
+case,cleared_share,cleared_MWh_per_year_full_size,fixed_cost_per_MWh_at_full_size,C_min_full_sample_p99,C_min_trailing_median_p99,C_min_trailing_max_p99
+every hub-hour bid and cleared (full volume),1.0,341640,0.146,204139.547,176756.463,328148.601
+"every hub-hour bid, hub clearing rate 72.1 %",0.721,246421,0.203,283020.637,245056.518,454947.742
+"  same, CI low 70.7 %",0.707,241600,0.207,288668.173,249946.499,464025.998
+previous sweep: 25 % of hub-hours cleared (assumption),0.25,85410,0.585,816558.19,707025.852,1312594.403
+selective bot: 10 %,0.1,34164,1.464,inf,inf,inf

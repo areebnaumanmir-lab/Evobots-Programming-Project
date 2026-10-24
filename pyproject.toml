@@ -25,7 +25,7 @@ build-backend = "hatchling.build"
 packages = ["src/evobots"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "src"]
 # Networking is blocked for the whole suite; only localhost is allowed (CLAUDE.md §14.4).
 addopts = "--disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1 --doctest-modules"
 
