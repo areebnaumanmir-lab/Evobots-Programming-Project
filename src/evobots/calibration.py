@@ -13,11 +13,9 @@ from pathlib import Path
 import numpy as np
 
 from evobots.config.capital import CapitalSettings
+from evobots.data.periods import HOLDOUT_FIRST_DAY, HOLDOUT_LAST_DAY
 
 DEFAULT_HUB_PRICES_PATH = Path("data/store/hub_prices.csv.gz")
-# Sealed hold-out (CLAUDE.md §7.2): calibration must stop before it.
-HOLDOUT_FIRST_DAY = "2025-09-22"
-HOLDOUT_LAST_DAY = "2026-09-21"
 
 
 def full_size_benchmark_daily_pnl(
@@ -37,7 +35,7 @@ def full_size_benchmark_daily_pnl(
 
     Maths: docs/maths.md §1.2 (P&L of INC = q × (DA − RT)).
     """
-    if not (last_day < HOLDOUT_FIRST_DAY or first_day > HOLDOUT_LAST_DAY):
+    if not (last_day < HOLDOUT_FIRST_DAY.isoformat() or first_day > HOLDOUT_LAST_DAY.isoformat()):
         raise ValueError("calibration ranges may not touch the sealed hold-out (CLAUDE.md §7.2)")
     caps = (settings or CapitalSettings()).hub_caps_mw()
     pnl_by_day = defaultdict(float)

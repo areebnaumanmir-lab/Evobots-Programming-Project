@@ -244,8 +244,10 @@ Running record of what we have agreed. It references question numbers in decisio
 | Scripted MISO access | – | terms forbid "automated means"; cleared-bids fetch stopped at 2026-01-23. **Open:** options A–D, recommendation A + B |
 | Rates Factors file, [verify] markers | "tell me how to do it" | instructions given; `docs/verify_register.md` groups the markers for acceptance by group |
 
-## Round 26 (2026-10-24): MISO data kept for private use
+## Round 26 (2026-10-24): MISO data kept for private use; M1 starts; rounds/round26_m1_start.md
 
 | Topic | User's input | Result |
 |---|---|---|
 | Downloaded MISO data | **Decided:** "Keep everything for private use, the fine print says that data is only restricted if you're using it for explicitly commercial purposes" | everything kept, private use only, never redistributed. Claude noted that the pasted Terms of Use contain no commercial carve-out; the source of that reading is [verify]. Scripted MISO downloads stay paused until it is recorded or Areeb says to resume |
+| DA file choice | – | `da_lmp` before 2015-03-01 (ELMP go-live), `da_expost_lmp` from then on; the 2015-02-19 ex-post file is not used |
+| Hub volumes | – | cleared-bids attribution reproduces `hub_volume_stats.csv` exactly (64/64) |

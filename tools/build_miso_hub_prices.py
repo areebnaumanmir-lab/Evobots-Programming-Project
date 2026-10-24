@@ -22,8 +22,12 @@ File layout facts this relies on (obs., 2026-10-24, see docs/data_coverage.md):
     types right-padded with spaces; later files have LMP, MCC and MLC rows per location;
   * hours are "Hours-Ending" in Eastern Standard Time all year, so every day has 24 hours;
   * a trading hub is a row whose Type is "Hub" and whose name ends in ".HUB".
-For days covered by two DA files (2015-02-19 → 28), the ex-post file is used, because MISO
-settles virtual bids at the DA ex-post LMP (docs/market_rules.md §1).
+Day-ahead file choice (round 26): MISO's Extended LMP went live on 2015-03-01 (Wang et al.,
+FERC technical conference, June 2015), and the ex-post DA files belong to it. Before that date
+there was one DA price, in the `da_lmp` files, so those are used. The one earlier ex-post file,
+2015-02-19, disagrees with that day's real-time prices ($29–33 hub averages against $71–117 in
+RT; the `da_lmp` file has $52–103) and is not used. From 2015-03-01 the ex-post file is used,
+because MISO settles virtual bids at the DA ex-post LMP (docs/market_rules.md §1).
 """
 
 import argparse
@@ -129,10 +133,16 @@ def parse_raw_file(path_text):
     return results
 
 
+# Extended LMP and the ex-post DA files start here (see the module docstring).
+FIRST_EXPOST_DAY = "2015-03-01"
+
+
 def chosen_day_results(all_results):
-    """One result per (day, market); prefer the ex-post DA file where two exist."""
+    """One result per (day, market): ex-post DA files from 2015-03-01, `da_lmp` files before."""
     chosen = {}
     for result in all_results:
+        if result["is_expost"] and result["day"] < FIRST_EXPOST_DAY:
+            continue
         key = (result["day"], result["market"])
         if key not in chosen or (result["is_expost"] and not chosen[key]["is_expost"]):
             chosen[key] = result
@@ -342,7 +352,9 @@ def write_coverage_doc(chosen, seen, rows_by_key, holdout_file_count, download_c
     ]
     lines += [
         f"| {hub} | {first} | {last} |"
-        for hub, (first, last) in sorted(hub_first_last.items(), key=lambda item: item[1][0])
+        for hub, (first, last) in sorted(
+            hub_first_last.items(), key=lambda item: (item[1][0], item[0])
+        )
     ]
     lines += [
         "",

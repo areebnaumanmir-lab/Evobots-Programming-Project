@@ -11,7 +11,7 @@ The resulting problem, the **optimal power flow**, is a linear program in the "D
 The LMP at a location is what one more MW consumed there would add to the total cost. In the linear program, that is the **dual** (shadow price) of the power-balance constraint, adjusted by the duals of any line limits that bind. MISO publishes it every hour at every node, split into three parts:
 - **energy (MEC):** the price at the reference;
 - **congestion (MCC):** the effect of binding lines;
-- **losses (MLC):** left out of the DC model, so zero here. In MISO's data it is usually a few percent of the price [verify].
+- **losses (MLC):** left out of the DC model, so zero here. In MISO's data it is small at the hubs: a median 2.5 % of the DA price, 90th percentile 6.1 % (obs., round 26: 471,446 hub-hours, 2019–2025, from the hub table).
 
 ## 3. A three-bus example
 

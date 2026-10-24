@@ -367,7 +367,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
   - MS 2017-12-01 → today, giving 8 hubs.
 - **Hours** are hour-ending **Eastern Standard Time all year**, as every file states, so every day has 24 hours and no daylight-saving shift (obs.).
 - **Congestion and loss components** (MCC, MLC) exist from **2005-06-16** in both markets (obs.); before that, LMP only.
-- **2015-02-19 → 28** is in two DA files; the ex-post file is used, because virtuals settle at the DA ex-post LMP (`market_rules.md` §1). Whether the pre-2015 `da_lmp` files are ex-post prices is [verify].
+- **Day-ahead file choice (round 26, obs.):** MISO's Extended LMP went live on **2015-03-01** (Wang et al., MISO, FERC technical conference, June 2015), and the ex-post DA files belong to it. Before that day there was one DA price, in the `da_lmp` files, so they are used. The one earlier ex-post file (2015-02-19) is wrong for that day: hub averages $29–33 against real-time $71–117 and `da_lmp` $52–103. From 2015-03-01 the ex-post file is used, because virtuals settle at the DA ex-post LMP (`market_rules.md` §1).
 - **Calibration sample facts (obs.):**
   - 2019-01-01 → 2025-09-21: 58,944 hours per hub, no gaps.
   - 2015-03 → 2018-12: seven hubs complete; MS from 2017-12.
