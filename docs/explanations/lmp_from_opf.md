@@ -39,7 +39,7 @@ The LMP at a location is what one more MW consumed there would add to the total 
 
 The price at C is **higher than either generator's cost**. That isn't a mistake; it is what congestion does. The binding line's shadow price is $90: one more MW of line capacity would save $90 an hour.
 
-The split into energy and congestion depends on the reference bus; the LMPs do not. With A as the reference, the energy component is $20 and C's congestion component is +$60. MISO's reference is a load-weighted set of buses rather than one bus [verify].
+The split into energy and congestion depends on the reference bus; the LMPs do not. With A as the reference, the energy component is $20 and C's congestion component is +$60. MISO's reference is a load-weighted set of buses rather than one bus: "The Reference Bus used by MISO is the fixed market Load distributed Reference Bus … an aggregation of fixed market Load Buses where the weighting factors are based on the fixed market Load at those Buses" (BPM-002-r23 §5, effective 2022-09-30; a copy filed with the Kentucky PSC, read in round 27).
 
 ## 4. Why this matters for virtual bids
 A virtual bid earns RT − DA at its node. Congestion is where the two markets disagree most: a line forecast in the day-ahead market to have room may bind in real time, or the reverse. Then the congestion component, and with it the spread, jumps at the nodes on either side. That is why:

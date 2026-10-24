@@ -18,7 +18,7 @@ A living write-up. Every design decision in evobots has an entry here: what was 
   - **(memory) [verify]**: the paper's existence was checked, but the claim about its content is from memory;
   - **(obs.)**: measured in this project;
   - **(arith.)**: arithmetic shown in place.
-- References are keyed as in [references.md](references.md). Every key there was checked against Crossref or arXiv by `tools/check_references.py`. Entries marked "not found" are always cited with [verify].
+- References are keyed as in [references.md](references.md). Every key there was checked against Crossref or arXiv by `tools/check_references.py`, or, where neither has a record, against a named primary record (round 27: a conference bibliography entry or the paper itself). Entries still marked "not found" are always cited with [verify]. Content claims below were checked against the abstracts or the papers in round 27; "(abstract)" or "(paper)" says which.
 
 ---
 
@@ -32,26 +32,26 @@ A living write-up. Every design decision in evobots has an entry here: what was 
 
 | Option | What it is | For | Against |
 |---|---|---|---|
-| **Typed tree GP** (Montana 1995) | programs as syntax trees; every function has argument and return types, and only well-typed trees are created | "enforces data-type constraints", avoiding "unnecessarily large search times and/or unnecessarily poor generalization" (montana1995, abstract); trees print directly as readable code | bloat (trees grow without gain); crossover can act like random macro-mutation (Angeline 1997, not found: [verify]) |
-| **Grammar-guided GP** (Whigham 1995 [verify]; survey mckay2010) | a grammar defines the language; trees are derivations of it | the whole trader language lives in one readable file; units are grammar categories | same search behaviour as typed GP; no extra benefit here beyond documentation |
-| **Grammatical evolution** (oneill2001) | an integer string is mapped through a grammar into a program | simple genome | small genome changes can make large program changes (low locality) (memory) [verify]; harder to trace why a child differs |
+| **Typed tree GP** (Montana 1995) | programs as syntax trees; every function has argument and return types, and only well-typed trees are created | "enforces data-type constraints", avoiding "unnecessarily large search times and/or unnecessarily poor generalization" (montana1995, abstract); trees print directly as readable code | bloat (trees grow without gain); crossover can act like random macro-mutation (angeline1997, "Comparing subtree crossover with macromutation": the experiments "support the hypothesis that the building block hypothesis is not descriptive of the operation of subtree crossover", abstract) |
+| **Grammar-guided GP** (whigham1995; survey mckay2010) | a grammar defines the language; trees are derivations of it | the whole trader language lives in one readable file; units are grammar categories | same search behaviour as typed GP; no extra benefit here beyond documentation |
+| **Grammatical evolution** (oneill2001) | an integer string is mapped through a grammar into a program | simple genome | small genome changes can make large program changes: "many neighboring genotypes do not correspond to neighboring phenotypes" (rothlauf2006, abstract); harder to trace why a child differs |
 | **Linear GP** (brameier2007) | a sequence of register instructions | fast to run | hard to read; much non-functional code |
 | **Cartesian GP** (miller2000) | a fixed-size graph of nodes | reuses sub-expressions; neutral drift | hard to read as a rule |
 | **PushGP** (spector2002) | stack-based programs with types, loops and self-modification | very general | far more power than a daily bid rule needs; hard to read |
-| **Self-replicating machine code** (Tierra: Ray 1991 [verify]; Avida: ofria2004) | each organism *is* executable code that copies itself and mutates | the literal "organism with its own code"; Avida is a platform for "self-replicating and evolving computer programs" (ofria2004, abstract) | built to study evolution, not to find good trading rules; most mutants don't work; unreadable |
+| **Self-replicating machine code** (Tierra: ray1991; Avida: ofria2004) | each organism *is* executable code that copies itself and mutates | the literal "organism with its own code"; Avida is a platform for "self-replicating and evolving computer programs" (ofria2004, abstract) | built to study evolution, not to find good trading rules; most mutants don't work; unreadable |
 | **Neural networks** (e.g. NEAT, stanley2002) | evolving network weights and topology | flexible | opaque. Rudin argues for "models that are interpretable in the first place" for high-stakes decisions (rudin2019, abstract). Rejected in round 9 for opacity and overfitting with ~20 years of data |
 | **Language-model mutation of source code** (ELM: lehman2022; FunSearch: romeraparedes2024) | a language model proposes code edits; an evaluator keeps the good ones | edits the literal source; ELM with MAP-Elites produced "hundreds of thousands of functional examples of Python programs" (lehman2022, abstract) | **hindsight leak**: a language model has read about 2005–2026 markets and can steer rules toward known history, the same reason news-reading was rejected in round 9; needs the internet or a large local model (breaks offline, §14.4); not byte-reproducible (breaks the resume test, §11.1) |
 
 **What GP trading studies report** (why readable, constrained rules and honest testing matter):
 - Allen & Karjalainen (1999) evolved trading rules for the S&P index: positive excess returns after costs in one test period (1970–89), but "using data for other periods since 1929, the rules … do not lead to excess returns after transaction costs" (allen1999, abstract).
-- Neely, Weller & Dittmar (1997, neely1997) found GP rules profitable in FX out of sample (memory) [verify].
-- Bhattacharyya, Pictet & Zumbach (2002, bhattacharyya2002) used domain-knowledge constraints on GP trading rules, reporting better out-of-sample results (memory) [verify].
-- Chen & Navet (2007, chen2007) proposed testing GP traders against random-search baselines to tell an efficient market from an inefficient algorithm (memory) [verify]. This supports the "random bots" baseline (§12.1).
+- Neely, Weller & Dittmar (1997, neely1997) found "strong evidence of economically significant out-of-sample excess returns" to GP rules for six exchange rates, 1981–1995 (working-paper abstract). Their 1999 intraday follow-up: "When realistic transaction costs and trading hours are taken into account, we find no evidence of excess returns" (Neely & Weller, 1999 draft, abstract; round 27), the same lesson as `paper_digest.md`: costs belong in the fitness.
+- Bhattacharyya, Pictet & Zumbach (2002, bhattacharyya2002) built domain knowledge into GP for FX trading models (a symmetry property, a risk-adjusted fitness) and report "more robust performance" (Semantic Scholar summary of the abstract; the claim is about robustness, not out-of-sample profit).
+- Chen & Navet (2007, chen2007) proposed testing GP traders against random-search baselines to tell an efficient market from an inefficient algorithm: if GP shows no ability "superior to a random search or a random trading behavior" there is no point investing further in it (Semantic Scholar summary). This supports the "random bots" baseline (§12.1).
 
 **Decision (changed r20 in detail, kept in substance):**
 1. **Typed tree GP with a fixed skeleton**, written as one **typed grammar file** (`bots/grammar.py`): the "trader language", readable on its own page. Types include units, so `spread + temperature` can't be written. Typed GP and grammar-guided GP give the same search here; the grammar form is chosen because it doubles as documentation.
 2. **The organism's code:** each trader's genome is compiled into a standalone Python file the moment it is born. The **View code** button shows that file. The engine and the file must agree exactly, checked by a test.
-3. **New in r20: the code can be read back.** The generated dialect is parsed back into a genome. You may edit a trader's file (or write one), and if it passes the grammar and unit checks it becomes a **founder** in a Refine run, labelled `founder:human`. Seeding with human-designed programs is studied in GP (langdon2000seeding; content (memory) [verify]).
+3. **New in r20: the code can be read back.** The generated dialect is parsed back into a genome. You may edit a trader's file (or write one), and if it passes the grammar and unit checks it becomes a **founder** in a Refine run, labelled `founder:human`. Seeding GP populations is studied (langdon2000seeding: populations seeded with "perfect" programs still evolve towards general solutions, abstract).
 
 **Rejected:** self-replicating machine code (not built for finding rules; unreadable); neural networks (opaque); language-model mutation (hindsight leak, not offline, not reproducible).
 
@@ -61,10 +61,10 @@ A living write-up. Every design decision in evobots has an entry here: what was 
 
 | Option | For | Against |
 |---|---|---|
-| **Ramped half-and-half** (Koza 1992, not found: [verify]) | the classic mix of tree shapes | poor control over tree *size*; with a ~15-node limit many trees are cut or rejected |
-| **PTC2** (luke2000ptc) | builds random trees with a chosen size distribution (memory: designed for that) [verify] | slightly more code |
+| **Ramped half-and-half** (koza1992) | the classic mix of tree shapes | poor control over tree *size*; with a ~15-node limit many trees are cut or rejected |
+| **PTC2** (luke2000ptc) | lets the user "request specific tree sizes" (luke2000ptc, abstract) | slightly more code |
 | **Random only** | no human bias | wastes early evaluations; may never find simple, known strategies |
-| **Seeded with known strategies** (langdon2000seeding; friedrich2015) | starts from sensible traders | seeds can take over the population and reduce diversity (burke2004 studies diversity measures; content (memory) [verify]); the benefit depends on the algorithm: "different optimization algorithms benefit very differently from seeding" (friedrich2015, abstract) |
+| **Seeded with known strategies** (langdon2000seeding; friedrich2015) | starts from sensible traders | seeds can take over the population and reduce diversity (burke2004 analyses diversity measures and their correlation with fitness; title and record checked); the benefit depends on the algorithm: "different optimization algorithms benefit very differently from seeding" (friedrich2015, abstract) |
 
 Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold the cells its behaviour falls into; it cannot take over the whole archive (mouret2015 describes the archive as "a map of high-performing solutions at each point in a space defined by dimensions of variation", abstract). Seeds still get offspring through parent selection, which is why a control run is required.
 
@@ -82,8 +82,8 @@ Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold 
 **What the literature offers on lineages:**
 - Lineage and phylogeny records are a standard way to understand evolutionary runs.
 - Dolson et al. propose "lineage length, mutation accumulation, and phenotypic volatility", plus phylogeny measures such as "phylogenetic richness … and depth of the most-recent common ancestor" (dolson2020, abstract).
-- Genealogy visualisation in GP: burlacu2013 (memory) [verify].
-- Population-history analysis: McPhee & Hopper 1999 (not found: [verify]).
+- Genealogy visualisation in GP: burlacu2013 tracks "genetic fragments" through mutation and crossover (abstract).
+- Population-history analysis: mcphee1999 measures diversity from genetic histories and finds final GP populations keep little of it (GP Bibliography record).
 
 **Decision (changed r20):**
 - **Trader id** = run number + birth number, e.g. `R12-184213`. It is unique by construction, ordered by birth, and short.
@@ -104,11 +104,11 @@ Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold 
 
 | Topic | Finding | Evidence |
 |---|---|---|
-| Crossover vs mutation | in GP, subtree crossover is often no better than mutation | angeline1997 (not found: [verify]); luke1997 ([verify]); white2009 "a rigorous evaluation of crossover and mutation" (memory) [verify] |
-| Size-fair crossover | swapping subtrees of similar size limits growth | langdon2000sizefair (memory) [verify] |
+| Crossover vs mutation | in GP, subtree crossover is often no better than mutation | angeline1997 (above); luke1998 (the revision of Luke & Spector 1997, whose results "were marred by statistical flaws"); white2009: crossover "does not significantly outperform mutation on most of the problems examined" (abstract) |
+| Size-fair crossover | swapping subtrees of similar size limits growth | langdon2000sizefair: "considerably reduced increases in program size and no detrimental effect on GP performance" (abstract) |
 | Bloat control | "the combination of depth limiting with such a punitive method is generally more effective than either alone" | luke2006bloat (abstract) |
-| Tarpeian bloat control | randomly zeroing the fitness of some oversized programs | poli2003tarpeian (memory) [verify] |
-| Semantic operators | crossover guided by the subtrees' behaviour improves on standard crossover in regression | uy2011 (abstract). *Geometric* semantic GP (moraglio2012) makes children whose size grows fast (memory) [verify], which would destroy readability |
+| Tarpeian bloat control | randomly zeroing the fitness of some oversized programs | poli2003tarpeian: "zeroing the fitness of a certain proportion of the offspring that have above average length" (abstract) |
+| Semantic operators | crossover guided by the subtrees' behaviour improves on standard crossover in regression | uy2011 (abstract). *Geometric* semantic GP (moraglio2012) makes children whose size grows fast: its operators "always produce offspring that are larger than their parents", giving "an exponential growth in the size of the individuals" (vanneschi2013, abstract), which would destroy readability |
 | Constants | local optimisation of numeric constants helps GP | kommenda2020 (abstract), but by gradient methods, which our clearing thresholds make unusable |
 | Continuous genes in MAP-Elites | "directional variation" (iso+line-DD), using correlations between elites, accelerates MAP-Elites | vassiliades2018 (abstract) |
 | CMA-ME emitters | CMA-ES self-adaptation combined with a MAP-Elites archive | fontaine2019 (abstract); hansen2001 for CMA-ES itself |
@@ -142,7 +142,7 @@ Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold 
 | Q11 settings | badges: Your choice / From market data / From the trader's account | kept (r19) | MPD and fees were wrongly shown as inputs |
 | Q12 death | **out of money** = can't post collateral for the smallest bid; other layers optional | Areeb (r19); definition delegated r20 (was R19-4 (a)) | (a) is the realistic "can't trade any more" point; (b) equity ≤ 0 ignores collateral; (c) is offered as a "MISO-eligible" preset |
 | Q13 best bot | highest **out-of-sample** fitness among gate-passing traders | kept (r19) | in-sample winners are the most overfitted (bailey2014charlatanism; bailey2017pbo) |
-| Q14 refine | Refine runs on 2005–2025 only; trial counts carry over | kept (r19) | the deflated Sharpe must count every trial (Bailey & López de Prado, deflated Sharpe ratio, [verify] publication details) |
+| Q14 refine | Refine runs on 2005–2025 only; trial counts carry over | kept (r19) | the deflated Sharpe must count every trial (bailey2014dsr: *J. Portfolio Management* 40(5), 94–107) |
 | Q15 sealed test | once per run, logged, code-enforced separation; Forward test always available | kept (r19) | the hold-out's value is that nothing was tuned on it |
 | Q16 grid map | axes net direction × selectivity; colour = fitness; blank = empty | kept; **colours changed r20** to greys (see D) | |
 | Q17 explanations | every number has a one-line description; "What happened" paragraphs | kept; layout taken from the reference image (title, one-line description, value) | |
@@ -206,12 +206,12 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-34 | Global gas prices reporting only | 11 | US–Europe gas correlation 0.16 | kept |
 | D-35 | Career preset: an individual; prop trader and hedge fund optional | 13 | the realistic focus | kept |
 | D-36 | Individual's floor from MISO's minimum capitalization ("$500k per a filing; a blog says $1M; verify at M0") | 13 | eligibility | **resolved** in round 18: Attachment L §III.C.1 requires $500k tangible net worth (or $5M assets) for a non-FTR participant, or $200k of financial security; §III.B's $1M net worth is one route to "appropriate person" status, not a floor |
-| D-37 | Quit hazard calibrated to day-trader survival 44/24/15 % (Barber et al. 2020); CUSUM against risk-free + fixed costs; peers off | 13 | how real traders stop | kept as optional layers (round 19). barber2020 (abstract) confirms that unprofitable day traders quit more; the 44/24/15 % points are still [verify] |
+| D-37 | Quit hazard calibrated to day-trader survival 44/24/15 % (Barber et al. 2020); CUSUM against risk-free + fixed costs; peers off | 13 | how real traders stop | kept as optional layers (round 19). barber2020 (abstract) confirms that unprofitable day traders quit more; the 44/24/15 % survival points are in the 2017 working paper (all day traders who traded ≥ 10 days, not only losers; round 27) |
 | D-38 | Starting capital $1.5M, range $250k–$5M, configurable in `CapitalSettings`, TOML, CLI, explorer | 14, kept 16 | data-based default (tail headroom) | kept; **reproduced** in round 21 (`data/claude_science_check.csv`) |
 | D-39 | Sizing rule: position_scale = min(1, 2 % × equity / p99 full-size loss) | 14 | a 1-in-100 day costs ≤ 2 % | kept |
 | D-40 | Point-in-time p99: trailing 365 days, newest D−6, 90-day warm-up; the full-sample constant renamed CALIBRATION_ONLY | 15 | removes look-ahead | kept; the estimator's outputs are **reproduced exactly** in round 21 (eight table rows, range, median, 2.16 % breach rate by year) |
 | D-41 | Liquidity cap min(5 MW, 5 % of median cleared MW); 936 MWh/day full size | 14; 936 confirmed 16 | stay a price-taker | kept; O9 tests it |
-| D-42 | `daily_risk_budget` is the leverage knob; `credit_share` = share of capital pledged as collateral (default 25 %), which sets the Virtual MWh Limit; kept for stages D and C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 [verify] on `credit_share`'s meaning (`CLAUDE.md` §13.1) |
+| D-42 | `daily_risk_budget` is the leverage knob; `credit_share` = share of capital pledged as collateral (default 25 %), which sets the Virtual MWh Limit; kept for stages D and C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 question on `credit_share`'s meaning (`CLAUDE.md` §13.1) |
 | D-43 | Clearing: all-or-nothing by price, measured 99.5 % / 100 % agreement | 15 | realistic for small bids | kept |
 | D-44 | Fixed costs $50k/year (assumed); cleared-share scenarios 1.0 / 0.721 / 0.25 | 15 | round-15 correction of $0.59/MWh | kept as assumption; no fixed MISO fee found (round 18) |
 | D-45 | Relative ruin floor 2/3 by default; optional absolute floor; < 10 % headroom rejected | 16 | comparable careers at every capital | **superseded as default** in round 19: out-of-money death is the default, the floor is optional |
@@ -223,7 +223,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 - **Missing decisions:** deployment levels L0–L3 (D-05); the two-fidelity simulator (D-07, superseded); multi-instrument scope (D-02, superseded); the persistent universe (D-23, superseded); the round-4 look-ahead rule (D-17, superseded); the `credit_share` meaning (D-42); the round-13 capitalization question and its round-18 answer (D-36).
 - **No conflicts** were found between the log and the current briefing: every difference is a later round replacing an earlier one, recorded above.
 
-## Part D. Rounds 17–25
+## Part D. Rounds 17–27
 
 | ID | Decision (round) | Status | Logic |
 |---|---|---|---|
@@ -249,6 +249,10 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-79 | MISO data: build locally, never redistribute, with a user switch (24–25) | Areeb (25) | MISO's terms (read in round 25) forbid reproduction, distribution and derivative works; other sources are public domain or CC BY |
 | D-80 | No scripted MISO access until decided (25) | Claude, pending Areeb | the terms forbid "automated means … to access … or copy"; stopping is reversible, continuing is not |
 | D-81 | Keep all downloaded MISO data for private use (26) | Areeb | Areeb reads the fine print as restricting only commercial use; the pasted Terms of Use don't say so, so the source is [verify] and new scripted downloads stay paused |
+| D-82 | Luke & Spector 1998 cited instead of their 1997 study; Angeline's Crossref-listed 1997 paper cited (27) | Claude | the 1997 study "was marred by statistical flaws" (the 1998 abstract); cite what can be checked |
+| D-83 | `epu` history treated as revised data (27) | Claude | EPU revises the previous 30 days daily and keeps no vintages; the hindsight check (§8) already tests bots without `epu` |
+| D-84 | The simulator never rejects a bid for its limit price (27) | Claude | caps specific to virtual bids weren't found; a limit beyond any cap only means "clear at any price", so results can't depend on the caps |
+| D-85 | The report card flags price-insensitive bidding (27) | Claude | the IMM screens price-insensitive virtuals as potential manipulation; a deployable trader shouldn't look like one |
 
 ## Part E. Visual design (Q20)
 

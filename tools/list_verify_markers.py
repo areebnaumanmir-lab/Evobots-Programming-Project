@@ -32,8 +32,8 @@ GROUPS = {
     ),
     "P": (
         "MISO's published MPD",
-        "accept: the simulator computes the MPD from Attachment L's formula on the downloaded "
-        "prices, with the $12 floor; collateral doesn't bind at Stage A",
+        "see question 1 (round 27): MISO's method can't be reproduced from public data; "
+        "collateral doesn't bind at Stage A",
         "open",
     ),
     "R": (
@@ -46,24 +46,25 @@ GROUPS = {
     "K": (
         "Library licences of packages not yet installed",
         "accept: each is read from the package metadata when it is installed",
-        "open",
+        "resolved in round 27: every licence read from PyPI or the licence file",
     ),
     "O": (
         "Later ORFE modules (§20)",
         "accept for now: each is checked when its module is built, and no code is built on "
         "them before that",
-        "open",
+        "resolved in round 27: citations and facts checked",
     ),
     "A": (
         "Rules and data details that don't change Stage A results",
         "accept: moot under decisions D1/D2, or too small to matter at 5 MW per hub-hour; "
         "the risk-free source returns at M5 and the price caps at M3",
-        "open",
+        "resolved in round 27 except the risk-free source (question 2) and Areeb's "
+        "commercial-use source",
     ),
     "L": (
         "Literature citations not yet checked",
         "accept: cited with [verify] until checked; nothing is coded on them",
-        "open",
+        "resolved in round 27: all 82 references checked (72 Crossref/arXiv, 10 named records)",
     ),
 }
 # First matching rule wins. Each rule: (group, file suffix or None, list of text fragments).
@@ -90,8 +91,13 @@ RULES = [
             "= from a secondary source",
             "Decision at DA close",
             "accept remaining [verify]",
+            "**(memory) [verify]**: the paper",
+            "are always cited with [verify]",
         ],
     ),
+    # History rows: the change ledger and the decisions log record what was open at the time.
+    ("M", "change_ledger.md", []),
+    ("M", "decisions_log.md", []),
     (
         "F",
         None,

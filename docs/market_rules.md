@@ -27,12 +27,12 @@ Status: draft for the end-of-M0 check-in (round 18). Times are Eastern Prevailin
 | Locations | any CP node: generator, load zone, interface or hub (about 2,200) | obs. D1, FAQ 7 |
 | Price range, INC offer | −$500 to $1,000/MWh | obs. D1, p. 4 |
 | Price range, DEC bid | −$500 to $2,000/MWh | obs. D1, p. 4 |
-| Blocks per bid | up to 9 MW/price blocks (p. 4); FAQ 8 says "up to 10 price/quantity pairs per hour per CP node" | obs. D1; the two statements in D1 disagree, [verify] in BPM-002 |
+| Blocks per bid | up to 9 MW/price blocks (p. 4); FAQ 8 says "up to 10 price/quantity pairs per hour per CP node" | obs. D1; the two statements in D1 disagree. **Round 27:** the cleared-bids report carries 9 price/MW pairs, and bids use all 9 (1,267 bids on 2025-01-15; obs.). Whether MISO accepts a 10th that the report drops can't be told from the data. Our traders bid one block, so it doesn't matter |
 | Earliest submission | 7 days before the operating day | obs. D1, FAQ 6 |
 | Changing one hour | a resubmission for one hour nulls the other 23; resubmit all hours | obs. D1, FAQ 10 |
-| Volume limits | "subject to credit limits and IMM volume limits" | obs. D1, p. 4. The IMM limit itself is not in D1. **[verify]** in BPM-009 / Tariff Module D |
+| Volume limits | "subject to credit limits and IMM volume limits" | obs. D1, p. 4. **Round 27:** no MW volume limit was found. The IMM's 2024 State of the Market report describes a **screen**: price-insensitive virtual transactions that cause day-ahead/real-time congestion divergence ("Screened Transactions") "raise potential manipulation" concerns (obs., pp. 32–33). Our cap (≤ 5 MW per hub-hour) is below the median single participant's 8 MW. But a trader bidding with no effective limit price is price-insensitive: the report card should flag that behaviour |
 
-D1 dates from August 2022 (PDF metadata). The price ranges are from that date; MISO may have changed offer caps since (for example the $1,000 → $2,000 range for demand bids). [verify] the current caps in BPM-002 before the simulator rejects bids by price.
+D1 dates from August 2022 (PDF metadata). The price ranges are from that date; MISO may have changed offer caps since (for example the $1,000 → $2,000 range for demand bids). **Round 27:** the $1,000/MWh soft and $2,000/MWh hard energy offer caps are confirmed: the IMM's 2023 report, footnote 40, and BPM-002-r23 §5 ("Energy Offer Hard Price Cap ($2,000)", effective 2022-09-30, from a copy filed with the Kentucky PSC). Caps specific to virtual bids were not found. **Decision for M3:** the simulator never rejects a bid for its limit price. A limit beyond any cap just means "clear at any price", so the caps can't change results.
 
 **For the simulator:** bots never come near these price limits (their limit price is `da_last` ± an offset), so the caps only need a validation check. The 0.1 MW step is already in the sizing rule.
 
@@ -44,8 +44,8 @@ D1 dates from August 2022 (PDF metadata). The price ranges are from that date; M
 
 | Period | DA market closes | DA results posted | Source |
 |---|---|---|---|
-| 2005-04 → 2016-11-05 | **11:00 a.m. EST, fixed**: 11:00 clock time in winter, **12:00 noon** clock time during daylight saving time | 3:00 p.m. EST (4:00 p.m. EPT in summer) | obs. D9, ¶13 (FERC order of 2015-12-17, describing the rule then in force). That 11:00 EST already held in 2005–2007 is [verify]; a 2007 ATC customer notice found by search says "1100 EST" but was not downloaded |
-| 2016-11-05 → today | **10:30 a.m. EPT**, year-round (9:30 a.m. Central) | 1:30 p.m. EPT | Current rule: obs. D12 (MISO help article KA-01129) and D1 FAQ 6. Change date 2016-11-05 (for operating day 2016-11-06): from a MISO notice hosted on `www.oasis.oati.com`, seen only through a search summary; the host returned HTTP 503 three times. **[verify]** |
+| 2005-04 → 2016-11-05 | **11:00 a.m. EST, fixed**: 11:00 clock time in winter, **12:00 noon** clock time during daylight saving time | 3:00 p.m. EST (4:00 p.m. EPT in summer) | obs. D9, ¶13 (FERC order of 2015-12-17, describing the rule then in force). That 11:00 EST already held in 2005–2007 rests on two second-hand sources: a 2007 ATC customer notice found by search says "1100 EST", and a 2014 FERC-related table found by search gives MISO bids due at 10:00 a.m. Central (round 27). Moot under decision D1 (the bot decides at 10:30 EPT, never later) |
+| 2016-11-05 → today | **10:30 a.m. EPT**, year-round (9:30 a.m. Central) | 1:30 p.m. EPT | Current rule: obs. D12 (MISO help article KA-01129) and D1 FAQ 6. Change date 2016-11-05 (for operating day 2016-11-06): from a MISO notice hosted on `www.oasis.oati.com`, seen only through a search summary; the host returned HTTP 503 three times. **Round 27:** BPM-002-r19 (effective 2018-10-15; a copy filed with the Missouri PSC) confirms "Virtual Supply Offers and Virtual Demand Bids … OD-1 @ 1030 EPT", with DA results posted at 13:30 EPT and **DA ex-post LMPs at 16:30 EPT** (Exhibit 7-1). The exact 2016 date stays second-hand; moot under D1 |
 
 Also from D12: rebid period closes 2:30 p.m. EPT; reliability assessment commitment (RAC) results 6:00 p.m. EPT.
 
@@ -85,7 +85,7 @@ Four charges apply to a cleared virtual. (obs. D1 pp. 6–8; formulas obs. D5)
 
 | Charge | Who pays | Volume it is charged on | Rate |
 |---|---|---|---|
-| **Schedule 17** market administration | all cleared virtuals | **\|net cleared virtual MWh\| per CP node per hour** for the asset owner: bids and offers at the same node net first (`DA_VSCHD_VOL = Σ ABS(DA_VSCHD)`, obs. D5 §B.4) | monthly; **$0.0746/MWh in October 2026**; $0.0852 (May 2026), $0.0817 (June 2026), $0.0824 (August 2025), $0.079 (December 2025). **[verify]**: these come from MISO's monthly rate notices as quoted by a search index; the notice pages refuse non-browser clients (Cloudflare) |
+| **Schedule 17** market administration | all cleared virtuals | **\|net cleared virtual MWh\| per CP node per hour** for the asset owner: bids and offers at the same node net first (`DA_VSCHD_VOL = Σ ABS(DA_VSCHD)`, obs. D5 §B.4) | monthly; **$0.0746/MWh in October 2026**; $0.0852 (May 2026), $0.0817 (June 2026), $0.0824 (August 2025), $0.079 (December 2025). **[verify]**: these come from MISO's monthly rate notices as quoted by a search index. The notice pages refuse non-browser clients (Cloudflare). In round 27 the search index again showed MISO's own pages ("[MISO] Settlements - Energy Market Rates for May / June / October 2026") with the same values: still second-hand, but consistent |
 | **Schedule 24** local balancing authority cost recovery | all cleared virtuals | same volume as Schedule 17 (`DA_S24_ADMIN_VOL` includes `DA_VSCHD_VOL`, obs. D5) | **$0.0156/MWh in October 2026** [verify, same source] |
 | **DA RSG distribution** (`DA_RSG_DIST`) | net virtual **demand** | net cleared virtual demand **per node** per hour: 100 MW DEC + 50 MW INC at one hub pays on 50 MW; 50 DEC + 100 INC pays on 0 (obs. D1, FAQ 19) | daily/hourly market rate [verify] |
 | **RT RSG first pass** (`RT_RSG_DIST1`) | net virtual **supply** | its main part, the Day-Ahead Deviation and Headroom Charge (DDC), is charged on the asset owner's hourly deviation volume, whose virtual term is the **net cleared virtual supply summed over all nodes** (`DDC_NDL_VIRT_VOL`); the total is floored at 0 (obs. D5 §D.14.6). The IMM states the same: "RSG or … DDC to virtual participants are assessed to net virtual supply, so participants can avoid such charges by clearing equal amounts of supply and demand" (obs. D6 and D7) | hourly market-wide **DDC rate** = DDC credits ÷ max(market deviation volume + headroom, committed capacity volume) (obs. D5). Plus two location-specific parts: the **Constraint Management Charge (CMC)** on deviations that load a constraint a RAC commitment relieves, and the **Voltage and Local Reliability (VLR)** charge (obs. D5 §D.14; D1 p. 7: "both virtual bids and offers are potentially subject to the RT RSG Constraint Management Charge") |
@@ -105,6 +105,8 @@ From Birge, Hortaçsu, Mercadal & Pavlin (2017), *Limits to Arbitrage in Electri
 D8's summary table gives an RSG first-pass rate (`RSG1`) with mean **$1.8/MWh**, standard deviation 2.3, maximum 21.0, over 10,920 observations, from data covering 2008–2012; the table doesn't say which months the RSG series spans (10,920 hours ≈ 455 days). The CMC and DDC rows (means 2.2 and 0.9, N 10,470,096) are node-hour level. These are the only RSG *numbers* found so far.
 
 **Missing:** the actual hourly or monthly DDC, CMC and DA RSG rates for 2005–2026. MISO publishes historical rates in a "Market Settlements Rates Factors" file on its Market Settlements page (per the monthly notices), behind the same Cloudflare check. **Ask Areeb to download it in a browser** into `data/inbox/` (§7).
+
+**Round 27, a second source for RSG levels:** the IMM's annual *State of the Market* reports (Potomac Economics, potomaceconomics.com, not a MISO host) report allocated RSG per MWh. The 2024 report says day-ahead prices were about 2 % above real-time "after adjusting for the real-time RSG costs, which averaged $0.11 per MWh" (obs., 2024 report, p. 33; PDF SHA-256 `cfad6625…`). Its footnote defines the rate as "the Day-Ahead Deviation Charge (DDC) Rate, which excludes the location-specific Congestion Management Charge (CMC) Rate and Pass 2 RSG" (2023 appendix, fn. 9). An annual RSG history 2008–2024 can be assembled from these reports, but only as annual averages, not the hourly rates the settlement uses.
 
 ### 3.2 Proposed cost model for M3
 
@@ -141,6 +143,12 @@ virtual potential exposure = Σ invoiced-unpaid virtual charges (VIE)
 - **MPD**: "the greater of the highest differential between the Day-Ahead and Real-Time Locational Marginal Prices at the 50th percentile over the previous twelve (12) months, assessed during the month of April and implemented May 1 … or the Minimum MPD Value." **Minimum MPD Value = $12.00/MWh.** The first MPD (April 2006 → April 2007) was $13.33. (obs. D2)
 - **VMEW** = 2 days. (obs. D2)
 - MISO's 2023 credit task team: the calculated MPD was **$4.89 in 2021**, "the lowest level since shortly after MISO's Virtual Market began"; the historic 50th-percentile value was $12.05. The $12 floor was one of its proposals and is in v56.0.0. (obs. D4, pp. 9–11) So the MPD in recent years has been the **$12 floor**. The *published* MPD for May 2026 → April 2027 was not found [verify; MISO's credit page is behind Cloudflare]. When the floor was introduced, and what MPD applied in each year 2007–2023, is also [verify]; the backtest needs it only for the collateral check.
+- **Round 27, an attempt to compute the MPD history ourselves** (`tools/compute_mpd_history.py` → `docs/data/mpd_history.csv`):
+  - **Reading tested:** for each hour of the day, the median |DA − RT| across all nodes over April → March; the MPD is the highest of the 24.
+  - **Result: not MISO's method.** It gives $4.87 for 2021 (published $4.89), but $18.54 for 2006 (published $13.33) and $3.59 for 2016, which contradicts MISO calling 2021's $4.89 the lowest since the market's early days.
+  - **The medians of our yearly values** ($8.15 since 2006, $5.50 over 2012–2021, $5.19 over 2017–2021) are also well below MISO's ($12.05, $10.23, $8.00).
+  - **The floor's start** is taken as Attachment L v56.0.0 (effective 2024-06-03).
+  - **Effect:** none at Stage A, where collateral is far below equity. At stages D and C the Virtual MWh Limit can bind.
 - Full Stage A size: 936 MWh × $12 × 2 = **$22,464**, as in `CLAUDE.md` §6.3. Confirmed.
 
 ### 4.2 The Virtual MWh Limit counts submitted, not cleared, MWh
@@ -158,7 +166,7 @@ virtual potential exposure = Σ invoiced-unpaid virtual charges (VIE)
 
 - The copy MISO hosts as "Attachment L – Credit Policy" is **v56.0.0, effective 2024-06-03** (obs. D2).
 - MISO filed **v57.0.0** on 2025-07-14 (docket ER25-2845), requesting effect from 2025-07-15. It changes only an emergency-pricing LMP proxy for demand resources ($200 → $1,000). (obs. D3, pp. 5–6) A text comparison shows §III.B, §IV.A and the virtual exposure formula are **identical** in v56.0.0 and v57.0.0 apart from PDF glyph encoding (script in round 18 doc §3).
-- Whether FERC accepted v57.0.0, and whether later versions exist, is [verify]. For the rules used here it makes no difference unless a later version changed them.
+- Whether FERC accepted v57.0.0 was not confirmed, and no later version was found by search (round 27). For the rules used here it makes no difference unless a later version changed them.
 
 ### 5.2 "Appropriate person" status (§III.B)
 
@@ -182,7 +190,7 @@ MISO's 2023 task team called the previous $50k alternative the lowest in the ind
 ### 5.4 What this means for the career model
 
 - With the $1.5M default, the individual meets §III.B (net worth > $1M) and §III.C (tangible net worth ≥ $500k). The optional absolute `ruin_floor_usd` of $1M "inspired by MISO's eligibility rule" (`CLAUDE.md` §10.1) is consistent with §III.B's financial-statement route. The **§III.C floor is $500k** of tangible net worth (non-FTR); a ruin floor below that would leave a career trading while ineligible under the audited-statements route.
-- **Fixed costs:** §III.C route 1 needs an **annual audit** of the trading company's financial statements. MISO itself charges no fixed annual participation fee that was found in these documents [verify against MISO's registration pages]. Admin charges are per MWh (§3).
+- **Fixed costs:** §III.C route 1 needs an **annual audit** of the trading company's financial statements. MISO itself charges no fixed annual participation fee that was found in these documents, nor by search in round 27 (which found only other ISOs' fees). The $50k/year fixed cost stays a labelled assumption. Admin charges are per MWh (§3).
 
 ---
 
@@ -190,7 +198,7 @@ MISO's 2023 task team called the previous $50k alternative the lowest in the ind
 
 The six NERC off-peak holidays, from the NAESB business practice recommendation (obs. D10): New Year's Day, Memorial Day, Independence Day, Labor Day, Thanksgiving, Christmas.
 
-**Conflict to settle [verify]:** D10 (NAESB, last saved 2006) says "If any of these holidays fall on a Sunday, the following Monday will be considered an Off-Peak day." PJM's published *NERC 2027 Off-Peak Days* (obs. D11) lists **Independence Day on Sunday, July 4, 2027**, with no Monday substitute. Options for M2:
+**Conflict (round 27: decided as below, pending Areeb's confirmation):** D10 (NAESB, last saved 2006) says "If any of these holidays fall on a Sunday, the following Monday will be considered an Off-Peak day." PJM's published *NERC 2027 Off-Peak Days* (obs. D11) lists **Independence Day on Sunday, July 4, 2027**, with no Monday substitute. Options for M2:
 - **A (recommended):** flag the holiday on its calendar date, and also flag the Monday after a Sunday holiday (covers both readings; at most one extra day a year is flagged).
 - **B:** follow the newest NERC document, once found, exactly.
 
@@ -202,7 +210,7 @@ Saturday holidays stay on Saturday in both sources.
 
 | Item (`CLAUDE.md` §16) | Result | Status |
 |---|---|---|
-| Bid deadline | 10:30 EPT since 2016-11-05; 11:00 EST (noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 still [verify] (§2.1). **Decided round 20 (D1):** the bot decides at 10:30 EPT on D−1 in every year, never later than the real deadline, so the [verify] no longer affects results |
+| Bid deadline | 10:30 EPT since 2016-11-05; 11:00 EST (noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 rest on second-hand sources (§2.1). **Decided round 20 (D1):** the bot decides at 10:30 EPT on D−1 in every year, never later than the real deadline, so the remaining uncertainty no longer affects results |
 | Admin fee | Schedule 17 + 24 ≈ $0.090/MWh (Oct 2026), on \|net\| per node-hour | **mechanics resolved**; rates [verify] (search-index source), history missing |
 | RSG rates | mechanics and eras resolved (§3); one historical average ($1.8/MWh RSG1, 2008–2012 data) | **rates missing**: need the Rates Factors file |
 | Holiday list | six NERC holidays | Sunday rule conflicting in the sources (§6); **decided round 20 (D2):** flag the Sunday and the following Monday |
@@ -210,7 +218,7 @@ Saturday holidays stay on Saturday in both sources.
 | Settlement timing | S7 statement, weekly Tuesday invoices | **resolved** |
 | Preliminary RT archive depth | not archived (only the last ~3 days) | **resolved** (obs. probe) |
 | IMM volume limits | mentioned, not specified | **open**: BPM-009 / Module D not yet read |
-| Attachment L v56.0.0 current? | v57.0.0 filed 2025-07; same text for virtual rules | **resolved for our purposes**; later versions [verify] |
+| Attachment L v56.0.0 current? | v57.0.0 filed 2025-07; same text for virtual rules | **resolved for our purposes**; no later version found by search (round 27) |
 | Individual's fixed yearly costs | no fixed MISO fee found; annual audit required (§III.C route 1) | **partly resolved**: costs of audit, accounting and legal are still assumptions (round 18 doc §5) |
 
 ### What Areeb can unblock

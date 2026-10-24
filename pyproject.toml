@@ -8,7 +8,9 @@ requires-python = ">=3.13"
 # each new one is recorded with its licence in docs/dependencies.md.
 dependencies = [
     "numpy",
+    "openpyxl>=3.1.5",
     "scipy>=1.18.1",
+    "xlrd>=2.0.2",
 ]
 
 [dependency-groups]

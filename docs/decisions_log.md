@@ -251,3 +251,11 @@ Running record of what we have agreed. It references question numbers in decisio
 | Downloaded MISO data | **Decided:** "Keep everything for private use, the fine print says that data is only restricted if you're using it for explicitly commercial purposes" | everything kept, private use only, never redistributed. Claude noted that the pasted Terms of Use contain no commercial carve-out; the source of that reading is [verify]. Scripted MISO downloads stay paused until it is recorded or Areeb says to resume |
 | DA file choice | – | `da_lmp` before 2015-03-01 (ELMP go-live), `da_expost_lmp` from then on; the 2015-02-19 ex-post file is not used |
 | Hub volumes | – | cleared-bids attribution reproduces `hub_volume_stats.csv` exactly (64/64) |
+
+## Round 27 (2026-10-24): every [verify] marker checked; rounds/round27_verification.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Markers | "independently verify all these markers and facts" | K, L, O and almost all of A resolved against primary sources; corrections listed in the round doc. Open: F (fees), P (MPD), the risk-free source, and Areeb's commercial-use source |
+| MPD | – | the tariff wording was tested on the full archive and doesn't reproduce MISO's published values; no MPD history can be computed from public data |
+| Weather download | "Continue the download" | resumed; relaunched after each 2-hour limit |

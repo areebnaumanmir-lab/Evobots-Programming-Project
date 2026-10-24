@@ -8,6 +8,8 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 |---|---|---|---|
 | numpy | 2.5.4 | BSD-3-Clause (bundled parts: 0BSD, MIT, Zlib, CC0-1.0) | arrays for prices, P&L and the trailing 1-in-100-day loss |
 | scipy | 1.18.1 | BSD-3-Clause (obs.: the three-clause licence text in the package metadata) | linear programs (HiGHS) for the DC-OPF explanation (O0), then O2 and O4 |
+| xlrd | 2.0.2 | BSD-3-Clause (obs., round 27: the LICENSE file has the endorsement clause) | old-format `.xls` spreadsheets: Henry Hub (EIA) and GPR |
+| openpyxl (with et-xmlfile 2.0.0) | 3.1.5 | MIT | `.xlsx` spreadsheets: EIA-860M and the World Bank Pink Sheet |
 
 ## Development and tests
 
@@ -29,15 +31,14 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 
 | Tool | Licence | Purpose |
 |---|---|---|
-| hatchling | MIT [verify: not installed in the environment; build back end only] | builds the `evobots` package from `src/evobots` |
+| hatchling | MIT (obs., PyPI metadata of 1.32.4, round 27) | builds the `evobots` package from `src/evobots` |
 
-## Planned (added when first used)
+## Planned (added when first used; licences checked in round 27, re-read from the installed metadata when added)
 
 | Library | Milestone | Licence | Purpose |
 |---|---|---|---|
-| numba | M3 | BSD-2-Clause [verify on install] | the fast simulator engine (§14.3) |
-| pyarrow or polars | M1 | Apache-2.0 / MIT [verify on install] | CSV ingestion |
-| openpyxl, xlrd | M1 | MIT, BSD [verify on install] | EIA spreadsheets |
-| FastAPI, Jinja2, uvicorn | M1.5 | MIT, BSD-3-Clause, BSD-3-Clause [verify on install] | the local app (option A) |
-| cvxpy, Clarabel | O2–O3 | Apache-2.0 [verify on install] | convex models (CVaR, log-growth) |
-| statsmodels | O1, O6 | BSD-3-Clause [verify on install] | regime switching, quantile regression, Cox models |
+| numba | M3 | BSD-2-Clause (obs., round 27: PyPI says "BSD"; the repository's LICENSE has the two redistribution clauses and no endorsement clause) | the fast simulator engine (§14.3) |
+| pyarrow or polars | M1 | Apache-2.0 / MIT (obs., PyPI metadata, round 27) | CSV ingestion |
+| FastAPI, Jinja2, uvicorn | M1.5 | MIT, BSD-3-Clause, BSD-3-Clause (obs., round 27: PyPI metadata; Jinja2's LICENSE.txt has three clauses) | the local app (option A) |
+| cvxpy, Clarabel | O2–O3 | Apache-2.0 (obs., PyPI metadata, round 27) | convex models (CVaR, log-growth) |
+| statsmodels | O1, O6 | BSD-3-Clause (obs., PyPI metadata, round 27) | regime switching, quantile regression, Cox models |

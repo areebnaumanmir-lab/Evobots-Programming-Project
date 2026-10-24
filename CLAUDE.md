@@ -266,7 +266,7 @@ pnl       = cleared * q * direction * (RT[n,h] - DA[n,h]) - fees(q, cleared)
   - MPD is the greater of the 50th-percentile DA−RT differential over the previous 12 months (reset each May) and **$12/MWh** (the floor, checked).
   - Use MISO's published MPD [verify at M0].
 - At full Stage A size (936 MWh/day), collateral is only **$22,464**, while the worst day lost $492k. So the simulator must **mark equity daily**, not only collateral.
-- **Eligibility:** Attachment L **v56.0.0, effective 2024-06-03, §III.B** ("Demonstration of Appropriate Person Status"): net worth > $1M **or** total assets > $5M. This is **one of seven routes** listed in MISO's *Minimum Participation Requirements* (energy business, governmental entity, financial statements, cash deposit > $5M, corporate guaranty, irrevocable letter of credit, other). It is not a hard requirement for every trader. Minimum capitalization is a separate test in §III.C. Whether v56.0.0 is still current is [verify].
+- **Eligibility:** Attachment L **v56.0.0, effective 2024-06-03, §III.B** ("Demonstration of Appropriate Person Status"): net worth > $1M **or** total assets > $5M. This is **one of seven routes** listed in MISO's *Minimum Participation Requirements* (energy business, governmental entity, financial statements, cash deposit > $5M, corporate guaranty, irrevocable letter of credit, other). It is not a hard requirement for every trader. Minimum capitalization is a separate test in §III.C. Version 57.0.0 (filed 2025-07-14 in docket ER25-2845, effective 2025-07-15) has the same virtual-trading text (obs., round 18). No later version was found by search (round 27).
 - Real trading needs MISO market-participant registration and collateral. **Out of scope.**
 
 ### 6.4 Information timeline (no look-ahead)
@@ -285,7 +285,7 @@ pnl       = cleared * q * direction * (RT[n,h] - DA[n,h]) - fees(q, cleared)
 
 **What a bot sees at each decision (round 19):**
 - **Past electricity prices: yes.** DA prices up to and including day D−1's (published the afternoon before the decision) and final RT prices up to D−6, through features 1–7 (§8).
-- **Futures quotes and past futures prices: no.** EIA's free gas futures stop on 2024-04-05; MISO power futures data is not free [verify]; and §7.1 requires every input for 2005–2026 from one keyless source. They stay out (decided round 20, R19-5) unless I supply such a source.
+- **Futures quotes and past futures prices: no.** EIA's free gas futures stop on 2024-04-05; MISO power futures history is not free (searched in round 27: CME's pages show only current settlements and ICE publishes contract specifications; no free history found); and §7.1 requires every input for 2005–2026 from one keyless source. They stay out (decided round 20, R19-5) unless I supply such a source.
 - **Outside factors:** gas (Henry Hub spot), policy uncertainty (EPU), weather forecasts, wind and solar capacity, calendar (§8). GPR, oil and the World Bank series are reporting only.
 - **Proof for the user:** the Trader page has a **"What did it see?"** panel: pick any day and it shows the exact input values the trader saw at 10:30 EPT on D−1 and the bids it made.
 
@@ -408,11 +408,14 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 ### 7.7 Geopolitical risk: GPR (reporting only)
 - **Source:** Caldara & Iacoviello (Federal Reserve Board), daily.
   - URL: `https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls`
-- **Columns (obs.):** `DAY`, `date`, `GPRD` (headline), `GPRD_THREAT` (categories 1–5), `GPRD_ACT` (6–8), `GPRD_MA7`, `GPRD_MA30`, `N10D` (meaning [verify]), `event`, `var_name`.
+- **Columns (obs.):** `DAY`, `date`, `GPRD` (headline), `GPRD_THREAT` (categories 1–5), `GPRD_ACT` (6–8), `GPRD_MA7`, `GPRD_MA30`, `N10D` ("Number of articles (10 recent newspapers, 1985-)", the file's own label; obs. round 27), `event`, `var_name`.
 - **Scaling:** 100 = the 1985–2019 average. Coverage 1985 → 2026-09-21 (obs.).
 - **Iran war (obs.):** threats peaked at 299 on Feb 24; GPR 274 on Mar 1 and 501 on Mar 2 (threats 602, acts 553). Mean GPR over 2026-02-28 → 03-31 was 319. Russia–Ukraine (2022-02-24 → 03-31) was 318. GPR did **not** flag COVID (29th percentile).
 - **Why it's not a bot input** (round 10, my point): most geopolitical threats don't touch MISO's fuel; only energy-related shocks matter. GPR was replaced by `gas_vol_20d` and kept for event analysis in reports.
-- **Revisions:** GPR and EPU files are today's versions; past revisions are unobservable [verify revision policy]. Paper-live mode archives each day's copy from now on, which builds true point-in-time vintages.
+- **Revisions (obs., round 27):**
+  - **GPR:** "The latest data are preliminary and subject to revisions", but the site archives every daily vintage (`data_gpr_daily_recent_YYYYMMDD.xls`), so past versions are recoverable.
+  - **EPU:** "each day we update the data from the previous 30 days … so these data are subject to changes", and no vintages are archived. The downloaded history therefore holds revised values, a small look-ahead risk for `epu`, which the hindsight check (§8) covers.
+  - Paper-live mode archives each day's copy of both from now on.
 
 ### 7.8 Generator fleet: EIA-860M (bot input via two capacity features)
 - **URLs:**
@@ -440,7 +443,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
   Full table: `docs/data/miso_capacity_by_tech_monthly.csv`.
 - **Planned projects:** only monthly snapshots from January 2016 (the January 2013–2015 files aren't on EIA's server), so they are **reporting only**.
 - **Transmission:** no free, consistent dataset found; its effect shows up in the congestion features.
-- **Corrections:** EIA occasionally corrects dates [verify how often].
+- **Corrections (obs., round 27, EIA-860M page):** "Estimates will be corrected without specific acknowledgment or explanation in subsequent month's inventory." Monthly files are archived from January 2015, so M1 measures the size of the corrections by comparing them.
 
 ### 7.9 Complete source list and the domains to allow
 
@@ -646,7 +649,7 @@ Bot "7c2e"
 | tree structure (`where`, `when`, `score`) | **subtree mutation**: replace a random subtree by a new random well-typed subtree | node chosen at random; new subtree by ramped half-and-half |
 | single nodes | **point mutation**: swap a node for one of the same type and arity (`>`↔`<`, `+`↔`−`, a feature for another with the same unit) | uniform over the allowed swaps |
 | tree size | **hoist / shrink**: replace a subtree by one of its own subtrees, removing code | bloat control (Luke & Panait 2006 compare methods, *Evolutionary Computation* 14(3), doi 10.1162/evco.2006.14.3.309) |
-| two parents | **size-fair crossover** (round 20): subtrees of similar size swapped in the same slot, types matched | Langdon 2000, *Genet. Program. Evolvable Mach.* 1; limits growth. Plain subtree crossover is often no better than mutation [verify: Angeline 1997; White & Poulding 2009], so crossover stays a minority operator |
+| two parents | **size-fair crossover** (round 20): subtrees of similar size swapped in the same slot, types matched | Langdon 2000, *Genet. Program. Evolvable Mach.* 1; limits growth. Plain subtree crossover is often no better than mutation (White & Poulding 2009, doi 10.1007/978-3-642-01181-8_19: crossover "does not significantly outperform mutation on most of the problems examined"; Angeline 1997, doi 10.1007/BFb0014804, on crossover as macromutation; checked round 27), so crossover stays a minority operator |
 | constants in trees | **Gaussian**, σ = 2 %, 10 % or 30 % of the feature's historical inter-quantile range (chosen by the bandit below), clipped to its range | |
 | category sets | add or remove one member | |
 | numeric genes (side thresholds, price offset, size scale, risk settings) | **iso+line-DD by default** (round 20): a step along the line between two elites plus a small Gaussian (Vassiliades & Mouret 2018, arXiv 1804.03906: "directional variation" accelerates MAP-Elites) | |
@@ -693,14 +696,14 @@ A one-person trading company that meets MISO's entry rules. Prop trader and hedg
 | **L0 Out of money** | can't post collateral | as above → **death** | **on** |
 | **L1 Capital floor** | eligibility or prudence | equity ≤ `effective_ruin_floor_usd()` → death. Relative floor (e.g. 2/3 of starting capital) or absolute `ruin_floor_usd` (e.g. MISO's $500k minimum capitalization); an absolute floor leaving < 10 % headroom is rejected. Basis: Attachment L §III.B–C (`market_rules.md` §5) | off |
 | **L2 Personal loss limit** | "stop if I lose 40 % from my peak" | hard stop at an evolved drawdown limit | off |
-| **L3 Quitting after poor results** | family, stress, doubt | monthly hazard `h = logistic(β0 + β1·cumPnL + β2·R6m + β3·DD + β4·Age)`. Fit β so that a population of *losing* baseline bots (random bots after costs) reproduces about **44 % / 24 % / 15 % survival at 1 / 2 / 3 years**. Poor results raise h; long survival lowers it. A `persistence` parameter models a stubborn trader. | off. Basis: Barber, Lee, Liu, Odean & Zhang (2020), *Learning, Fast or Slow* (Taiwanese day traders) [verify numbers in the paper] |
+| **L3 Quitting after poor results** | family, stress, doubt | monthly hazard `h = logistic(β0 + β1·cumPnL + β2·R6m + β3·DD + β4·Age)`. Fit β so that a population of *losing* baseline bots (random bots after costs) reproduces about **44 % / 24 % / 15 % survival at 1 / 2 / 3 years**. Poor results raise h; long survival lowers it. A `persistence` parameter models a stubborn trader. | off. Basis: Barber, Lee, Liu, Odean & Zhang (2020), *Learning, Fast or Slow* (Taiwanese day traders), doi 10.1093/rapstu/raz006. The working paper (Oct 2017) says "survival rates at one, two, and three years are 44%, 24% and 15%" for day traders who traded at least 10 days, losers and winners together (obs., round 27) |
 | **L4 Opportunity cost and overspecialisation** | the edge is gone; T-bills pay better after fixed costs | Page's CUSUM on monthly returns in excess of (risk-free + fixed costs ÷ capital); a signal retires the bot (it also catches regime-specific bots) | off. Basis: sequential analysis |
 | **L5 Peers** | – | other traders' behaviour | off for individuals; on for prop trader and hedge fund |
 
 - **Fixed yearly costs** of running the company (audit, accounting, MISO admin charges, data): $50k/year **assumed**. M0 estimates the real amount: MISO's published participant fees (hard numbers) plus clearly labelled assumptions for the rest.
 - **L3 caveat** (state it in reports): the data are Taiwanese stock day traders, not capitalised power traders. We calibrate the direction and speed of quitting, not their overconfidence.
 - **Prop trader preset:** firm capital, a tight daily loss limit (e.g. 2 %), a maximum drawdown (e.g. 10 %), peers on.
-- **Hedge fund preset:** an investor-withdrawal hazard calibrated to about 14 % yearly attrition for managed futures (Getmansky, Lo & Mei 2004 [verify]); two losing years raise the risk; peers on.
+- **Hedge fund preset:** an investor-withdrawal hazard calibrated to about 14 % yearly attrition for managed futures (Getmansky, Lo & Mei 2004: attrition "to a high of 14.4% per year on average for managed futures funds", TASS 1994–2004; abstract read round 27); two losing years raise the risk; peers on.
 - **Citation status:** the earlier "Chan, Getmansky, Haas & Lo 2005" logit citation and "Brown, Goetzmann & Park 2001" were **not** verified in Claude Science. One was flagged as unsupported by the reviewer. Verify them or drop them.
 
 ### 10.2 Fitness
@@ -755,7 +758,7 @@ repeat until the evaluation budget is used or the session time ends:
   - P(elite i is chosen) = (1 − p) · uniform + p · rank weight, where the rank weight grows with the elite's fitness rank.
   - p = 0 is plain MAP-Elites; proposed default p = 0.5.
   - More profitable traders then get more offspring. The Trader page shows each trader's offspring count.
-- Alternatives: uniform only; "curiosity" (favour elites whose children tend to enter the archive), one of the variants in Cully & Demiris 2017 (arXiv 1708.09251) [verify details]; and wealth-driven reproduction in market time (Life mode, §11.3).
+- Alternatives: uniform only; "curiosity" (favour elites whose children tend to enter the archive), the "curiosity score" of Cully & Demiris 2017 (arXiv 1708.09251, §III-B3: a parent gains 1 when its child enters the archive and loses 0.5 otherwise; read round 27); and wealth-driven reproduction in market time (Life mode, §11.3).
 - **When and how often:** continuously, in batches (§11 loop) for as long as the run lasts. O8 compares uniform, rank-weighted and **ε-lexicase on per-year results** (La Cava et al. 2016; Helmuth et al. 2015), which favours parents that are best on random subsets of years, at equal budget.
 
 ### 11.3 Compute time vs market time; how many generations (round 19)
@@ -1343,14 +1346,14 @@ One scenario generator, used by the synthetic tests (M4), the G1 stress paths (M
   - compare simulated against real spreads on mean, variance, tail quantiles (p99, p99.9), excess kurtosis, autocorrelation, cross-hub correlation and the frequency of spike days;
   - score forecasts with proper scoring rules (CRPS, pinball loss) and probability-integral-transform histograms;
   - use rolling-origin evaluation only.
-- **Stress scenarios:** replay the worst real days (Uri, Elliott, the 2014 polar vortex [verify dates]) scaled up, and sample from the stress regime. These test survival, and the report says so.
+- **Stress scenarios:** replay the worst real days (Uri, Elliott, the 2014 polar vortex (2014-01-06 → 07 in our data: hub mean RT $189.9/MWh on the 7th, peak $1,966; obs. round 27)) scaled up, and sample from the stress regime. These test survival, and the report says so.
 - **Done when:** each model has a validation table against real data, the generator is seeded and deterministic, and the look-ahead test covers every fitted parameter.
 
 ### 20.5 O2: An optimization-based virtual bidder (the main benchmark for evolution)
 A bidder built by solving a stochastic program each day, instead of evolving a formula.
 - **Decision (day D, made at the DA deadline on D−1):** MW at each hub-hour, split into DEC quantity q⁺ ≥ 0 and INC quantity q⁻ ≥ 0, optionally at several limit prices.
 - **Scenarios:** K joint (DA, RT) scenarios for day D from O1, built from data visible at D−6 or earlier.
-- **Base model (sample average approximation, mean-CVaR, a linear program via Rockafellar–Uryasev [verify citation]):**
+- **Base model (sample average approximation, mean-CVaR, a linear program via Rockafellar & Uryasev 2000, *J. Risk* 2(3), doi 10.21314/JOR.2000.038):**
   - profit in scenario k: π_k = Σ_{n,h} (q⁺ − q⁻)·(RT − DA)_k − fee·(q⁺ + q⁻)
   - maximise (1/K) Σ_k π_k − λ·CVaR_α(−π)
   - CVaR written as ζ + 1/((1−α)K) Σ_k u_k, with u_k ≥ −π_k − ζ and u_k ≥ 0
@@ -1382,7 +1385,7 @@ Instead of deploying one bot, choose weights over the archive's elites.
 - **Constraints:**
   - w ≥ 0;
   - |Σ_i w_i·q_i(n,h,t)| ≤ cap(n) for every hub-hour in the window (the combined net position respects the liquidity cap; linear);
-  - fees charged on the **net** position, since one trader nets its own bids [verify how MISO charges per bid vs per net position];
+  - fees charged on the **net** position, since one trader nets its own bids (settled in round 18: admin fees and DA RSG on the net position per node-hour; RT RSG on net virtual supply summed over nodes; `market_rules.md` §3.2);
   - the daily risk budget.
 - **Protocol:**
   - rolling re-optimisation (e.g. monthly) and walk-forward out-of-sample evaluation;
@@ -1397,12 +1400,12 @@ A second, physical decision problem on the same price data: a small battery buyi
 - **Label it as a study, not a deployable strategy.** A real battery is a physical resource that needs MISO registration and interconnection.
 - **Parameters** (configurable `[battery]` table; defaults are an open decision §17.2):
   - power P MW and energy E MWh (e.g. 5 MW / 20 MWh, small enough to be a price-taker under the same cap logic);
-  - charge and discharge efficiencies η_c, η_d (round-trip ≈ 0.85 [verify typical values]);
+  - charge and discharge efficiencies η_c, η_d (EIA, Today in Energy 2021-02-12: the US battery fleet averaged a monthly round-trip efficiency of 82 % in 2019; default to be decided, §17.2);
   - degradation cost κ $/MWh throughput;
   - start-of-day and end-of-day state of charge.
 - **Dynamics:** e_{t+1} = e_t + η_c·c_t − d_t/η_d, with 0 ≤ e_t ≤ E and 0 ≤ c_t, d_t ≤ P. Revenue Σ p_t·(d_t − c_t) − κ·(c_t + d_t).
 - **Simultaneous charge and discharge:** with negative prices an LP may charge and discharge at once to waste energy. Either forbid it with a binary (a MILP) or show it is unprofitable under the parameters. Test both.
-- **Policies, from simplest to most advanced** (organised by a policy-class framework, e.g. Powell's four classes [verify citation]):
+- **Policies, from simplest to most advanced** (organised by a policy-class framework, Powell's four policy classes: Powell 2019, *EJOR* 275(3), doi 10.1016/j.ejor.2018.07.014):
   1. **Perfect-foresight LP:** the upper bound, never a strategy.
   2. **Deterministic look-ahead / rolling intrinsic:** re-solve each day using a point forecast of tomorrow's prices.
   3. **Stochastic dynamic programming:** a value function over a state-of-charge grid, with prices from the O1 regime model (backward induction).
@@ -1428,7 +1431,7 @@ The sizing rule uses an empirical trailing p99 that was exceeded on **2.2 % of d
 - **Backtests:**
   - Kupiec's proportion-of-failures test;
   - Christoffersen's independence and conditional-coverage tests (breaches cluster in volatile years such as 2022);
-  - an expected-shortfall backtest [verify which; e.g. Acerbi–Székely].
+  - the expected-shortfall backtests of Acerbi & Székely (MSCI, December 2014; three model-independent tests).
   - Report p-values by period, 2015–2025.
 - **Consequence:** if an estimator passes where the current one fails, **propose** switching the sizing rule to it, with the effect on storm-day losses and fitness. Don't switch silently; it is a decided design point (§17.2).
 - **Done when:** every estimator is look-ahead-tested, the backtest table exists, and the Risk app page shows the estimators side by side.
@@ -1437,8 +1440,8 @@ The sizing rule uses an empirical trailing p99 that was exceeded on **2.2 % of d
 ### 20.9 O6: Sequential analysis, optimal stopping and survival statistics (the career model, done rigorously)
 - **CUSUM calibration** (L4):
   - choose the threshold from a target **average run length** under "edge still present" (false-retirement rate), and report the detection delay when the edge vanishes;
-  - compute ARLs by simulation and check them against a standard approximation [verify, e.g. Siegmund's];
-  - compare with **Shiryaev–Roberts** and Bayesian online change-point detection [verify citation].
+  - compute ARLs by simulation and check them against Siegmund's approximation (Siegmund 1985, *Sequential Analysis*, Springer);
+  - compare with **Shiryaev–Roberts** (Roberts 1966, *Technometrics*, doi 10.1080/00401706.1966.10490374) and Bayesian online change-point detection (Adams & MacKay 2007, arXiv 0710.3742).
 - **Quitting as optimal stopping:** a Bayesian trader with a prior on their edge updates it from monthly P&L and quits when the value of continuing falls below the outside option (T-bills minus fixed costs). Solve the stopping problem by dynamic programming, and compare its decisions with the CUSUM rule and with the calibrated L3 hazard.
 - **L3 calibration as an estimation problem:**
   - fit β by the **method of simulated moments**, matching the 1-, 2- and 3-year survival points (44 / 24 / 15 %);
@@ -1477,14 +1480,14 @@ Design M1–M3 interfaces with these in mind:
 - Next to the deflated Sharpe ratio, add:
   - **White's Reality Check** and **Hansen's SPA test** against the do-nothing benchmark;
   - **Romano–Wolf step-down** for multiple strategies;
-  - the **model confidence set** for the leaderboard [verify citation].
+  - the **model confidence set** for the leaderboard (Hansen, Lunde & Nason 2011, *Econometrica* 79(2), doi 10.3982/ECTA5771).
 - **Bootstrap confidence intervals** on every strategy's F.
 - **Power analysis:** the smallest annual edge (in $/MWh and in Sharpe) that 20.5 years of walk-forward data could detect at 5 % significance, given the measured trial count. This says how much a "no edge" result actually means.
 
 **O8. Search treated as an OR problem** (after M6):
 - **Evaluation budget allocation:**
   - successive halving / Hyperband racing as the multi-fidelity option;
-  - **optimal computing budget allocation (OCBA)** [verify citation] for deciding which noisy elites to re-evaluate.
+  - **optimal computing budget allocation (OCBA)** (Chen, Lin, Yücesan & Chick 2000, *Discrete Event Dyn. Syst.* 10, doi 10.1023/A:1008349927281) for deciding which noisy elites to re-evaluate.
   - Measure the speed-up against plain MAP-Elites at equal quality.
 - **Multi-objective comparison:** your own **NSGA-II** over (log-growth, maximum drawdown, CVaR) vs MAP-Elites, under an equal evaluation budget and several seeds. Compare hypervolume, QD score, archive coverage and the best out-of-sample F.
 - **CMA-ES / CMA-MAE** on continuous constants as an emitter (already listed as optional in §11).

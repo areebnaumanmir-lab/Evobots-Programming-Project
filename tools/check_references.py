@@ -14,8 +14,13 @@ Writes:
   docs/references.md                 the bibliography, with each entry's check status
 
 Status values: "verified" (title, surname and year match), "partial" (title matches but the
-surname or year doesn't; read the note), "not found". Only "verified" entries may be cited
-without a [verify] marker (CLAUDE.md §2.2).
+surname or year doesn't; read the note), "manual" (no Crossref or arXiv record, but the
+`manual_record` column of references.csv names the primary record that was read, e.g. a
+conference bibliography entry or the paper's PDF; added in round 27), "not found". Only
+"verified" and "manual" entries may be cited without a [verify] marker (CLAUDE.md §2.2).
+
+Abstracts already saved in references_checked.json are reused when the DOI is unchanged, so a
+rerun asks Semantic Scholar only for new entries.
 """
 
 import argparse
@@ -60,7 +65,9 @@ def fetch_text(url, user_agent):
 
 
 def normalised_title(title):
-    return re.sub(r"[^a-z0-9 ]", "", (title or "").lower()).strip()
+    """Lower-case letters, digits and spaces only; markup like <i>…</i> is dropped first."""
+    without_markup = re.sub(r"<[^>]+>", " ", title or "")
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", "", without_markup.lower())).strip()
 
 
 def best_crossref_match(reference, user_agent, contact_email):
@@ -124,7 +131,8 @@ def arxiv_record(arxiv_id, user_agent):
     }
 
 
-def check_reference(reference, user_agent, contact_email):
+def check_reference(reference, user_agent, contact_email, saved_abstract_by_doi=None):
+    """Match one reference; see the module docstring for the status values."""
     result = {"key": reference["key"], "query_title": reference["title"]}
     if reference.get("doi"):
         # A DOI given in references.csv is checked, not trusted: the title must still match.
@@ -144,7 +152,9 @@ def check_reference(reference, user_agent, contact_email):
         doi = item.get("DOI", "")
         abstract = re.sub(r"<[^>]+>", " ", item.get("abstract") or "")
         if not abstract.strip() and doi:
-            abstract = semantic_scholar_abstract(doi, user_agent)
+            abstract = (saved_abstract_by_doi or {}).get(doi.lower()) or semantic_scholar_abstract(
+                doi, user_agent
+            )
         result.update(
             {
                 "title": (item.get("title") or [""])[0],
@@ -158,6 +168,13 @@ def check_reference(reference, user_agent, contact_email):
                 "title_similarity": round(similarity, 3),
             }
         )
+    if reference.get("arxiv_id") and "title" in result:
+        # A Crossref title match by another author (e.g. a software package named after the
+        # paper) is dropped in favour of the arXiv record.
+        crossref_authors = " ".join(result.get("authors", [])).lower()
+        if reference["first_author_surname"].lower() not in crossref_authors:
+            for field_name in ("title", "authors", "year", "venue", "doi", "type", "abstract"):
+                result.pop(field_name, None)
     if reference.get("arxiv_id"):
         arxiv = arxiv_record(reference["arxiv_id"], user_agent)
         result["arxiv_id"] = reference["arxiv_id"]
@@ -182,7 +199,16 @@ def check_reference(reference, user_agent, contact_email):
                 }
             )
     if "title" not in result:
-        result["status"] = "not found"
+        if reference.get("manual_record"):
+            result.update(
+                {
+                    "status": "manual",
+                    "title": reference["title"],
+                    "manual_record": reference["manual_record"],
+                }
+            )
+        else:
+            result["status"] = "not found"
         return result
     authors = result.get("authors", [])
     # Some Crossref records (books, some journals) carry no author list; title, year and
@@ -194,6 +220,15 @@ def check_reference(reference, user_agent, contact_email):
         result["note"] = "no author metadata in Crossref; matched on title, year and DOI"
     is_year_close = abs((result.get("year") or 0) - int(reference["year"])) <= 1
     result["status"] = "verified" if has_surname and is_year_close else "partial"
+    if result["status"] == "partial" and reference.get("manual_record"):
+        # Crossref found a related record (e.g. a review of a book) but not the work itself.
+        return {
+            "key": reference["key"],
+            "query_title": reference["title"],
+            "status": "manual",
+            "title": reference["title"],
+            "manual_record": reference["manual_record"],
+        }
     if result["status"] == "partial":
         result["note"] = (
             f"surname match: {has_surname}; year {result.get('year')} vs {reference['year']}"
@@ -202,20 +237,27 @@ def check_reference(reference, user_agent, contact_email):
 
 
 def bibliography_line(checked):
+    if checked["status"] == "manual":
+        return (
+            f"- **{checked['key']}**: *{checked['title']}*. {checked['manual_record']}. "
+            "Status: checked against the record named."
+        )
     if checked["status"] == "not found":
         return f"- **{checked['key']}**: *{checked['query_title']}*. Not found: [verify]."
     authors = checked.get("authors", [])
     author_text = ", ".join(authors[:4]) + (" et al." if len(authors) > 4 else "")
-    identifier = f"doi {checked['doi']}" if checked.get("doi") else checked.get("venue") or ""
-    if checked.get("arxiv_id"):
-        identifier += f"; arXiv {checked['arxiv_id']}"
+    identifiers = [f"doi {checked['doi']}"] if checked.get("doi") else []
+    venue = checked.get("venue") or ""
+    if checked.get("arxiv_id") and f"arXiv {checked['arxiv_id']}" not in venue:
+        identifiers.append(f"arXiv {checked['arxiv_id']}")
+    identifier = "; ".join(identifiers)
     if checked["status"] == "verified":
         status = "checked" + (f" ({checked['note']})" if checked.get("note") else "")
     else:
         status = f"partial ({checked['note']})"
     return (
         f"- **{checked['key']}**: {author_text} ({checked.get('year')}). *{checked['title']}*. "
-        f"{checked.get('venue') or ''}. {identifier}. Status: {status}."
+        f"{venue}. {identifier + '. ' if identifier else ''}Status: {status}."
     )
 
 
@@ -227,9 +269,14 @@ def main():
     user_agent = f"evobots/0.1 (research; reference check; contact: {contact_email})"
     with REFERENCES_CSV_PATH.open(encoding="utf-8") as references_file:
         references = list(csv.DictReader(references_file))
+    saved_abstract_by_doi = {}
+    if CHECKED_JSON_PATH.exists():
+        for saved in json.loads(CHECKED_JSON_PATH.read_text(encoding="utf-8")):
+            if saved.get("doi") and saved.get("abstract"):
+                saved_abstract_by_doi[saved["doi"].lower()] = saved["abstract"]
     checked_references = []
     for reference in references:
-        checked = check_reference(reference, user_agent, contact_email)
+        checked = check_reference(reference, user_agent, contact_email, saved_abstract_by_doi)
         checked_references.append(checked)
         print(f"{checked['status']:<10} {reference['key']}", flush=True)
     CHECKED_JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -243,7 +290,8 @@ def main():
         f"Generated by `tools/check_references.py` on {today} from `references.csv`.",
         "Each entry was matched on Crossref (and arXiv where an ID is given) by title,",
         "first-author surname and year. Abstracts are in `data/references_checked.json`.",
-        "Entries not marked **checked** must be cited with [verify].",
+        "Entries not marked **checked** must be cited with [verify]. Entries checked against a",
+        "named record (no Crossref or arXiv entry exists) say which record was read.",
         "",
     ]
     lines += [bibliography_line(checked) for checked in checked_references]

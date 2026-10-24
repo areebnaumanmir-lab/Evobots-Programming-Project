@@ -2,7 +2,9 @@
  {
   "key": "koza1992",
   "query_title": "Genetic programming: on the programming of computers by means of natural selection",
-  "status": "not found"
+  "status": "manual",
+  "title": "Genetic programming: on the programming of computers by means of natural selection",
+  "manual_record": "Koza, J. R. (1992). MIT Press. Existence confirmed by P. J. Angeline's review of the book in BioSystems 33 (1994), doi 10.1016/0303-2647(94)90062-0 (Crossref, read 2026-10-24, round 27)"
  },
  {
   "key": "montana1995",
@@ -23,7 +25,9 @@
  {
   "key": "whigham1995",
   "query_title": "Grammatically-based genetic programming",
-  "status": "not found"
+  "status": "manual",
+  "title": "Grammatically-based genetic programming",
+  "manual_record": "Whigham, P. A. (1995). In J. P. Rosca (ed.), Proceedings of the Workshop on Genetic Programming: From Theory to Real-World Applications, Tahoe City, pp. 33-41. Record: GP Bibliography whigham_1995_GBGP (read 2026-10-24, round 27)"
  },
  {
   "key": "mckay2010",
@@ -114,7 +118,9 @@
  {
   "key": "ray1991",
   "query_title": "An approach to the synthesis of life",
-  "status": "not found"
+  "status": "manual",
+  "title": "An approach to the synthesis of life",
+  "manual_record": "Ray, T. S. (1991). In Langton, Taylor, Farmer & Rasmussen (eds), Artificial Life II, Addison-Wesley, p. 371 ff. Record: the author's PDF at tomray.me (read 2026-10-24, round 27)"
  },
  {
   "key": "ofria2004",
@@ -305,20 +311,9 @@
  {
   "key": "chen2007",
   "query_title": "Failure of Genetic-Programming Induced Trading Strategies: Distinguishing between Efficient Markets and Inefficient Algorithms",
+  "status": "manual",
   "title": "Failure of Genetic-Programming Induced Trading Strategies: Distinguishing between Efficient Markets and Inefficient Algorithms",
-  "authors": [
-   "Shu-Heng Chen",
-   "Nicolas Navet"
-  ],
-  "year": null,
-  "venue": "Computational Intelligence in Economics and Finance",
-  "doi": "10.1007/978-3-540-72821-4_11",
-  "type": "book-chapter",
-  "cited_by_count": 7,
-  "abstract": "",
-  "title_similarity": 1.0,
-  "status": "partial",
-  "note": "surname match: True; year None vs 2007"
+  "manual_record": "Chen, S.-H. & Navet, N. (2007). In Computational Intelligence in Economics and Finance, Vol. II, Springer, doi 10.1007/978-3-540-72821-4_11 (Crossref record has no year; round 27)"
  },
  {
   "key": "wang2000",
@@ -347,7 +342,7 @@
   "venue": "Nature Machine Intelligence",
   "doi": "10.1038/s42256-019-0048-x",
   "type": "journal-article",
-  "cited_by_count": 9797,
+  "cited_by_count": 9804,
   "abstract": "Black box machine learning models are currently being used for high-stakes decision making throughout society, causing problems in healthcare, criminal justice and other domains. Some people hope that creating methods for explaining these black box models will alleviate some of the problems, but trying to explain black box models, rather than creating models that are interpretable in the first place, is likely to perpetuate bad practice and can potentially cause great harm to society. The way forward is to design models that are inherently interpretable. This Perspective clarifies the chasm between explaining black boxes and using inherently interpretable models, outlines several key reasons why explainable black boxes should be avoided in high-stakes decisions, identifies challenges to interpretable machine learning, and provides several example applications where interpretable models could potentially replace black box models in criminal justice, healthcare and computer vision. There has been a recent rise of interest in developing methods for ‘explainable AI’, where models are created to explain how a first ‘black box’ machine learning model arrives at a specific decision. It can be argued that instead efforts should be directed at building inherently interpretable models in the first place, in particular where they are applied in applications that directly affect human lives, such as in healthcare and criminal justice.",
   "title_similarity": 1.0,
   "status": "verified"
@@ -355,7 +350,9 @@
  {
   "key": "luke2001survey",
   "query_title": "A survey and comparison of tree generation algorithms",
-  "status": "not found"
+  "status": "manual",
+  "title": "A survey and comparison of tree generation algorithms",
+  "manual_record": "Luke, S. & Panait, L. (2001). GECCO-2001, pp. 81-88, Morgan Kaufmann. Record: GP Bibliography gpbib.pmacs.upenn.edu/gp-html/Luke1_2001_GECCO.html (read 2026-10-24, round 27)"
  },
  {
   "key": "luke2000ptc",
@@ -428,7 +425,9 @@
  {
   "key": "mcphee1999",
   "query_title": "Analysis of genetic diversity through population history",
-  "status": "not found"
+  "status": "manual",
+  "title": "Analysis of genetic diversity through population history",
+  "manual_record": "McPhee, N. F. & Hopper, N. J. (1999). GECCO-1999, vol. 2, pp. 1112-1120, Morgan Kaufmann. Record: GP Bibliography mcphee_1999_A (read 2026-10-24, round 27)"
  },
  {
   "key": "dolson2020",
@@ -471,26 +470,26 @@
  },
  {
   "key": "angeline1997",
-  "query_title": "Subtree crossover: Building block engine or macromutation?",
-  "status": "not found"
+  "query_title": "Comparing subtree crossover with macromutation",
+  "title": "Comparing subtree crossover with macromutation",
+  "authors": [
+   "Peter J. Angeline"
+  ],
+  "year": 1997,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/bfb0014804",
+  "type": "book-chapter",
+  "cited_by_count": 12,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
  },
  {
-  "key": "luke1997",
-  "query_title": "A comparison of crossover and mutation in genetic programming",
-  "title": "A Rigorous Evaluation of Crossover and Mutation in Genetic Programming",
-  "authors": [
-   "David R. White",
-   "Simon Poulding"
-  ],
-  "year": 2009,
-  "venue": "Lecture Notes in Computer Science",
-  "doi": "10.1007/978-3-642-01181-8_19",
-  "type": "book-chapter",
-  "cited_by_count": 20,
-  "abstract": "",
-  "title_similarity": 0.855,
-  "status": "partial",
-  "note": "surname match: False; year 2009 vs 1997"
+  "key": "luke1998",
+  "query_title": "A revised comparison of crossover and mutation in genetic programming",
+  "status": "manual",
+  "title": "A revised comparison of crossover and mutation in genetic programming",
+  "manual_record": "Luke, S. & Spector, L. (1998). Genetic Programming 1998, pp. 208-213, Morgan Kaufmann. Record: GP Bibliography luke_1998_rcxmGP (read 2026-10-24, round 27); it replaces their 1997 study, which 'was marred by statistical flaws' (their abstract)"
  },
  {
   "key": "langdon2000sizefair",
@@ -549,7 +548,9 @@
  {
   "key": "luke2002lexpars",
   "query_title": "Lexicographic parsimony pressure",
-  "status": "not found"
+  "status": "manual",
+  "title": "Lexicographic parsimony pressure",
+  "manual_record": "Luke, S. & Panait, L. (2002). GECCO 2002, pp. 829-836, Morgan Kaufmann. Record: GP Bibliography luke2_2002_gecco (read 2026-10-24, round 27)"
  },
  {
   "key": "poli2003tarpeian",
@@ -852,7 +853,7 @@
   "venue": "Evolutionary Computation",
   "doi": "10.1162/evco_a_00025",
   "type": "journal-article",
-  "cited_by_count": 723,
+  "cited_by_count": 724,
   "abstract": "In evolutionary computation, the fitness function normally measures progress toward an objective in the search space, effectively acting as an objective function. Through deception, such objective functions may actually prevent the objective from being reached. While methods exist to mitigate deception, they leave the underlying pathology untreated: Objective functions themselves may actively misdirect search toward dead ends. This paper proposes an approach to circumventing deception that also yields a new perspective on open-ended evolution. Instead of either explicitly seeking an objective or modeling natural evolution to capture open-endedness, the idea is to simply search for behavioral novelty. Even in an objective-based problem, such novelty search ignores the objective. Because many points in the search space collapse to a single behavior, the search for novelty is often feasible. Furthermore, because there are only so many simple behaviors, the search for novelty leads to increasing complexity. By decoupling open-ended search from artificial life worlds, the search for novelty is applicable to real world problems. Counterintuitively, in the maze navigation and biped walking tasks in this paper, novelty search significantly outperforms objective-based search, suggesting the strange conclusion that some problems are best solved by methods that ignore the objective. The main lesson is the inherent limitation of the objective-based paradigm and the unexploited opportunity to guide search through other means.",
   "title_similarity": 1.0,
   "status": "verified"
@@ -958,8 +959,20 @@
  },
  {
   "key": "bailey2014dsr",
-  "query_title": "The Deflated Sharpe Ratio: Correcting for Selection Bias and Backtest Overfitting",
-  "status": "not found"
+  "query_title": "The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality",
+  "title": "The Deflated Sharpe Ratio:\n                    <i>Correcting for Selection Bias, Backtest</i>\n                    <i>Overfitting, and Non-Normality</i>",
+  "authors": [
+   "David H. Bailey",
+   "Marcos López de Prado"
+  ],
+  "year": 2014,
+  "venue": "The Journal of Portfolio Management",
+  "doi": "10.3905/jpm.2014.40.5.094",
+  "type": "journal-article",
+  "cited_by_count": 114,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
  },
  {
   "key": "bailey2014charlatanism",
@@ -1075,7 +1088,7 @@
   "venue": "Journal of the American Statistical Association",
   "doi": "10.1080/01621459.1994.10476870",
   "type": "journal-article",
-  "cited_by_count": 2277,
+  "cited_by_count": 2279,
   "abstract": "Abstract This article introduces a resampling procedure called the stationary bootstrap as a means of calculating standard errors of estimators and constructing confidence regions for parameters based on weakly dependent stationary observations. Previously, a technique based on resampling blocks of consecutive observations was introduced to construct confidence intervals for a parameter of the m-dimensional joint distribution of m consecutive observations, where m is fixed. This procedure has been generalized by constructing a “blocks of blocks” resampling scheme that yields asymptotically valid procedures even for a multivariate parameter of the whole (i.e., infinite-dimensional) joint distribution of the stationary sequence of observations. These methods share the construction of resampling blocks of observations to form a pseudo-time series, so that the statistic of interest may be recalculated based on the resampled data set. But in the context of applying this method to stationary data, it is natural...",
   "title_similarity": 1.0,
   "status": "verified"
@@ -1092,7 +1105,7 @@
   "venue": "The Journal of Risk",
   "doi": "10.21314/jor.2000.038",
   "type": "journal-article",
-  "cited_by_count": 5552,
+  "cited_by_count": 5556,
   "abstract": "",
   "title_similarity": 1.0,
   "status": "verified"
@@ -1124,14 +1137,14 @@
   "venue": "Biometrika",
   "doi": "10.2307/2333009",
   "type": "journal-article",
-  "cited_by_count": 1554,
+  "cited_by_count": 1555,
   "abstract": "",
   "title_similarity": 1.0,
   "status": "verified"
  },
  {
   "key": "barber2020",
-  "query_title": "Learning Fast or Slow?",
+  "query_title": "Learning, Fast or Slow",
   "title": "Learning, Fast or Slow",
   "authors": [
    "Brad M Barber",
@@ -1202,7 +1215,9 @@
  {
   "key": "acerbi2014",
   "query_title": "Backtesting Expected Shortfall",
-  "status": "not found"
+  "status": "manual",
+  "title": "Backtesting Expected Shortfall",
+  "manual_record": "Acerbi, C. & Szekely, B. (December 2014). MSCI research paper, also in Risk. Record: the paper's PDF from msci.com, cover page (read 2026-10-24, round 27)"
  },
  {
   "key": "powell2019",
@@ -1253,7 +1268,7 @@
   "venue": "IEEE Transactions on Evolutionary Computation",
   "doi": "10.1109/4235.996017",
   "type": "journal-article",
-  "cited_by_count": 44738,
+  "cited_by_count": 44748,
   "abstract": "",
   "title_similarity": 1.0,
   "status": "verified"
@@ -1322,5 +1337,89 @@
   "abstract": "",
   "title_similarity": 1.0,
   "status": "verified"
+ },
+ {
+  "key": "vanneschi2013",
+  "query_title": "A new implementation of geometric semantic GP and its application to problems in pharmacokinetics",
+  "title": "A New Implementation of Geometric Semantic GP and Its Application to Problems in Pharmacokinetics",
+  "authors": [
+   "Leonardo Vanneschi",
+   "Mauro Castelli",
+   "Luca Manzoni",
+   "Sara Silva"
+  ],
+  "year": 2013,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/978-3-642-37207-0_18",
+  "type": "book-chapter",
+  "cited_by_count": 95,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "rothlauf2006",
+  "query_title": "On the locality of grammatical evolution",
+  "title": "On the Locality of Grammatical Evolution",
+  "authors": [
+   "Franz Rothlauf",
+   "Marie Oetzel"
+  ],
+  "year": 2006,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/11729976_29",
+  "type": "book-chapter",
+  "cited_by_count": 69,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "roberts1966",
+  "query_title": "A comparison of some control chart procedures",
+  "title": "A Comparison of Some Control Chart Procedures",
+  "authors": [
+   "S. W. Roberts"
+  ],
+  "year": 1966,
+  "venue": "Technometrics",
+  "doi": "10.1080/00401706.1966.10490374",
+  "type": "journal-article",
+  "cited_by_count": 415,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "adams2007",
+  "query_title": "Bayesian Online Changepoint Detection",
+  "cited_by_count": 33,
+  "title_similarity": 1.0,
+  "arxiv_id": "0710.3742",
+  "arxiv": {
+   "title": "Bayesian Online Changepoint Detection",
+   "authors": [
+    "Ryan Prescott Adams",
+    "David J. C. MacKay"
+   ],
+   "published": "2007-10-19",
+   "abstract": "Changepoints are abrupt variations in the generative parameters of a data sequence. Online detection of changepoints is useful in modelling and prediction of time series in application areas such as finance, biometrics, and robotics. While frequentist methods have yielded online filtering and prediction techniques, most Bayesian papers have focused on the retrospective segmentation problem. Here we examine the case where the model parameters before and after the changepoint are independent and we derive an online algorithm for exact inference of the most recent changepoint. We compute the probability distribution of the length of the current ``run,'' or time since the last changepoint, using a simple message-passing algorithm. Our implementation is highly modular so that the algorithm may be applied to a variety of types of data. We illustrate this modularity by demonstrating the algorithm on three different real-world data sets."
+  },
+  "abstract": "Changepoints are abrupt variations in the generative parameters of a data sequence. Online detection of changepoints is useful in modelling and prediction of time series in application areas such as finance, biometrics, and robotics. While frequentist methods have yielded online filtering and prediction techniques, most Bayesian papers have focused on the retrospective segmentation problem. Here we examine the case where the model parameters before and after the changepoint are independent and we derive an online algorithm for exact inference of the most recent changepoint. We compute the probability distribution of the length of the current ``run,'' or time since the last changepoint, using a simple message-passing algorithm. Our implementation is highly modular so that the algorithm may be applied to a variety of types of data. We illustrate this modularity by demonstrating the algorithm on three different real-world data sets.",
+  "title": "Bayesian Online Changepoint Detection",
+  "authors": [
+   "Ryan Prescott Adams",
+   "David J. C. MacKay"
+  ],
+  "year": 2007,
+  "venue": "arXiv 0710.3742",
+  "status": "verified"
+ },
+ {
+  "key": "siegmund1985",
+  "query_title": "Sequential analysis: tests and confidence intervals",
+  "status": "manual",
+  "title": "Sequential analysis: tests and confidence intervals",
+  "manual_record": "Siegmund, D. (1985). Springer. Existence confirmed by the book's review in Technometrics 29 (1987), doi 10.2307/1269900 (Crossref, read 2026-10-24, round 27)"
  }
 ]
