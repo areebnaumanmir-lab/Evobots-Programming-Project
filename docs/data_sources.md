@@ -55,7 +55,10 @@ Provenance marks (`CLAUDE.md` §2.2): **(obs.)** = read on the source's own page
   All were polite (≤ 2 parallel requests, 0.5 s spacing, identified by a User-Agent with a contact email), but they were scripts.
 - **Whether `docs.misoenergy.org`, which serves the market-report files linked from the website, is part of "this Website"** is not stated in the terms. The safe reading is yes.
 - **Stopped on 2026-10-24** when the clause was read: the cleared-bids fetch, at operating day 2026-01-23. No further scripted request is made to any MISO host until Areeb decides. The weather fetch (IEM, public domain) continues.
-- **The decision is in `docs/rounds/round25_miso_terms.md`.**
+- **Decided by Areeb (round 26):** keep everything already downloaded, for private use only. Areeb's reason: "the fine print says that data is only restricted if you're using it for explicitly commercial purposes".
+  - The Terms of Use text Areeb pasted in round 25 contains no commercial/non-commercial distinction (obs.: no occurrence of "commercial" in it).
+  - The commercial-only reading may come from other fine print, such as conditions posted on the market-reports pages, which the terms say prevail. That source is not yet in the project [verify: Areeb to paste or link it].
+  - **Scripted downloading stays paused** until that source is recorded, or Areeb explicitly says to resume. Nothing before M9 needs new MISO downloads.
 
 ## 5. Measured vs assumed
 - **Measured:** MISO's Terms of Use (full text, supplied by Areeb); the EIA, NWS, IEM, EPU and GPR statements above, read on their pages on 2026-10-24; the World Bank catalog licence for the Global Economic Monitor; the repository's visibility.

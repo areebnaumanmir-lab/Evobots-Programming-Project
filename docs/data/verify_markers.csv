@@ -1,113 +1,117 @@
 id,group,file,line,excerpt
-V001,M,CLAUDE.md,97,- **[verify]**: from memory or a s…
-V002,M,CLAUDE.md,97,"- **[verify]**: from memory or a secondary source, not yet checked. Never build code on a [verify] fact without flagging…"
-V003,M,CLAUDE.md,98,"…a made-up search-result label used to rebut the reviewer). If you can't retrieve a source, say so and mark it [verify]."
-V004,F,CLAUDE.md,260,…he file arrives; decided round 20). Schedule 17 + 24 ≈ $0.090/MWh in October 2026 is from search-index quotes [verify]; the RSG rate history…
-V005,P,CLAUDE.md,266,- Use MISO's published MPD [verify at M0].
-V006,A,CLAUDE.md,268,…nt for every trader. Minimum capitalization is a separate test in §III.C. Whether v56.0.0 is still current is [verify].
-V007,A,CLAUDE.md,287,…and past futures prices: no.** EIA's free gas futures stop on 2024-04-05; MISO power futures data is not free [verify]; and §7.1 requires ev…
-V008,R,CLAUDE.md,369,…ettle at the DA ex-post LMP (`market_rules.md` §1). Whether the pre-2015 `da_lmp` files are ex-post prices is [verify].
-V009,A,CLAUDE.md,410,"…`GPRD` (headline), `GPRD_THREAT` (categories 1–5), `GPRD_ACT` (6–8), `GPRD_MA7`, `GPRD_MA30`, `N10D` (meaning [verify]), `event`, `var_name`…"
-V010,A,CLAUDE.md,414,- **Revisions:** GPR and EPU files are today's versions; past revisions are unobservable [verify revision policy]. Pape…
-V011,A,CLAUDE.md,442,- **Corrections:** EIA occasionally corrects dates [verify how often].
-V012,L,CLAUDE.md,648,… *Genet. Program. Evolvable Mach.* 1; limits growth. Plain subtree crossover is often no better than mutation [verify: Angeline 1997; White …
-V013,L,CLAUDE.md,695,"…rader. | off. Basis: Barber, Lee, Liu, Odean & Zhang (2020), *Learning, Fast or Slow* (Taiwanese day traders) [verify numbers in the paper] …"
-V014,L,CLAUDE.md,702,"…tor-withdrawal hazard calibrated to about 14 % yearly attrition for managed futures (Getmansky, Lo & Mei 2004 [verify]); two losing years ra…"
-V015,L,CLAUDE.md,757,"…tes whose children tend to enter the archive), one of the variants in Cully & Demiris 2017 (arXiv 1708.09251) [verify details]; and wealth-d…"
-V016,A,CLAUDE.md,907,| Risk-free rate | **From market data** | needs a keyless T-bill series [verify source; Fed H.15 was d…
-V017,M,CLAUDE.md,1102,- Resolve the [verify] list against MISO's d…
-V018,M,CLAUDE.md,1111,- **Done when:** no [verify] markers remain (or ea…
-V019,M,CLAUDE.md,1198,"- The M0 [verify] list (§16, M0)."
-V020,M,CLAUDE.md,1244,"- Don't fabricate citations, numbers or URLs. Mark [verify] instead."
-V021,M,CLAUDE.md,1278,| (obs.) / [verify] | observed in this pr…
-V022,O,CLAUDE.md,1345,"- **Stress scenarios:** replay the worst real days (Uri, Elliott, the 2014 polar vortex [verify dates]) scaled up, and…"
-V023,O,CLAUDE.md,1352,"- **Base model (sample average approximation, mean-CVaR, a linear program via Rockafellar–Uryasev [verify citation]):**"
-V024,O,CLAUDE.md,1384,"- fees charged on the **net** position, since one trader nets its own bids [verify how MISO charges per b…"
-V025,O,CLAUDE.md,1399,"- charge and discharge efficiencies η_c, η_d (round-trip ≈ 0.85 [verify typical values]);"
-V026,O,CLAUDE.md,1404,"…Policies, from simplest to most advanced** (organised by a policy-class framework, e.g. Powell's four classes [verify citation]):"
-V027,O,CLAUDE.md,1430,- an expected-shortfall backtest [verify which; e.g. Acerbi–Szé…
-V028,O,CLAUDE.md,1439,"- compute ARLs by simulation and check them against a standard approximation [verify, e.g. Siegmund's];"
-V029,O,CLAUDE.md,1440,- compare with **Shiryaev–Roberts** and Bayesian online change-point detection [verify citation].
-V030,O,CLAUDE.md,1479,- the **model confidence set** for the leaderboard [verify citation].
-V031,O,CLAUDE.md,1486,- **optimal computing budget allocation (OCBA)** [verify citation] for deciding…
-V032,M,CLAUDE.md,1516,- Every number links to the script that produced it; every citation is verified or marked [verify].
+V001,M,CLAUDE.md,98,- **[verify]**: from memory or a s…
+V002,M,CLAUDE.md,98,"- **[verify]**: from memory or a secondary source, not yet checked. Never build code on a [verify] fact without flagging…"
+V003,M,CLAUDE.md,99,"…a made-up search-result label used to rebut the reviewer). If you can't retrieve a source, say so and mark it [verify]."
+V004,F,CLAUDE.md,261,…he file arrives; decided round 20). Schedule 17 + 24 ≈ $0.090/MWh in October 2026 is from search-index quotes [verify]; the RSG rate history…
+V005,P,CLAUDE.md,267,- Use MISO's published MPD [verify at M0].
+V006,A,CLAUDE.md,269,…nt for every trader. Minimum capitalization is a separate test in §III.C. Whether v56.0.0 is still current is [verify].
+V007,A,CLAUDE.md,288,…and past futures prices: no.** EIA's free gas futures stop on 2024-04-05; MISO power futures data is not free [verify]; and §7.1 requires ev…
+V008,R,CLAUDE.md,370,…ettle at the DA ex-post LMP (`market_rules.md` §1). Whether the pre-2015 `da_lmp` files are ex-post prices is [verify].
+V009,A,CLAUDE.md,411,"…`GPRD` (headline), `GPRD_THREAT` (categories 1–5), `GPRD_ACT` (6–8), `GPRD_MA7`, `GPRD_MA30`, `N10D` (meaning [verify]), `event`, `var_name`…"
+V010,A,CLAUDE.md,415,- **Revisions:** GPR and EPU files are today's versions; past revisions are unobservable [verify revision policy]. Pape…
+V011,A,CLAUDE.md,443,- **Corrections:** EIA occasionally corrects dates [verify how often].
+V012,L,CLAUDE.md,649,… *Genet. Program. Evolvable Mach.* 1; limits growth. Plain subtree crossover is often no better than mutation [verify: Angeline 1997; White …
+V013,L,CLAUDE.md,696,"…rader. | off. Basis: Barber, Lee, Liu, Odean & Zhang (2020), *Learning, Fast or Slow* (Taiwanese day traders) [verify numbers in the paper] …"
+V014,L,CLAUDE.md,703,"…tor-withdrawal hazard calibrated to about 14 % yearly attrition for managed futures (Getmansky, Lo & Mei 2004 [verify]); two losing years ra…"
+V015,L,CLAUDE.md,758,"…tes whose children tend to enter the archive), one of the variants in Cully & Demiris 2017 (arXiv 1708.09251) [verify details]; and wealth-d…"
+V016,A,CLAUDE.md,908,| Risk-free rate | **From market data** | needs a keyless T-bill series [verify source; Fed H.15 was d…
+V017,M,CLAUDE.md,1103,- Resolve the [verify] list against MISO's d…
+V018,M,CLAUDE.md,1112,- **Done when:** no [verify] markers remain (or ea…
+V019,M,CLAUDE.md,1199,"- The M0 [verify] list (§16, M0)."
+V020,M,CLAUDE.md,1245,"- Don't fabricate citations, numbers or URLs. Mark [verify] instead."
+V021,M,CLAUDE.md,1279,| (obs.) / [verify] | observed in this pr…
+V022,O,CLAUDE.md,1346,"- **Stress scenarios:** replay the worst real days (Uri, Elliott, the 2014 polar vortex [verify dates]) scaled up, and…"
+V023,O,CLAUDE.md,1353,"- **Base model (sample average approximation, mean-CVaR, a linear program via Rockafellar–Uryasev [verify citation]):**"
+V024,O,CLAUDE.md,1385,"- fees charged on the **net** position, since one trader nets its own bids [verify how MISO charges per b…"
+V025,O,CLAUDE.md,1400,"- charge and discharge efficiencies η_c, η_d (round-trip ≈ 0.85 [verify typical values]);"
+V026,O,CLAUDE.md,1405,"…Policies, from simplest to most advanced** (organised by a policy-class framework, e.g. Powell's four classes [verify citation]):"
+V027,O,CLAUDE.md,1431,- an expected-shortfall backtest [verify which; e.g. Acerbi–Szé…
+V028,O,CLAUDE.md,1440,"- compute ARLs by simulation and check them against a standard approximation [verify, e.g. Siegmund's];"
+V029,O,CLAUDE.md,1441,- compare with **Shiryaev–Roberts** and Bayesian online change-point detection [verify citation].
+V030,O,CLAUDE.md,1480,- the **model confidence set** for the leaderboard [verify citation].
+V031,O,CLAUDE.md,1487,- **optimal computing budget allocation (OCBA)** [verify citation] for deciding…
+V032,M,CLAUDE.md,1517,- Every number links to the script that produced it; every citation is verified or marked [verify].
 V033,P,docs/capital_sizing.md,362,"highest over all locations, so the true MPD can be above $12; use MISO's published value [verify at M0]."
-V034,A,docs/change_ledger.md,16,"…g_reference.md`, `CLAUDE.md` | Decided: bundle policy, $1.5M final. Open: scripted MISO access (A–D), R1, the [verify] groups |"
-V035,M,docs/change_ledger.md,17,"…ocs/*.md`, `pyproject.toml`, `uv.lock` | Delegated: R24-1…4. Open for Areeb: MISO terms; R1; accept remaining [verify] |"
-V036,M,docs/change_ledger.md,23,… fetch scripts; glossary; doc link checker; local config template with the contact email kept out of git | M0 [verify] list; network policy …
-V037,M,docs/data_sources.md,5,"…nance marks (`CLAUDE.md` §2.2): **(obs.)** = read on the source's own page on the date given, quoted below. **[verify]** = from a secondary …"
-V038,A,docs/data_sources.md,28,… 4.0. The World Bank's general (non-dataset) terms allow only non-commercial use and no derivative works. | **[verify]** | **not until check…
-V039,A,docs/data_sources.md,29,"…ail in a conflict; whether the market-report pages or the Data Exchange carry such conditions was not checked [verify]. | (obs., text suppli…"
-V040,M,docs/decisions_log.md,62,| Look-ahead | – | Decision at DA close (D−1 10:30 ET [verify]); may use DA ≤ D−1 an…
-V041,M,docs/decisions_log.md,130,…unds 3–12 consolidated into design spec v3. Open: the default career preset (proposed: hedge fund) and the M0 [verify] list. |
-V042,M,docs/decisions_log.md,184,| M0 [verify] list | – | resolved f…
-V043,A,docs/decisions_log.md,245,"| Rates Factors file, [verify] markers | ""tell me ho…"
-V044,K,docs/dependencies.md,32,| hatchling | MIT [verify: not installed in the …
-V045,K,docs/dependencies.md,38,| numba | M3 | BSD-2-Clause [verify on install] | the fast…
-V046,K,docs/dependencies.md,39,| pyarrow or polars | M1 | Apache-2.0 / MIT [verify on install] | CSV inge…
-V047,K,docs/dependencies.md,40,"| openpyxl, xlrd | M1 | MIT, BSD [verify on install] | EIA spre…"
-V048,K,docs/dependencies.md,41,"| FastAPI, Jinja2, uvicorn | M1.5 | MIT, BSD-3-Clause, BSD-3-Clause [verify on install] | the loca…"
-V049,K,docs/dependencies.md,42,"| cvxpy, Clarabel | O2–O3 | Apache-2.0 [verify on install] | convex m…"
-V050,K,docs/dependencies.md,43,"| statsmodels | O1, O6 | BSD-3-Clause [verify on install] | regime s…"
-V051,L,docs/design_rationale.md,18,- **(memory) [verify]**: the paper's existe…
-V052,L,docs/design_rationale.md,21,"…ed against Crossref or arXiv by `tools/check_references.py`. Entries marked ""not found"" are always cited with [verify]."
-V053,L,docs/design_rationale.md,35,"…de | bloat (trees grow without gain); crossover can act like random macro-mutation (Angeline 1997, not found: [verify]) |"
-V054,L,docs/design_rationale.md,36,| **Grammar-guided GP** (Whigham 1995 [verify]; survey mckay2010) | …
-V055,L,docs/design_rationale.md,37,… into a program | simple genome | small genome changes can make large program changes (low locality) (memory) [verify]; harder to trace why …
-V056,L,docs/design_rationale.md,41,| **Self-replicating machine code** (Tierra: Ray 1991 [verify]; Avida: ofria2004) | …
-V057,L,docs/design_rationale.md,47,"- Neely, Weller & Dittmar (1997, neely1997) found GP rules profitable in FX out of sample (memory) [verify]."
-V058,L,docs/design_rationale.md,48,"…a2002) used domain-knowledge constraints on GP trading rules, reporting better out-of-sample results (memory) [verify]."
-V059,L,docs/design_rationale.md,49,"…GP traders against random-search baselines to tell an efficient market from an inefficient algorithm (memory) [verify]. This supports the ""r…"
-V060,L,docs/design_rationale.md,54,… `founder:human`. Seeding with human-designed programs is studied in GP (langdon2000seeding; content (memory) [verify]).
-V061,L,docs/design_rationale.md,64,"| **Ramped half-and-half** (Koza 1992, not found: [verify]) | the classic mix of…"
-V062,L,docs/design_rationale.md,65,| **PTC2** (luke2000ptc) | builds random trees with a chosen size distribution (memory: designed for that) [verify] | slightly more code …
-V063,L,docs/design_rationale.md,67,…eds can take over the population and reduce diversity (burke2004 studies diversity measures; content (memory) [verify]); the benefit depends…
-V064,L,docs/design_rationale.md,85,- Genealogy visualisation in GP: burlacu2013 (memory) [verify].
-V065,L,docs/design_rationale.md,86,- Population-history analysis: McPhee & Hopper 1999 (not found: [verify]).
-V066,L,docs/design_rationale.md,107,"… Crossover vs mutation | in GP, subtree crossover is often no better than mutation | angeline1997 (not found: [verify]); luke1997 ([verify])…"
-V067,L,docs/design_rationale.md,107,"…n | in GP, subtree crossover is often no better than mutation | angeline1997 (not found: [verify]); luke1997 ([verify]); white2009 ""a rigoro…"
-V068,L,docs/design_rationale.md,107,"…t found: [verify]); luke1997 ([verify]); white2009 ""a rigorous evaluation of crossover and mutation"" (memory) [verify] |"
-V069,L,docs/design_rationale.md,108,| Size-fair crossover | swapping subtrees of similar size limits growth | langdon2000sizefair (memory) [verify] |
-V070,L,docs/design_rationale.md,110,… Tarpeian bloat control | randomly zeroing the fitness of some oversized programs | poli2003tarpeian (memory) [verify] |
-V071,L,docs/design_rationale.md,111,"…ion | uy2011 (abstract). *Geometric* semantic GP (moraglio2012) makes children whose size grows fast (memory) [verify], which would destroy …"
-V072,L,docs/design_rationale.md,145,"…er | kept (r19) | the deflated Sharpe must count every trial (Bailey & López de Prado, deflated Sharpe ratio, [verify] publication details) …"
-V073,L,docs/design_rationale.md,209,… 19). barber2020 (abstract) confirms that unprofitable day traders quit more; the 44/24/15 % points are still [verify] |
-V074,M,docs/design_rationale.md,214,"…d C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 [verify] on `credit_share`'s m…"
-V075,R,docs/explanations/lmp_from_opf.md,14,"…sses (MLC):** left out of the DC model, so zero here. In MISO's data it is usually a few percent of the price [verify]."
-V076,A,docs/explanations/lmp_from_opf.md,42,…20 and C's congestion component is +$60. MISO's reference is a load-weighted set of buses rather than one bus [verify].
-V077,M,docs/glossary.md,55,| (obs.) / [verify] | observed in this pr…
-V078,M,docs/market_rules.md,3,Explanation doc (Diátaxis). It answers the M0 [verify] list in `CLAUDE.md` §…
-V079,M,docs/market_rules.md,8,- **[verify]**: not yet read in a …
-V080,A,docs/market_rules.md,30,"…FAQ 8 says ""up to 10 price/quantity pairs per hour per CP node"" | obs. D1; the two statements in D1 disagree, [verify] in BPM-002 |"
-V081,A,docs/market_rules.md,33,"…mits | ""subject to credit limits and IMM volume limits"" | obs. D1, p. 4. The IMM limit itself is not in D1. **[verify]** in BPM-009 / Tariff…"
-V082,A,docs/market_rules.md,35,"…om that date; MISO may have changed offer caps since (for example the $1,000 → $2,000 range for demand bids). [verify] the current caps in B…"
-V083,A,docs/market_rules.md,47,"…13 (FERC order of 2015-12-17, describing the rule then in force). That 11:00 EST already held in 2005–2007 is [verify]; a 2007 ATC customer …"
-V084,A,docs/market_rules.md,48,"…hosted on `www.oasis.oati.com`, seen only through a search summary; the host returned HTTP 503 three times. **[verify]** |"
-V085,R,docs/market_rules.md,54,"…trader could have used. NWS PFM issues come a few times a day, so this rarely changes which issue is ""latest"" [verify on the parsed table in…"
-V086,M,docs/market_rules.md,68,"…10-06-01, 2015-03-01, 2020-01-01, 2023-01-01 or any day from 2025-01-01 to 2026-10-19 (binary search). So the [verify] in `CLAUDE.md` §6.4 i…"
-V087,F,docs/market_rules.md,88,"… in October 2026**; $0.0852 (May 2026), $0.0817 (June 2026), $0.0824 (August 2025), $0.079 (December 2025). **[verify]**: these come from MI…"
-V088,F,docs/market_rules.md,89,"…volume as Schedule 17 (`DA_S24_ADMIN_VOL` includes `DA_VSCHD_VOL`, obs. D5) | **$0.0156/MWh in October 2026** [verify, same source] |"
-V089,F,docs/market_rules.md,90,"…+ 50 MW INC at one hub pays on 50 MW; 50 DEC + 100 INC pays on 0 (obs. D1, FAQ 19) | daily/hourly market rate [verify] |"
-V090,F,docs/market_rules.md,93,…upply gives a positive deviation. That reading matches the IMM's wording above; the sign convention itself is [verify] in the BPM-005 glossa…
-V091,M,docs/market_rules.md,123,"… a portfolio that balances INC and DEC. O3 (CVaR portfolio) should model it; it settles the `CLAUDE.md` §20.6 [verify] ""how MISO charges per…"
-V092,P,docs/market_rules.md,143,…e MPD in recent years has been the **$12 floor**. The *published* MPD for May 2026 → April 2027 was not found [verify; MISO's credit page is…
-V093,P,docs/market_rules.md,143,"…ge is behind Cloudflare]. When the floor was introduced, and what MPD applied in each year 2007–2023, is also [verify]; the backtest needs i…"
-V094,A,docs/market_rules.md,161,"- Whether FERC accepted v57.0.0, and whether later versions exist, is [verify]. For the rules used h…"
-V095,A,docs/market_rules.md,185,…financial statements. MISO itself charges no fixed annual participation fee that was found in these documents [verify against MISO's registr…
-V096,A,docs/market_rules.md,193,"**Conflict to settle [verify]:** D10 (NAESB, last s…"
-V097,M,docs/market_rules.md,201,## 7. Status of the M0 [verify] list
-V098,A,docs/market_rules.md,205,…(noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 still [verify] (§2.1). **Decided rou…
-V099,A,docs/market_rules.md,205,"…ound 20 (D1):** the bot decides at 10:30 EPT on D−1 in every year, never later than the real deadline, so the [verify] no longer affects res…"
-V100,F,docs/market_rules.md,206,"…dmin fee | Schedule 17 + 24 ≈ $0.090/MWh (Oct 2026), on \|net\| per node-hour | **mechanics resolved**; rates [verify] (search-index source)…"
-V101,P,docs/market_rules.md,209,…shed MPD | $12 floor binds in recent years; formula confirmed | current published value and 2007–2023 history [verify] |
-V102,A,docs/market_rules.md,213,…current? | v57.0.0 filed 2025-07; same text for virtual rules | **resolved for our purposes**; later versions [verify] |
-V103,M,docs/references.md,6,Entries not marked **checked** must be cited with [verify].
-V104,L,docs/references.md,8,…*koza1992**: *Genetic programming: on the programming of computers by means of natural selection*. Not found: [verify].
-V105,L,docs/references.md,10,- **whigham1995**: *Grammatically-based genetic programming*. Not found: [verify].
-V106,L,docs/references.md,16,- **ray1991**: *An approach to the synthesis of life*. Not found: [verify].
-V107,L,docs/references.md,29,- **luke2001survey**: *A survey and comparison of tree generation algorithms*. Not found: [verify].
-V108,L,docs/references.md,34,- **mcphee1999**: *Analysis of genetic diversity through population history*. Not found: [verify].
-V109,L,docs/references.md,37,- **angeline1997**: *Subtree crossover: Building block engine or macromutation?*. Not found: [verify].
-V110,L,docs/references.md,42,- **luke2002lexpars**: *Lexicographic parsimony pressure*. Not found: [verify].
-V111,L,docs/references.md,63,…ley2014dsr**: *The Deflated Sharpe Ratio: Correcting for Selection Bias and Backtest Overfitting*. Not found: [verify].
-V112,L,docs/references.md,78,- **acerbi2014**: *Backtesting Expected Shortfall*. Not found: [verify].
+V034,A,docs/change_ledger.md,16,… all downloaded MISO data for private use; the commercial-only reading is recorded as Areeb's with its source [verify]; scripted downloads s…
+V035,A,docs/change_ledger.md,16,"…g_reference.md`, `CLAUDE.md` | Decided: bundle policy, $1.5M final. Open: scripted MISO access (A–D), R1, the [verify] groups |"
+V036,M,docs/change_ledger.md,17,"…ocs/*.md`, `pyproject.toml`, `uv.lock` | Delegated: R24-1…4. Open for Areeb: MISO terms; R1; accept remaining [verify] |"
+V037,M,docs/change_ledger.md,23,… fetch scripts; glossary; doc link checker; local config template with the contact email kept out of git | M0 [verify] list; network policy …
+V038,M,docs/data_sources.md,5,"…nance marks (`CLAUDE.md` §2.2): **(obs.)** = read on the source's own page on the date given, quoted below. **[verify]** = from a secondary …"
+V039,A,docs/data_sources.md,28,… 4.0. The World Bank's general (non-dataset) terms allow only non-commercial use and no derivative works. | **[verify]** | **not until check…
+V040,A,docs/data_sources.md,29,"…ail in a conflict; whether the market-report pages or the Data Exchange carry such conditions was not checked [verify]. | (obs., text suppli…"
+V041,A,docs/data_sources.md,60,"…itions posted on the market-reports pages, which the terms say prevail. That source is not yet in the project [verify: Areeb to paste or lin…"
+V042,M,docs/decisions_log.md,62,| Look-ahead | – | Decision at DA close (D−1 10:30 ET [verify]); may use DA ≤ D−1 an…
+V043,M,docs/decisions_log.md,130,…unds 3–12 consolidated into design spec v3. Open: the default career preset (proposed: hedge fund) and the M0 [verify] list. |
+V044,M,docs/decisions_log.md,184,| M0 [verify] list | – | resolved f…
+V045,A,docs/decisions_log.md,245,"| Rates Factors file, [verify] markers | ""tell me ho…"
+V046,A,docs/decisions_log.md,251,…ted. Claude noted that the pasted Terms of Use contain no commercial carve-out; the source of that reading is [verify]. Scripted MISO downlo…
+V047,K,docs/dependencies.md,32,| hatchling | MIT [verify: not installed in the …
+V048,K,docs/dependencies.md,38,| numba | M3 | BSD-2-Clause [verify on install] | the fast…
+V049,K,docs/dependencies.md,39,| pyarrow or polars | M1 | Apache-2.0 / MIT [verify on install] | CSV inge…
+V050,K,docs/dependencies.md,40,"| openpyxl, xlrd | M1 | MIT, BSD [verify on install] | EIA spre…"
+V051,K,docs/dependencies.md,41,"| FastAPI, Jinja2, uvicorn | M1.5 | MIT, BSD-3-Clause, BSD-3-Clause [verify on install] | the loca…"
+V052,K,docs/dependencies.md,42,"| cvxpy, Clarabel | O2–O3 | Apache-2.0 [verify on install] | convex m…"
+V053,K,docs/dependencies.md,43,"| statsmodels | O1, O6 | BSD-3-Clause [verify on install] | regime s…"
+V054,L,docs/design_rationale.md,18,- **(memory) [verify]**: the paper's existe…
+V055,L,docs/design_rationale.md,21,"…ed against Crossref or arXiv by `tools/check_references.py`. Entries marked ""not found"" are always cited with [verify]."
+V056,L,docs/design_rationale.md,35,"…de | bloat (trees grow without gain); crossover can act like random macro-mutation (Angeline 1997, not found: [verify]) |"
+V057,L,docs/design_rationale.md,36,| **Grammar-guided GP** (Whigham 1995 [verify]; survey mckay2010) | …
+V058,L,docs/design_rationale.md,37,… into a program | simple genome | small genome changes can make large program changes (low locality) (memory) [verify]; harder to trace why …
+V059,L,docs/design_rationale.md,41,| **Self-replicating machine code** (Tierra: Ray 1991 [verify]; Avida: ofria2004) | …
+V060,L,docs/design_rationale.md,47,"- Neely, Weller & Dittmar (1997, neely1997) found GP rules profitable in FX out of sample (memory) [verify]."
+V061,L,docs/design_rationale.md,48,"…a2002) used domain-knowledge constraints on GP trading rules, reporting better out-of-sample results (memory) [verify]."
+V062,L,docs/design_rationale.md,49,"…GP traders against random-search baselines to tell an efficient market from an inefficient algorithm (memory) [verify]. This supports the ""r…"
+V063,L,docs/design_rationale.md,54,… `founder:human`. Seeding with human-designed programs is studied in GP (langdon2000seeding; content (memory) [verify]).
+V064,L,docs/design_rationale.md,64,"| **Ramped half-and-half** (Koza 1992, not found: [verify]) | the classic mix of…"
+V065,L,docs/design_rationale.md,65,| **PTC2** (luke2000ptc) | builds random trees with a chosen size distribution (memory: designed for that) [verify] | slightly more code …
+V066,L,docs/design_rationale.md,67,…eds can take over the population and reduce diversity (burke2004 studies diversity measures; content (memory) [verify]); the benefit depends…
+V067,L,docs/design_rationale.md,85,- Genealogy visualisation in GP: burlacu2013 (memory) [verify].
+V068,L,docs/design_rationale.md,86,- Population-history analysis: McPhee & Hopper 1999 (not found: [verify]).
+V069,L,docs/design_rationale.md,107,"… Crossover vs mutation | in GP, subtree crossover is often no better than mutation | angeline1997 (not found: [verify]); luke1997 ([verify])…"
+V070,L,docs/design_rationale.md,107,"…n | in GP, subtree crossover is often no better than mutation | angeline1997 (not found: [verify]); luke1997 ([verify]); white2009 ""a rigoro…"
+V071,L,docs/design_rationale.md,107,"…t found: [verify]); luke1997 ([verify]); white2009 ""a rigorous evaluation of crossover and mutation"" (memory) [verify] |"
+V072,L,docs/design_rationale.md,108,| Size-fair crossover | swapping subtrees of similar size limits growth | langdon2000sizefair (memory) [verify] |
+V073,L,docs/design_rationale.md,110,… Tarpeian bloat control | randomly zeroing the fitness of some oversized programs | poli2003tarpeian (memory) [verify] |
+V074,L,docs/design_rationale.md,111,"…ion | uy2011 (abstract). *Geometric* semantic GP (moraglio2012) makes children whose size grows fast (memory) [verify], which would destroy …"
+V075,L,docs/design_rationale.md,145,"…er | kept (r19) | the deflated Sharpe must count every trial (Bailey & López de Prado, deflated Sharpe ratio, [verify] publication details) …"
+V076,L,docs/design_rationale.md,209,… 19). barber2020 (abstract) confirms that unprofitable day traders quit more; the 44/24/15 % points are still [verify] |
+V077,M,docs/design_rationale.md,214,"…d C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 [verify] on `credit_share`'s m…"
+V078,A,docs/design_rationale.md,251,"…ads the fine print as restricting only commercial use; the pasted Terms of Use don't say so, so the source is [verify] and new scripted down…"
+V079,R,docs/explanations/lmp_from_opf.md,14,"…sses (MLC):** left out of the DC model, so zero here. In MISO's data it is usually a few percent of the price [verify]."
+V080,A,docs/explanations/lmp_from_opf.md,42,…20 and C's congestion component is +$60. MISO's reference is a load-weighted set of buses rather than one bus [verify].
+V081,M,docs/glossary.md,55,| (obs.) / [verify] | observed in this pr…
+V082,M,docs/market_rules.md,3,Explanation doc (Diátaxis). It answers the M0 [verify] list in `CLAUDE.md` §…
+V083,M,docs/market_rules.md,8,- **[verify]**: not yet read in a …
+V084,A,docs/market_rules.md,30,"…FAQ 8 says ""up to 10 price/quantity pairs per hour per CP node"" | obs. D1; the two statements in D1 disagree, [verify] in BPM-002 |"
+V085,A,docs/market_rules.md,33,"…mits | ""subject to credit limits and IMM volume limits"" | obs. D1, p. 4. The IMM limit itself is not in D1. **[verify]** in BPM-009 / Tariff…"
+V086,A,docs/market_rules.md,35,"…om that date; MISO may have changed offer caps since (for example the $1,000 → $2,000 range for demand bids). [verify] the current caps in B…"
+V087,A,docs/market_rules.md,47,"…13 (FERC order of 2015-12-17, describing the rule then in force). That 11:00 EST already held in 2005–2007 is [verify]; a 2007 ATC customer …"
+V088,A,docs/market_rules.md,48,"…hosted on `www.oasis.oati.com`, seen only through a search summary; the host returned HTTP 503 three times. **[verify]** |"
+V089,R,docs/market_rules.md,54,"…trader could have used. NWS PFM issues come a few times a day, so this rarely changes which issue is ""latest"" [verify on the parsed table in…"
+V090,M,docs/market_rules.md,68,"…10-06-01, 2015-03-01, 2020-01-01, 2023-01-01 or any day from 2025-01-01 to 2026-10-19 (binary search). So the [verify] in `CLAUDE.md` §6.4 i…"
+V091,F,docs/market_rules.md,88,"… in October 2026**; $0.0852 (May 2026), $0.0817 (June 2026), $0.0824 (August 2025), $0.079 (December 2025). **[verify]**: these come from MI…"
+V092,F,docs/market_rules.md,89,"…volume as Schedule 17 (`DA_S24_ADMIN_VOL` includes `DA_VSCHD_VOL`, obs. D5) | **$0.0156/MWh in October 2026** [verify, same source] |"
+V093,F,docs/market_rules.md,90,"…+ 50 MW INC at one hub pays on 50 MW; 50 DEC + 100 INC pays on 0 (obs. D1, FAQ 19) | daily/hourly market rate [verify] |"
+V094,F,docs/market_rules.md,93,…upply gives a positive deviation. That reading matches the IMM's wording above; the sign convention itself is [verify] in the BPM-005 glossa…
+V095,M,docs/market_rules.md,123,"… a portfolio that balances INC and DEC. O3 (CVaR portfolio) should model it; it settles the `CLAUDE.md` §20.6 [verify] ""how MISO charges per…"
+V096,P,docs/market_rules.md,143,…e MPD in recent years has been the **$12 floor**. The *published* MPD for May 2026 → April 2027 was not found [verify; MISO's credit page is…
+V097,P,docs/market_rules.md,143,"…ge is behind Cloudflare]. When the floor was introduced, and what MPD applied in each year 2007–2023, is also [verify]; the backtest needs i…"
+V098,A,docs/market_rules.md,161,"- Whether FERC accepted v57.0.0, and whether later versions exist, is [verify]. For the rules used h…"
+V099,A,docs/market_rules.md,185,…financial statements. MISO itself charges no fixed annual participation fee that was found in these documents [verify against MISO's registr…
+V100,A,docs/market_rules.md,193,"**Conflict to settle [verify]:** D10 (NAESB, last s…"
+V101,M,docs/market_rules.md,201,## 7. Status of the M0 [verify] list
+V102,A,docs/market_rules.md,205,…(noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 still [verify] (§2.1). **Decided rou…
+V103,A,docs/market_rules.md,205,"…ound 20 (D1):** the bot decides at 10:30 EPT on D−1 in every year, never later than the real deadline, so the [verify] no longer affects res…"
+V104,F,docs/market_rules.md,206,"…dmin fee | Schedule 17 + 24 ≈ $0.090/MWh (Oct 2026), on \|net\| per node-hour | **mechanics resolved**; rates [verify] (search-index source)…"
+V105,P,docs/market_rules.md,209,…shed MPD | $12 floor binds in recent years; formula confirmed | current published value and 2007–2023 history [verify] |
+V106,A,docs/market_rules.md,213,…current? | v57.0.0 filed 2025-07; same text for virtual rules | **resolved for our purposes**; later versions [verify] |
+V107,M,docs/references.md,6,Entries not marked **checked** must be cited with [verify].
+V108,L,docs/references.md,8,…*koza1992**: *Genetic programming: on the programming of computers by means of natural selection*. Not found: [verify].
+V109,L,docs/references.md,10,- **whigham1995**: *Grammatically-based genetic programming*. Not found: [verify].
+V110,L,docs/references.md,16,- **ray1991**: *An approach to the synthesis of life*. Not found: [verify].
+V111,L,docs/references.md,29,- **luke2001survey**: *A survey and comparison of tree generation algorithms*. Not found: [verify].
+V112,L,docs/references.md,34,- **mcphee1999**: *Analysis of genetic diversity through population history*. Not found: [verify].
+V113,L,docs/references.md,37,- **angeline1997**: *Subtree crossover: Building block engine or macromutation?*. Not found: [verify].
+V114,L,docs/references.md,42,- **luke2002lexpars**: *Lexicographic parsimony pressure*. Not found: [verify].
+V115,L,docs/references.md,63,…ley2014dsr**: *The Deflated Sharpe Ratio: Correcting for Selection Bias and Backtest Overfitting*. Not found: [verify].
+V116,L,docs/references.md,78,- **acerbi2014**: *Backtesting Expected Shortfall*. Not found: [verify].

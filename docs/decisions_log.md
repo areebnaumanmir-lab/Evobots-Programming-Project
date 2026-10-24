@@ -243,3 +243,9 @@ Running record of what we have agreed. It references question numbers in decisio
 | $1.5M default | same answer | **decided:** final default, still the user's choice |
 | Scripted MISO access | – | terms forbid "automated means"; cleared-bids fetch stopped at 2026-01-23. **Open:** options A–D, recommendation A + B |
 | Rates Factors file, [verify] markers | "tell me how to do it" | instructions given; `docs/verify_register.md` groups the markers for acceptance by group |
+
+## Round 26 (2026-10-24): MISO data kept for private use
+
+| Topic | User's input | Result |
+|---|---|---|
+| Downloaded MISO data | **Decided:** "Keep everything for private use, the fine print says that data is only restricted if you're using it for explicitly commercial purposes" | everything kept, private use only, never redistributed. Claude noted that the pasted Terms of Use contain no commercial carve-out; the source of that reading is [verify]. Scripted MISO downloads stay paused until it is recorded or Areeb says to resume |

@@ -77,3 +77,10 @@ The data builder (M1) is built on this assumption:
   - that `docs.misoenergy.org` counts as "this Website";
   - the reading of Areeb's "You can";
   - the Rates Factors page location (from round-18 search snippets).
+
+## 7. Addendum (round 26): Areeb's decision
+- **Areeb:** "Keep everything for private use, the fine print says that data is only restricted if you're using it for explicitly commercial purposes."
+- **Decided:** option A's first half. Everything downloaded is kept, for private use only, never redistributed (the round-25 bundle policy stands).
+- **Noted to Areeb:** the Terms of Use text pasted in this round has no commercial/non-commercial distinction, and the word "commercial" doesn't appear in it. If the commercial-only rule is in other fine print (for example, conditions posted on the market-reports pages, which the terms say prevail), pasting it lets the project record it. Until then:
+  - that reading is [verify];
+  - scripted MISO downloads stay paused unless Areeb explicitly says to resume them.

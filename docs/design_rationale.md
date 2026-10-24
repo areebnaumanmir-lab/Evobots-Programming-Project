@@ -248,6 +248,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-78 | "Well above full size" at ≥ 2× (24, R24-2) | delegated, assumption | the only threshold consistent with `capital_sizing.md` §10's expected warnings that is also a round number |
 | D-79 | MISO data: build locally, never redistribute, with a user switch (24–25) | Areeb (25) | MISO's terms (read in round 25) forbid reproduction, distribution and derivative works; other sources are public domain or CC BY |
 | D-80 | No scripted MISO access until decided (25) | Claude, pending Areeb | the terms forbid "automated means … to access … or copy"; stopping is reversible, continuing is not |
+| D-81 | Keep all downloaded MISO data for private use (26) | Areeb | Areeb reads the fine print as restricting only commercial use; the pasted Terms of Use don't say so, so the source is [verify] and new scripted downloads stay paused |
 
 ## Part E. Visual design (Q20)
 
