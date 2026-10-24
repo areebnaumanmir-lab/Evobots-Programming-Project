@@ -1,0 +1,197 @@
+group,item,claude_science,round_21,difference
+hub_price_stats,ARKANSAS.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,ARKANSAS.HUB DA_median,25.47,25.47,0.0
+hub_price_stats,ARKANSAS.HUB DA_p99,111.257,111.2571,0.0001
+hub_price_stats,ARKANSAS.HUB DA_max,689.59,689.59,0.0
+hub_price_stats,ARKANSAS.HUB RT_median,23.82,23.82,0.0
+hub_price_stats,ARKANSAS.HUB RT_p1,9.954,9.9543,0.0003
+hub_price_stats,ARKANSAS.HUB RT_p99,122.446,122.4457,-0.0003
+hub_price_stats,ARKANSAS.HUB RT_p99_9,448.445,448.4453,0.0003
+hub_price_stats,ARKANSAS.HUB RT_max,3480.75,3480.75,0.0
+hub_price_stats,ARKANSAS.HUB RT_min,-210.13,-210.13,0.0
+hub_price_stats,ARKANSAS.HUB RT_share_above_500,0.001,0.0009,-0.0001
+hub_price_stats,ARKANSAS.HUB RT_share_below_0,0.002,0.0022,0.0002
+hub_price_stats,ARKANSAS.HUB spread_mean,0.431,0.4312,0.0002
+hub_price_stats,ARKANSAS.HUB spread_median,1.29,1.29,-0.0
+hub_price_stats,ARKANSAS.HUB spread_std,35.441,35.4414,0.0004
+hub_price_stats,ARKANSAS.HUB spread_p1,-53.496,-53.4957,0.0003
+hub_price_stats,ARKANSAS.HUB spread_p99,31.377,31.3771,0.0001
+hub_price_stats,ARKANSAS.HUB abs_spread_median,2.57,2.57,0.0
+hub_price_stats,ARKANSAS.HUB abs_spread_p95,21.048,21.0485,0.0005
+hub_price_stats,ARKANSAS.HUB abs_spread_p99,66.12,66.12,0.0
+hub_price_stats,ARKANSAS.HUB abs_spread_max,3327.19,3327.19,0.0
+hub_price_stats,ARKANSAS.HUB spread_excess_kurtosis,3165.393,3165.1243,-0.2687
+hub_price_stats,ILLINOIS.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,ILLINOIS.HUB DA_median,27.42,27.42,0.0
+hub_price_stats,ILLINOIS.HUB DA_p99,128.118,128.1185,0.0005
+hub_price_stats,ILLINOIS.HUB DA_max,498.89,498.89,0.0
+hub_price_stats,ILLINOIS.HUB RT_median,24.86,24.86,0.0
+hub_price_stats,ILLINOIS.HUB RT_p1,-0.121,-0.1214,-0.0004
+hub_price_stats,ILLINOIS.HUB RT_p99,147.611,147.6114,0.0004
+hub_price_stats,ILLINOIS.HUB RT_p99_9,424.785,424.7853,0.0003
+hub_price_stats,ILLINOIS.HUB RT_max,2178.34,2178.34,0.0
+hub_price_stats,ILLINOIS.HUB RT_min,-140.02,-140.02,0.0
+hub_price_stats,ILLINOIS.HUB RT_share_above_500,0.001,0.0007,-0.0003
+hub_price_stats,ILLINOIS.HUB RT_share_below_0,0.01,0.0102,0.0002
+hub_price_stats,ILLINOIS.HUB spread_mean,0.958,0.9579,-0.0001
+hub_price_stats,ILLINOIS.HUB spread_median,2.14,2.14,0.0
+hub_price_stats,ILLINOIS.HUB spread_std,30.151,30.1509,-0.0001
+hub_price_stats,ILLINOIS.HUB spread_p1,-75.766,-75.7657,0.0003
+hub_price_stats,ILLINOIS.HUB spread_p99,42.446,42.4457,-0.0003
+hub_price_stats,ILLINOIS.HUB abs_spread_median,4.02,4.02,0.0
+hub_price_stats,ILLINOIS.HUB abs_spread_p95,31.268,31.2685,0.0005
+hub_price_stats,ILLINOIS.HUB abs_spread_p99,92.321,92.3212,0.0002
+hub_price_stats,ILLINOIS.HUB abs_spread_max,2080.52,2080.52,0.0
+hub_price_stats,ILLINOIS.HUB spread_excess_kurtosis,1064.148,1064.0572,-0.0908
+hub_price_stats,INDIANA.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,INDIANA.HUB DA_median,29.96,29.96,0.0
+hub_price_stats,INDIANA.HUB DA_p99,138.287,138.2871,0.0001
+hub_price_stats,INDIANA.HUB DA_max,547.48,547.48,0.0
+hub_price_stats,INDIANA.HUB RT_median,26.99,26.99,0.0
+hub_price_stats,INDIANA.HUB RT_p1,11.71,11.71,0.0
+hub_price_stats,INDIANA.HUB RT_p99,162.536,162.5357,-0.0003
+hub_price_stats,INDIANA.HUB RT_p99_9,537.057,537.0568,-0.0002
+hub_price_stats,INDIANA.HUB RT_max,2411.71,2411.71,0.0
+hub_price_stats,INDIANA.HUB RT_min,-27.82,-27.82,0.0
+hub_price_stats,INDIANA.HUB RT_share_above_500,0.001,0.0011,0.0001
+hub_price_stats,INDIANA.HUB RT_share_below_0,0.0,0.0004,0.0004
+hub_price_stats,INDIANA.HUB spread_mean,0.585,0.585,-0.0
+hub_price_stats,INDIANA.HUB spread_median,2.26,2.26,0.0
+hub_price_stats,INDIANA.HUB spread_std,33.895,33.8945,-0.0005
+hub_price_stats,INDIANA.HUB spread_p1,-82.93,-82.9298,0.0002
+hub_price_stats,INDIANA.HUB spread_p99,43.806,43.8057,-0.0003
+hub_price_stats,INDIANA.HUB abs_spread_median,4.04,4.04,-0.0
+hub_price_stats,INDIANA.HUB abs_spread_p95,32.52,32.52,-0.0
+hub_price_stats,INDIANA.HUB abs_spread_p99,100.443,100.4428,-0.0002
+hub_price_stats,INDIANA.HUB abs_spread_max,2282.99,2282.99,0.0
+hub_price_stats,INDIANA.HUB spread_excess_kurtosis,1013.489,1013.4026,-0.0864
+hub_price_stats,LOUISIANA.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,LOUISIANA.HUB DA_median,27.53,27.53,0.0
+hub_price_stats,LOUISIANA.HUB DA_p99,120.247,120.2471,0.0001
+hub_price_stats,LOUISIANA.HUB DA_max,800.0,800.0,0.0
+hub_price_stats,LOUISIANA.HUB RT_median,25.18,25.18,0.0
+hub_price_stats,LOUISIANA.HUB RT_p1,11.26,11.26,0.0
+hub_price_stats,LOUISIANA.HUB RT_p99,137.737,137.7371,0.0001
+hub_price_stats,LOUISIANA.HUB RT_p99_9,548.689,548.6885,-0.0005
+hub_price_stats,LOUISIANA.HUB RT_max,3500.0,3500.0,0.0
+hub_price_stats,LOUISIANA.HUB RT_min,-312.1,-312.1,0.0
+hub_price_stats,LOUISIANA.HUB RT_share_above_500,0.001,0.0011,0.0001
+hub_price_stats,LOUISIANA.HUB RT_share_below_0,0.001,0.0008,-0.0002
+hub_price_stats,LOUISIANA.HUB spread_mean,0.451,0.4509,-0.0001
+hub_price_stats,LOUISIANA.HUB spread_median,1.65,1.65,-0.0
+hub_price_stats,LOUISIANA.HUB spread_std,43.089,43.0887,-0.0003
+hub_price_stats,LOUISIANA.HUB spread_p1,-65.003,-65.0026,0.0004
+hub_price_stats,LOUISIANA.HUB spread_p99,36.656,36.6557,-0.0003
+hub_price_stats,LOUISIANA.HUB abs_spread_median,2.84,2.84,0.0
+hub_price_stats,LOUISIANA.HUB abs_spread_p95,23.93,23.93,0.0
+hub_price_stats,LOUISIANA.HUB abs_spread_p99,81.25,81.25,0.0
+hub_price_stats,LOUISIANA.HUB abs_spread_max,3328.34,3328.34,0.0
+hub_price_stats,LOUISIANA.HUB spread_excess_kurtosis,1727.656,1727.5096,-0.1464
+hub_price_stats,MICHIGAN.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,MICHIGAN.HUB DA_median,29.22,29.22,0.0
+hub_price_stats,MICHIGAN.HUB DA_p99,130.231,130.2314,0.0004
+hub_price_stats,MICHIGAN.HUB DA_max,443.72,443.72,0.0
+hub_price_stats,MICHIGAN.HUB RT_median,26.49,26.49,0.0
+hub_price_stats,MICHIGAN.HUB RT_p1,11.2,11.2,0.0
+hub_price_stats,MICHIGAN.HUB RT_p99,157.761,157.7612,0.0002
+hub_price_stats,MICHIGAN.HUB RT_p99_9,457.788,457.788,-0.0
+hub_price_stats,MICHIGAN.HUB RT_max,2280.33,2280.33,0.0
+hub_price_stats,MICHIGAN.HUB RT_min,-37.06,-37.06,0.0
+hub_price_stats,MICHIGAN.HUB RT_share_above_500,0.001,0.0008,-0.0002
+hub_price_stats,MICHIGAN.HUB RT_share_below_0,0.001,0.0005,-0.0005
+hub_price_stats,MICHIGAN.HUB spread_mean,0.587,0.5869,-0.0001
+hub_price_stats,MICHIGAN.HUB spread_median,2.35,2.35,0.0
+hub_price_stats,MICHIGAN.HUB spread_std,31.677,31.6773,0.0003
+hub_price_stats,MICHIGAN.HUB spread_p1,-85.77,-85.7698,0.0002
+hub_price_stats,MICHIGAN.HUB spread_p99,40.891,40.8914,0.0004
+hub_price_stats,MICHIGAN.HUB abs_spread_median,3.94,3.94,0.0
+hub_price_stats,MICHIGAN.HUB abs_spread_p95,30.748,30.7485,0.0005
+hub_price_stats,MICHIGAN.HUB abs_spread_p99,98.016,98.0157,-0.0003
+hub_price_stats,MICHIGAN.HUB abs_spread_max,2179.65,2179.65,0.0
+hub_price_stats,MICHIGAN.HUB spread_excess_kurtosis,1007.484,1007.3983,-0.0857
+hub_price_stats,MINN.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,MINN.HUB DA_median,25.05,25.05,0.0
+hub_price_stats,MINN.HUB DA_p99,107.528,107.5284,0.0004
+hub_price_stats,MINN.HUB DA_max,606.82,606.82,0.0
+hub_price_stats,MINN.HUB RT_median,23.21,23.21,0.0
+hub_price_stats,MINN.HUB RT_p1,-3.08,-3.08,0.0
+hub_price_stats,MINN.HUB RT_p99,146.367,146.3669,-0.0001
+hub_price_stats,MINN.HUB RT_p99_9,439.048,439.0475,-0.0005
+hub_price_stats,MINN.HUB RT_max,1781.78,1781.78,0.0
+hub_price_stats,MINN.HUB RT_min,-78.64,-78.64,0.0
+hub_price_stats,MINN.HUB RT_share_above_500,0.001,0.0008,-0.0002
+hub_price_stats,MINN.HUB RT_share_below_0,0.016,0.016,-0.0
+hub_price_stats,MINN.HUB spread_mean,0.318,0.3176,-0.0004
+hub_price_stats,MINN.HUB spread_median,1.85,1.85,-0.0
+hub_price_stats,MINN.HUB spread_std,30.186,30.1861,0.0001
+hub_price_stats,MINN.HUB spread_p1,-82.88,-82.8797,0.0003
+hub_price_stats,MINN.HUB spread_p99,44.873,44.8728,-0.0002
+hub_price_stats,MINN.HUB abs_spread_median,4.725,4.725,0.0
+hub_price_stats,MINN.HUB abs_spread_p95,35.04,35.04,0.0
+hub_price_stats,MINN.HUB abs_spread_p99,95.266,95.2657,-0.0003
+hub_price_stats,MINN.HUB abs_spread_max,1723.21,1723.21,0.0
+hub_price_stats,MINN.HUB spread_excess_kurtosis,560.659,560.6115,-0.0475
+hub_price_stats,MS.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,MS.HUB DA_median,26.15,26.15,0.0
+hub_price_stats,MS.HUB DA_p99,114.788,114.7885,0.0005
+hub_price_stats,MS.HUB DA_max,531.73,531.73,0.0
+hub_price_stats,MS.HUB RT_median,24.29,24.29,0.0
+hub_price_stats,MS.HUB RT_p1,10.274,10.2743,0.0003
+hub_price_stats,MS.HUB RT_p99,122.047,122.0471,0.0001
+hub_price_stats,MS.HUB RT_p99_9,403.79,403.7905,0.0005
+hub_price_stats,MS.HUB RT_max,3500.0,3500.0,0.0
+hub_price_stats,MS.HUB RT_min,-265.2,-265.2,0.0
+hub_price_stats,MS.HUB RT_share_above_500,0.001,0.0007,-0.0003
+hub_price_stats,MS.HUB RT_share_below_0,0.002,0.0024,0.0004
+hub_price_stats,MS.HUB spread_mean,0.725,0.7248,-0.0002
+hub_price_stats,MS.HUB spread_median,1.37,1.37,0.0
+hub_price_stats,MS.HUB spread_std,33.762,33.7624,0.0004
+hub_price_stats,MS.HUB spread_p1,-50.486,-50.4857,0.0003
+hub_price_stats,MS.HUB spread_p99,34.836,34.8357,-0.0003
+hub_price_stats,MS.HUB abs_spread_median,2.65,2.65,-0.0
+hub_price_stats,MS.HUB abs_spread_p95,21.41,21.41,0.0
+hub_price_stats,MS.HUB abs_spread_p99,67.877,67.8771,0.0001
+hub_price_stats,MS.HUB abs_spread_max,3201.7,3201.7,0.0
+hub_price_stats,MS.HUB spread_excess_kurtosis,3322.082,3321.8006,-0.2814
+hub_price_stats,TEXAS.HUB hours,58944.0,58944.0,0.0
+hub_price_stats,TEXAS.HUB DA_median,27.36,27.36,0.0
+hub_price_stats,TEXAS.HUB DA_p99,120.541,120.5414,0.0004
+hub_price_stats,TEXAS.HUB DA_max,1207.28,1207.28,0.0
+hub_price_stats,TEXAS.HUB RT_median,25.05,25.05,0.0
+hub_price_stats,TEXAS.HUB RT_p1,11.304,11.3043,0.0003
+hub_price_stats,TEXAS.HUB RT_p99,147.303,147.3027,-0.0003
+hub_price_stats,TEXAS.HUB RT_p99_9,783.61,783.6105,0.0005
+hub_price_stats,TEXAS.HUB RT_max,3500.0,3500.0,0.0
+hub_price_stats,TEXAS.HUB RT_min,-132.21,-132.21,0.0
+hub_price_stats,TEXAS.HUB RT_share_above_500,0.002,0.0017,-0.0003
+hub_price_stats,TEXAS.HUB RT_share_below_0,0.001,0.0009,-0.0001
+hub_price_stats,TEXAS.HUB spread_mean,0.044,0.0438,-0.0002
+hub_price_stats,TEXAS.HUB spread_median,1.58,1.58,0.0
+hub_price_stats,TEXAS.HUB spread_std,62.182,62.1816,-0.0004
+hub_price_stats,TEXAS.HUB spread_p1,-68.107,-68.1071,-0.0001
+hub_price_stats,TEXAS.HUB spread_p99,38.486,38.4856,-0.0004
+hub_price_stats,TEXAS.HUB abs_spread_median,2.84,2.84,0.0
+hub_price_stats,TEXAS.HUB abs_spread_p95,25.33,25.33,0.0
+hub_price_stats,TEXAS.HUB abs_spread_p99,88.907,88.9068,-0.0002
+hub_price_stats,TEXAS.HUB abs_spread_max,3473.19,3473.19,0.0
+hub_price_stats,TEXAS.HUB spread_excess_kurtosis,1978.541,1978.3731,-0.1679
+capital_sizing_section_4,always_inc_mean_day_usd,474.0,474.4,0.4
+capital_sizing_section_4,always_inc_p99_daily_loss_usd,27897.0,27896.9,-0.1
+capital_sizing_section_4,always_inc_p999_daily_loss_usd,118855.0,118855.2,0.2
+capital_sizing_section_4,always_inc_worst_day_usd,492173.0,492172.7,-0.3
+capital_sizing_section_4,always_inc_worst_5_days_usd,503873.0,503873.5,0.5
+capital_sizing_section_4,always_inc_worst_20_days_usd,484372.0,484371.6,-0.4
+capital_sizing_section_4,always_dec_mean_day_usd,-474.0,-474.4,-0.4
+capital_sizing_section_4,always_dec_p99_daily_loss_usd,19351.0,19350.6,-0.4
+capital_sizing_section_4,always_dec_p999_daily_loss_usd,69479.0,69479.3,0.3
+capital_sizing_section_4,always_dec_worst_day_usd,176554.0,176553.7,-0.3
+capital_sizing_section_4,always_dec_worst_5_days_usd,380617.0,380617.2,0.2
+capital_sizing_section_4,always_dec_worst_20_days_usd,373652.0,373651.8,-0.2
+capital_sizing_section_4b,trailing p99 2021-02-13,12261.0,12261.3,0.3
+capital_sizing_section_4b,trailing p99 2021-02-18,12261.0,12261.3,0.3
+capital_sizing_section_4b,trailing p99 2021-02-25,18777.0,18777.4,0.4
+capital_sizing_section_4b,trailing p99 2021-03-20,24859.0,24859.4,0.4
+capital_sizing_section_4b,trailing p99 2022-02-26,16787.0,16786.9,-0.1
+capital_sizing_section_4b,trailing p99 2022-12-23,31519.0,31518.9,-0.1
+capital_sizing_section_4b,trailing p99 2022-12-31,39723.0,39723.2,0.2
+capital_sizing_section_4b,trailing p99 2023-12-31,19885.0,19885.4,0.4

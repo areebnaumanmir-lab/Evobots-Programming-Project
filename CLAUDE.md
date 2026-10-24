@@ -37,6 +37,7 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
   - the round-18 and round-19 open choices decided under my delegation (§17.3);
   - the whole MISO DA/RT archive downloaded and parsed (§3, §7.0, §7.3);
   - the visual style from my reference image (§14.5).
+- **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 
 **First session, in order:**
 1. Read this whole prompt.
@@ -134,7 +135,7 @@ For every substantive decision or milestone:
 
 **Empty:** `data/`, `features/`, `market/`, `bots/`, `simulate/`, `career/`, `qd/`, `assess/`, `deploy/`, `app/`. No M1 data builder yet. The only data so far is a calibration sample: 8 hubs, 2019-01 → 2025-09, plus a 2015–2018 check and 33 days of cleared bids. It was built inside Claude Science's sandbox and **was not carried over**. Only the summary CSVs exist. You will re-download.
 
-**Status in the repository (round 20, obs.):** none of the files in the table above has arrived yet. **The full MISO day-ahead and real-time price archive for every location (2005-04-01 → today) has been downloaded and parsed** into a hub table, a location list and a coverage report (§7.0). What exists: this briefing, tooling config, `docs/market_rules.md`, `docs/glossary.md`, the round docs, probe and fetch scripts in `tools/`, and a link-checker test. Every answer about traders, evolution or the app below describes the **design**, not working software.
+**Status in the repository (round 21, obs.):** of the files in the table above, only `docs/capital_sizing.md` has arrived, together with `docs/decisions_log.md` and three of its CSVs (§4). The code, tests and the other docs are still missing, so step zero (the 40 tests) still can't run. **The full MISO day-ahead and real-time price archive for every location (2005-04-01 → today) has been downloaded and parsed** into a hub table, a location list and a coverage report (§7.0). What exists: this briefing, tooling config, `docs/market_rules.md`, `docs/glossary.md`, the round docs, probe and fetch scripts in `tools/`, and a link-checker test. Every answer about traders, evolution or the app below describes the **design**, not working software.
 
 **Known problems:**
 1. `capital_explorer.html` has a JavaScript syntax error: an unescaped apostrophe in "MISO's" inside a single-quoted string, which probably stops the whole script. It was never opened in a browser. Fix it in M0 and add a headless browser test.
@@ -302,7 +303,11 @@ MISO announced that its public pricing reports would stop updating from 12 Decem
 | MISO cleared bids | not downloaded (2023 →, ~6 MB/day) | needed for O9 and the liquidity medians; fetch in M1 |
 | NWS forecasts, Henry Hub, EPU, GPR, EIA-860M | not downloaded yet | M1 |
 
-**Check against Claude Science (obs.):** the hub spread statistics for 2019-01-01 → 2025-09-21 reproduce §13: 58,944 hours per hub; mean $0.04–0.96, median |s| $2.57–4.73, std $30.2–62.2, excess kurtosis 561–3,322.
+**Check against Claude Science (obs., round 21, `tools/check_against_claude_science.py` → `docs/data/claude_science_check.csv`):** from the downloaded archive, for 2019-01-01 → 2025-09-21:
+- **all 176 values** of `docs/data/hub_price_stats.csv` agree to rounding;
+- the 12 full-size benchmark numbers of `capital_sizing.md` §4 agree to the dollar (e.g. always-INC 1-in-100-day loss $27,897, worst day $492,173 on 2022-12-23; always-DEC worst day $176,554 on 2021-02-18);
+- the point-in-time trailing p99 of §4b agrees exactly: the eight table rows, the range $10,432–$44,843, median $24,155, the 2019-04-06 end of warm-up, and the **2.16 %** breach rate with every yearly value.
+- So the archive is the same data as the calibration sample, and `sizing.py`'s rules are pinned down independently. §4b's lost figure is redrawn as `docs/data/figures/point_in_time_full_size_threshold.svg`.
 
 Gaps are never filled silently: a missing day is missing.
 
@@ -888,7 +893,7 @@ Every value in the app and the config carries one of three badges. Only **Your c
 |---|---|---|
 | `starting_capital_usd` | **Your choice** | |
 | `daily_risk_budget` | **Your choice** | how much risk to take per day |
-| `credit_share` | **Your choice** | exact meaning to be checked in `capital.py` when it arrives [verify] |
+| `credit_share` | **Your choice** | share of capital pledged as collateral (default 25 %); it sets the Virtual MWh Limit, which never binds at Stage A but will at stages D and C (decisions log, round 14) |
 | `max_mw_per_hub_hour` | **Your choice** for the 5 MW cap and the 5 % share; **From market data** for each hub's median cleared MW | |
 | `ruin_floor_fraction`, `ruin_floor_usd`, drawdown limit, quit hazard, CUSUM | **Your choice**, off by default | §10.1 |
 | `mpd_usd_per_mwh` | **From market data** (was a user input) | computed by Attachment L's formula: 50th-percentile DA−RT differential over the prior 12 months, reset each May 1, floor $12 (`market_rules.md` §4.1) |

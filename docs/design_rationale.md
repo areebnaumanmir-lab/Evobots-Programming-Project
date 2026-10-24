@@ -6,7 +6,7 @@ A living write-up. Every design decision in evobots has an entry here: what was 
   - the decisions of rounds 1–16 as recorded in the briefing (`CLAUDE.md`);
   - rounds 17–19;
   - Areeb's 20 review questions (`rounds/round19_prompt_review.md`).
-- The decision logs from rounds 1–16 (`docs/decisions_log.md`) **have not been uploaded to the repository**. Entries D-01 … D-45 are reconstructed from the briefing's summaries. When the logs arrive, each entry will be reconciled with them and any difference reported.
+- The decision log for rounds 1–16 (`decisions_log.md`) arrived in round 21. Part C was rewritten from it (round 20 had reconstructed it from the briefing); the corrections are listed at the end of Part C.
 - **Status labels:**
   - **kept:** reviewed in round 20 and still the best option;
   - **changed r20:** revised in round 20, reason given;
@@ -164,59 +164,82 @@ Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold 
 
 ---
 
-## Part C. Decisions from rounds 1–16 (reconstructed from the briefing) and their review
+## Part C. Decisions from rounds 1–16 (from `decisions_log.md`) and their review
 
-| ID | Decision (round) | Logic | Round-20 review |
-|---|---|---|---|
-| D-01 | Goal: natural selection of trading bots that is realistic, reports deployability, and can deploy (1) | Areeb's goal | kept |
-| D-02 | Market: MISO virtual bidding (4–5) | free, keyless, large; none of the 8 virtual-bidding papers studies MISO; none uses evolution or QD | kept. Birge et al. found MISO arbitrage limited by transaction costs and some participants betting against the gap (birge2017, abstract), so costs (D-21) matter |
-| D-03 | Crypto and energy futures rejected (4–5) | pumps and whales; futures heavily optimised and free data ends 2024 | kept |
-| D-04 | Periods: evolution 2005-04 → 2025-09-21, sealed hold-out 12 months, forward after (6) | every season once; includes the 2026 Iran war | kept; the hold-out files are physically separate since round 20 |
-| D-05 | Consistency principle: inputs exist 2005–2026 from one source (7) | no regime breaks from data changes | kept |
-| D-06 | Location universe option E: hubs → clustered → all (8) | start small and readable, scale later | kept; all-location data now downloaded |
-| D-07 | Weather from NWS forecasts via IEM, latest issue before the deadline (8) | the forecast is what a trader sees; actuals would leak | kept |
-| D-08 | No language-model reading of news (9) | hindsight leak; no consistent archive; news moves both DA and RT | kept; the same argument now also rules out language-model mutation (A1) |
-| D-09 | Bots are small typed formulas, not neural nets (9) | readability; overfitting with ~20 years | kept, strengthened (A1, rudin2019) |
-| D-10 | GPR reporting only (10) | most geopolitical threats don't touch MISO's fuel | kept |
-| D-11 | EPU kept as an input (11) | the only input that flagged COVID | kept |
-| D-12 | 25 features in raw units (12) | readability; unit checking | kept |
-| D-13 | Missing input makes comparisons false (12) | a bot never trades on missing data | kept |
-| D-14 | Hindsight check on `epu` and `gas_*` (12) | detects edges only possible with hindsight | kept |
-| D-15 | Career: an individual trader (13) | the realistic default for a portfolio project | kept; death rule changed (D-46) |
-| D-16 | Quit hazard calibrated to Taiwanese day traders (13) | direction and speed of quitting | now optional (r19). barber2020 (abstract): "unprofitable day traders are more likely than profitable traders to quit"; the 44/24/15 % survival points are still [verify] |
-| D-17 | CUSUM retirement (13) | opportunity cost; edge decay | now optional (r19); page1954 checked |
-| D-18 | Fitness = expected log-growth over risk-free minus parsimony (14) | log-growth punishes over-leverage (Kelly; kelly1956 checked) | kept |
-| D-19 | MAP-Elites with net direction × selectivity (14) | diversity of strategy kinds, not one winner | kept |
-| D-20 | Rolling 1-year window (14) | literature on virtual bidding | **changed r20 to 5 years** (C1) |
-| D-21 | Clearing rule by price; all-or-nothing (15–16) | 99.5 % agreement with the cleared-bids report | kept; the rare partial fills happen when the price equals the bid (`market_rules.md` §1) |
-| D-22 | Price-taker with 5 MW / 5 % liquidity cap (16) | our size is small against hub volume | kept; O9 tests it |
-| D-23 | $1.5M starting capital (15–16) | covers the trailing tail at 2 % daily risk | kept |
-| D-24 | Sizing rule on trailing p99 (D−6, 365 days, 90-day warm-up) (15) | point-in-time risk sizing | kept; O5 tests better tail estimators |
-| D-25 | Size gene not adopted (16) | it would saturate at 1 | kept |
-| D-26 | Report-card gates G1–G8 (14) | multiple defences against overfitting | kept; G2 uses distinct behaviours (A3) |
-| D-27 | Deployable bot at every checkpoint; "do nothing" fallback (14) | usable after every session | kept |
-| D-28 | Determinism and byte-identical resume (14) | trustworthy long runs on a laptop | kept; the bandit and neutral-skip are seeded (A4) |
-| D-29 | Stack: Python 3.13, uv, NumPy, Numba, own GP and MAP-Elites (planning) | readable, fast, no heavy frameworks | kept |
-| D-30 | Offline at run time (planning) | works on the laptop without internet | kept |
-| D-31 | Storm sensitivity reporting (16) | Uri and Elliott dominate tails | kept |
+Round numbers are where a decision was **made** (a proposal in an earlier round is noted). "Superseded" means a later round replaced it; the later entry carries the current rule.
+
+| ID | Decision | Round | Logic (from the log) | Round-21 review |
+|---|---|---|---|---|
+| D-01 | Portfolio project in OR/FE; realistic natural selection; bots die when they lose too much; score deployability; deploy | 1 | Areeb's goal (Q1) | kept; death rule refined in round 19 (D-66) |
+| D-02 | Multi-instrument trading (futures, options, swaps) | 1 | first scope | **superseded** in round 4 by electricity virtual bidding; "not planned unless reopened" (`CLAUDE.md` §16) |
+| D-03 | Repo + `uv` lockfile; internet only for first install, never for market data | 1 (Q15) | reproducible, offline | kept (D-61) |
+| D-04 | Own engine; Python + NumPy, GPU optional (Q10, Q14) | 1 | readability, speed | kept |
+| D-05 | Deployment levels: L0 forward test, L1 paper-live on public data, L2 optional testnet, L3 real account out of scope | 2 | no broker needed for L0–L1 | kept. For MISO, L1 = the daily public report files (M9). MISO's sandbox ("CCE", `market_rules.md`) needs a registered participant, so L2 is out of scope, like L3 |
+| D-06 | Interruptible sessions, checkpoints every ~10 min, budgets in evaluations, deflated Sharpe on the true count | 2 | laptop not on 24/7 | kept (`CLAUDE.md` §11.1); the bandit and neutral-skip are seeded so resume stays byte-identical (A4) |
+| D-07 | Exchange simulator with two fidelities (bar level + tick replay) | 2 | crypto realism | **superseded** in round 4: MISO's DA clearing is an auction, so one simulator with the price rule (D-24) suffices |
+| D-08 | MAP-Elites as the showcase; CVT for >2 descriptors; re-evaluation for noisy fitness; CMA-MAE later | 2 | Areeb's choice | kept; re-evaluation made precise in round 20 (C2) |
+| D-09 | Crypto (Binance perpetuals), then US energy futures | 2–3 | free derivatives data | **superseded** in round 4 |
+| D-10 | `deployable/current_bot.json` refreshed at each checkpoint; "do nothing" fallback | 3 | a deployable bot at any time | kept; "best" defined in round 19 (§11.4) |
+| D-11 | Five-layer career model (margin, mandate, hazard, CUSUM, peers); hazard enters fitness as a survival probability | 3 | "when a real trader would stop" | kept as optional layers; default death = out of money since round 19 |
+| D-12 | Fitness = expected excess log-growth under the career model; QD gives visibility, not protection | 3 | punishes over-leverage by itself (zero excess growth at 2× Kelly; kelly1956 checked) | kept |
+| D-13 | Baselines incl. do nothing, minimum size, random bots | 3 | anchors against luck | kept, adapted to MISO (§12.1) |
+| D-14 | Market: electricity virtual trading | 4 | not covered by the surveyed papers and repos | kept. birge2017 (abstract): MISO arbitrage was limited by transaction costs, so the cost model matters |
+| D-15 | Bot output per (node, hour): side, limit price, MW; P&L = cleared × q × direction × (RT − DA) − fees | 4 | the market's own mechanics | kept; fees made time-varying and netted (round 18) |
+| D-16 | Map: net direction × selectivity | 4 (proposed), adopted with the spec | describes strategy kinds without using profit | kept; colours changed to greys (round 20) |
+| D-17 | Look-ahead: decide at DA close; use DA ≤ D−1, RT ≤ D−2 | 4 | point-in-time | **superseded**: RT ≤ D−6 in round 15 (final RT is ~5 days late; preliminary RT is not archived, round 18); decision time 10:30 EPT every year (round 20) |
+| D-18 | MISO primary, CAISO later | 5 | 0 of 8 papers study MISO; one all-node file per day | kept |
+| D-19 | Location universe option E (hubs → clustered → all) | recommended 5, decided 6 | start small, scale later | kept; all-location data downloaded (round 20) |
+| D-20 | Sealed 12-month hold-out 2025-09-22 → 2026-09-21, scored once per run, logged | 6 | an untouched test | kept; files stored apart since round 20 (§12.4) |
+| D-21 | History option D: evolution from 2005-04-01 | 7 | more regimes; compensates for the hold-out | kept; the archive confirms 2005-04-01 is the first day (round 20) |
+| D-22 | Consistency: inputs must cover 2005–2026 from one source; load forecasts and gas futures excluded | 7 | no data-driven regime breaks | kept |
+| D-23 | Fixed persistent universe of 387 locations | 7 (proposed) | consistency | **superseded** in round 8 (D-24). Round 7 counted CINERGY/INDIANA as one persistent hub; the round-20 data shows they are **different node sets** (DA median abs. difference $0.23/MWh over 7,344 overlapping hours) |
+| D-24 | Locations: whatever exists each day; bots choose by properties, never by name | 8 | a one-day bid strands nothing | kept |
+| D-25 | Shocks: lagged GPR + EPU + Henry Hub as inputs; event calendar for reporting only | 8 (delegated) | mechanical, point-in-time indices | partly **superseded**: GPR moved to reporting in round 11 |
+| D-26 | Weather: NWS Point Forecast Matrices via IEM, fetched once, parsed table bundled; ASOS reporting only | 8 | forecasts are what a trader sees | kept (not downloaded yet) |
+| D-27 | Bundle hub prices 2005–2026 | 8 | offline use | kept; the hub table exists (round 20), bundling waits for the redistribution check |
+| D-28 | 25 point-in-time features; fixed skeleton; typed GP ≤ ~15 nodes; rolling window; no language-model reading of news | 9 | readability; hindsight leak | kept; window lengthened to 5 years (C1); the hindsight argument also rules out language-model mutation (A1) |
+| D-29 | Raw units; constants from each feature's historical range | 9 | readable formulas | kept |
+| D-30 | Weather link: location → most-correlated hub (365 days) → NWS office | 9 | regional forecasts | kept; hub → office table still to decide (M1) |
+| D-31 | `gpr` → `gas_vol_20d`; GPR reporting only; oil excluded | proposed 10, decided 11 | only energy-related threats matter to MISO | kept |
+| D-32 | `month` → `wind_cap_region`, `loc_age_days` → `solar_cap_region` (EIA-860M) | proposed 10, decided 12 | capacity changes the price formation; count stays 25 | kept |
+| D-33 | EPU kept | 11 | the only input that flagged COVID | kept |
+| D-34 | Global gas prices reporting only | 11 | US–Europe gas correlation 0.16 | kept |
+| D-35 | Career preset: an individual; prop trader and hedge fund optional | 13 | the realistic focus | kept |
+| D-36 | Individual's floor from MISO's minimum capitalization ("$500k per a filing; a blog says $1M; verify at M0") | 13 | eligibility | **resolved** in round 18: Attachment L §III.C.1 requires $500k tangible net worth (or $5M assets) for a non-FTR participant, or $200k of financial security; §III.B's $1M net worth is one route to "appropriate person" status, not a floor |
+| D-37 | Quit hazard calibrated to day-trader survival 44/24/15 % (Barber et al. 2020); CUSUM against risk-free + fixed costs; peers off | 13 | how real traders stop | kept as optional layers (round 19). barber2020 (abstract) confirms that unprofitable day traders quit more; the 44/24/15 % points are still [verify] |
+| D-38 | Starting capital $1.5M, range $250k–$5M, configurable in `CapitalSettings`, TOML, CLI, explorer | 14, kept 16 | data-based default (tail headroom) | kept; **reproduced** in round 21 (`data/claude_science_check.csv`) |
+| D-39 | Sizing rule: position_scale = min(1, 2 % × equity / p99 full-size loss) | 14 | a 1-in-100 day costs ≤ 2 % | kept |
+| D-40 | Point-in-time p99: trailing 365 days, newest D−6, 90-day warm-up; the full-sample constant renamed CALIBRATION_ONLY | 15 | removes look-ahead | kept; the estimator's outputs are **reproduced exactly** in round 21 (eight table rows, range, median, 2.16 % breach rate by year) |
+| D-41 | Liquidity cap min(5 MW, 5 % of median cleared MW); 936 MWh/day full size | 14; 936 confirmed 16 | stay a price-taker | kept; O9 tests it |
+| D-42 | `daily_risk_budget` is the leverage knob; `credit_share` = share of capital pledged as collateral (default 25 %), which sets the Virtual MWh Limit; kept for stages D and C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 [verify] on `credit_share`'s meaning (`CLAUDE.md` §13.1) |
+| D-43 | Clearing: all-or-nothing by price, measured 99.5 % / 100 % agreement | 15 | realistic for small bids | kept |
+| D-44 | Fixed costs $50k/year (assumed); cleared-share scenarios 1.0 / 0.721 / 0.25 | 15 | round-15 correction of $0.59/MWh | kept as assumption; no fixed MISO fee found (round 18) |
+| D-45 | Relative ruin floor 2/3 by default; optional absolute floor; < 10 % headroom rejected | 16 | comparable careers at every capital | **superseded as default** in round 19: out-of-money death is the default, the floor is optional |
+| D-46 | Storm-sensitivity helper (reporting only) | 16 | Uri and Elliott dominate tails | kept |
+| D-47 | Size gene not added; tests first | 16 | it would saturate at g = 1 | kept |
+
+**What round 20's reconstruction got wrong** (corrected above):
+- **Round attributions:** the history start (round 7, not 6); option E (decided round 6, not 8); GPR to reporting (round 11, not 10); the feature swaps (round 12); fitness and current_bot.json (round 3, not 14); MAP-Elites (round 2); the map axes (round 4); the rolling window (round 9); the liquidity cap and $1.5M (round 14); the sizing rule (round 14, point-in-time in round 15); interruptible sessions (round 2); offline install (round 1).
+- **Missing decisions:** deployment levels L0–L3 (D-05); the two-fidelity simulator (D-07, superseded); multi-instrument scope (D-02, superseded); the persistent universe (D-23, superseded); the round-4 look-ahead rule (D-17, superseded); the `credit_share` meaning (D-42); the round-13 capitalization question and its round-18 answer (D-36).
+- **No conflicts** were found between the log and the current briefing: every difference is a later round replacing an earlier one, recorded above.
 
 ## Part D. Rounds 17–20
 
 | ID | Decision (round) | Status | Logic |
 |---|---|---|---|
-| D-40 | UI option A: FastAPI + Jinja2 + one `theme.css` (17) | Areeb | editable without a build step |
-| D-41 | Offline scope (a) (17) | Areeb | |
-| D-42 | Standalone standard-library bot files (17) | Areeb; now generated at birth (A1) | |
-| D-43 | Performance targets accepted (17) | Areeb; evaluations/hour 5× lower under C1 at the same trader-years/hour | |
-| D-44 | Costs from MISO's documents; netting rules (18) | kept | `market_rules.md` §3 |
-| D-45 | NERC holidays; a Sunday holiday also flags the Monday after (18, D2) | delegated r20 | covers both readings of the conflicting sources |
-| D-46 | Default death = out of money (19) | Areeb | |
-| D-47 | Trader as organism with generated code (19) | Areeb; refined r20 (A1) | |
-| D-48 | Ids, names, lineage (19) | changed r20 (A3) | |
-| D-49 | Founders (19) | changed r20 (A2) | |
-| D-50 | Mutation operators (19) | changed r20 (A4) | |
-| D-51 | Best bot, Refine, sealed test, grid map, badges, ledger, UI separation (19) | kept | |
-| D-52 | Visual style from the reference image (20) | Areeb | below |
+| D-60 | UI option A: FastAPI + Jinja2 + one `theme.css` (17) | Areeb | editable without a build step |
+| D-61 | Offline scope (a) (17) | Areeb | |
+| D-62 | Standalone standard-library bot files (17) | Areeb; now generated at birth (A1) | |
+| D-63 | Performance targets accepted (17) | Areeb; evaluations/hour 5× lower under C1 at the same trader-years/hour | |
+| D-64 | Costs from MISO's documents; netting rules (18) | kept | `market_rules.md` §3 |
+| D-65 | NERC holidays; a Sunday holiday also flags the Monday after (18, D2) | delegated r20 | covers both readings of the conflicting sources |
+| D-66 | Default death = out of money (19) | Areeb | |
+| D-67 | Trader as organism with generated code (19) | Areeb; refined r20 (A1) | |
+| D-68 | Ids, names, lineage (19) | changed r20 (A3) | |
+| D-69 | Founders (19) | changed r20 (A2) | |
+| D-70 | Mutation operators (19) | changed r20 (A4) | |
+| D-71 | Best bot, Refine, sealed test, grid map, badges, ledger, UI separation (19) | kept | |
+| D-72 | Visual style from the reference image (20) | Areeb | below |
 
 ## Part E. Visual design (Q20)
 
