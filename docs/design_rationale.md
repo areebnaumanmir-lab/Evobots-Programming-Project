@@ -223,7 +223,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 - **Missing decisions:** deployment levels L0–L3 (D-05); the two-fidelity simulator (D-07, superseded); multi-instrument scope (D-02, superseded); the persistent universe (D-23, superseded); the round-4 look-ahead rule (D-17, superseded); the `credit_share` meaning (D-42); the round-13 capitalization question and its round-18 answer (D-36).
 - **No conflicts** were found between the log and the current briefing: every difference is a later round replacing an earlier one, recorded above.
 
-## Part D. Rounds 17–24
+## Part D. Rounds 17–25
 
 | ID | Decision (round) | Status | Logic |
 |---|---|---|---|
@@ -246,7 +246,8 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-76 | Stop only at the §2.4 check-ins (23) | Areeb | keeps momentum; the check-ins are where Areeb can test something real |
 | D-77 | Capital explorer as a static page of Python-computed values (24, R24-1) | delegated | one formula source for the CLI, the explorer and the future Capital page; nothing to drift between Python and JavaScript |
 | D-78 | "Well above full size" at ≥ 2× (24, R24-2) | delegated, assumption | the only threshold consistent with `capital_sizing.md` §10's expected warnings that is also a round number |
-| D-79 | MISO data: build locally, never redistribute (24) | proposed | MISO's terms could not be read; the summary seen forbids redistribution; other sources are public domain or CC BY |
+| D-79 | MISO data: build locally, never redistribute, with a user switch (24–25) | Areeb (25) | MISO's terms (read in round 25) forbid reproduction, distribution and derivative works; other sources are public domain or CC BY |
+| D-80 | No scripted MISO access until decided (25) | Claude, pending Areeb | the terms forbid "automated means … to access … or copy"; stopping is reversible, continuing is not |
 
 ## Part E. Visual design (Q20)
 

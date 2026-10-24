@@ -7,6 +7,7 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 | Library | Version | Licence | Purpose |
 |---|---|---|---|
 | numpy | 2.5.4 | BSD-3-Clause (bundled parts: 0BSD, MIT, Zlib, CC0-1.0) | arrays for prices, P&L and the trailing 1-in-100-day loss |
+| scipy | 1.18.1 | BSD-3-Clause (obs.: the three-clause licence text in the package metadata) | linear programs (HiGHS) for the DC-OPF explanation (O0), then O2 and O4 |
 
 ## Development and tests
 
@@ -34,7 +35,6 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 
 | Library | Milestone | Licence | Purpose |
 |---|---|---|---|
-| scipy | O0 (M0) | BSD-3-Clause [verify on install] | linear programs (HiGHS) for the DC-OPF explanation, then O2 and O4 |
 | numba | M3 | BSD-2-Clause [verify on install] | the fast simulator engine (§14.3) |
 | pyarrow or polars | M1 | Apache-2.0 / MIT [verify on install] | CSV ingestion |
 | openpyxl, xlrd | M1 | MIT, BSD [verify on install] | EIA spreadsheets |

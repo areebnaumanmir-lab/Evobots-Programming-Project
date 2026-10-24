@@ -6,7 +6,7 @@ Every TOML key: meaning, unit, default, bounds, who sets it (`CLAUDE.md` §13.1)
 
 | Key | Meaning | Unit | Default | Bounds | Set by | Source |
 |---|---|---|---|---|---|---|
-| `starting_capital_usd` | money the trader starts with | USD | 1,500,000 | 250,000–5,000,000 | your choice | [capital_sizing.md](capital_sizing.md) §6 |
+| `starting_capital_usd` | money the trader starts with | USD | 1,500,000 (final default, round 25) | 250,000–5,000,000 | your choice: change it in the TOML, with `--starting-capital`, or (from M1.5) on the Capital page | [capital_sizing.md](capital_sizing.md) §6 |
 | `daily_risk_budget_fraction` | share of equity a 1-in-100 day may cost; the leverage knob | fraction | 0.02 | 0.005–0.05 | your choice | §4 |
 | `credit_share_fraction` | share of capital pledged to MISO as collateral; sets the Virtual MWh Limit | fraction | 0.25 | 0.05–0.80 | your choice | §7 |
 | `max_mw_per_hub_hour` | absolute cap per hub-hour | MW | 5.0 | 0.1–50 | your choice | §3 |

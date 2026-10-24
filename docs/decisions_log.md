@@ -234,3 +234,12 @@ Running record of what we have agreed. It references question numbers in decisio
 | "Well above full size" warning | – (delegated, R24-2) | fires at ≥ 2× the full-size point (assumption) |
 | Abbreviations | – (delegated, R24-3) | DC, OPF, PTDF approved for the ORFE power-flow material |
 | MISO redistribution | **open** | proposal: build locally, never redistribute, until Areeb reads MISO's terms |
+
+## Round 25 (2026-10-24): MISO's terms; rounds/round25_miso_terms.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| MISO redistribution | pasted MISO's Terms of Use; "You can, but make it changeable by the user" | **decided:** build locally, never redistribute; switch `is_miso_redistribution_allowed` (default false) at M1 |
+| $1.5M default | same answer | **decided:** final default, still the user's choice |
+| Scripted MISO access | – | terms forbid "automated means"; cleared-bids fetch stopped at 2026-01-23. **Open:** options A–D, recommendation A + B |
+| Rates Factors file, [verify] markers | "tell me how to do it" | instructions given; `docs/verify_register.md` groups the markers for acceptance by group |

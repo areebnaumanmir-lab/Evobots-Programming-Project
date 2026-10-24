@@ -26,30 +26,40 @@ Provenance marks (`CLAUDE.md` §2.2): **(obs.)** = read on the source's own page
 | **EPU** | "This work is licensed under a Creative Commons Attribution 4.0 International License"; "© 2012-2018 by Economic Policy Uncertainty". | (obs., `policyuncertainty.com` home page) | **yes**, under CC BY 4.0, crediting Baker, Bloom & Davis and the site |
 | **GPR** | "All the material in this webpage, including interactive visualizations and code, are completely open access under the Creative Commons BY license. You have the permission to use, distribute, and reproduce these in any medium, provided the source and authors are credited." Cite as Caldara & Iacoviello (2022), *American Economic Review* 112(4), 1194–1225, plus the website and download date. | (obs., `matteoiacoviello.com/gpr.htm`) | **yes**, with that citation |
 | **World Bank Pink Sheet** | Data-catalog datasets are typically "Creative Commons Attribution 4.0" (obs. for the Global Economic Monitor entry). The Pink Sheet's own catalog entry was not reached; a third-party aggregator lists it as CC BY 4.0. The World Bank's general (non-dataset) terms allow only non-commercial use and no derivative works. | **[verify]** | **not until checked**; reporting only, so it can stay a download-on-demand item |
-| **MISO** | MISO's Legal and Privacy page (`misoenergy.org/meet-miso/legal-and-privacy/`) returns HTTP 403 to scripts (Cloudflare), so it was **not read**. A search-index summary of it says website materials are protected by MISO's copyrights, users may not "modify, publish, transmit, reproduce, create derivative works of, distribute …" them, and access "does not confer any license". Whether that covers the market-report files, and whether the Data Exchange terms differ, is unknown. | **[verify]**: open the page in a browser | **not for others** until checked (below) |
+| **MISO** | Read in full on 2026-10-24 from the text of MISO's *Privacy Notice and Terms of Use* (`misoenergy.org/meet-miso/legal-and-privacy/`), pasted by Areeb because the page refuses scripts. Two clauses matter. **Redistribution:** "You are not permitted to modify, publish, transmit, participate in the transfer or sale of, reproduce, create derivative works of, distribute, publicly perform, publicly display or in any way exploit any of the materials or content on this Website or the App in whole or in part." **Automated access:** "You agree not use any automated means, including, without limitation, agents, robots, scripts, or spiders, to access, monitor, or copy any part of this Website or the App." The terms also say some services "may be subject to additional posted conditions", which prevail in a conflict; whether the market-report pages or the Data Exchange carry such conditions was not checked [verify]. | (obs., text supplied by Areeb) | **no**: build locally, never redistribute (round 25), with a user switch for the day MISO grants permission. **Scripted downloading is also in question: see §5** |
 
-## 3. Consequences for the bundle (proposal for the end-of-M0 check-in)
+## 3. Consequences for the bundle (decided round 25)
 
 - **The repository is private** (obs., 2026-10-24). No MISO price file or parsed price table is committed: `data/raw/`, `data/store/` and `data/holdout/` are git-ignored.
 - **Committed MISO-derived files** are statistics and aggregates, not price series:
   - hub spread statistics;
   - the trailing 1-in-100-day loss;
+  - coverage counts;
   - the daily full-size benchmark P&L, which sums (DA − RT) × cap over 8 hubs and 24 hours (`docs/data/benchmark_full_size_daily_pnl.csv`).
-
-  The last is the closest to a derived series. It stays private with the repository.
-- **Proposal:**
-  1. Treat MISO data as **"build locally, never redistribute"** until Areeb reads MISO's terms in a browser. `evobots data build --download` makes each user's own copy from MISO's public server, so the offline bundle on Areeb's own machine is unaffected.
-  2. The NWS/IEM, EIA, EPU and GPR parts of the bundle may be shared with their acknowledgments.
-  3. If the repository or a bundle is ever made public, decide first whether the benchmark P&L series may go with it. If not, regenerate it locally from the store as the tests' fixture.
+- **MISO's terms also forbid "derivative works".** These files are for private use in a private repository. If the repository is ever made public, every MISO-derived file in `docs/data/` (and the benchmark fixture the tests read) must be reviewed first. The `data_sources.md` list above is the checklist.
+- **Decided (round 25):**
+  1. **MISO data: build locally, never redistribute.** Each user makes their own copy. Your own offline bundle is unaffected.
+  2. **A user switch,** `is_miso_redistribution_allowed`, default **false**, arrives with the bundle builder (M1). When false, the builder leaves MISO-derived files out of any shareable bundle. Flip it only with MISO's written permission.
+  3. **The other sources** (NWS/IEM, EIA, EPU, GPR) may be shared with their acknowledgments.
 - **Acknowledgments** go in the app's About text and the README at M1.5:
   - EIA (with download date);
   - "derived from National Weather Service forecasts, archived by the Iowa Environmental Mesonet, Iowa State University";
   - EPU (CC BY 4.0) and GPR (CC BY, with the AER citation);
   - MISO as the source of price data.
 
-## 4. Measured vs assumed
-- **Measured:** the EIA, NWS, IEM, EPU and GPR statements above, read on their pages on 2026-10-24; the World Bank catalog licence for the Global Economic Monitor; the repository's visibility.
+## 4. MISO's "no automated means" clause (round 25)
+- **What was done before the clause was read:**
+  - `tools/fetch_miso_prices.py` downloaded the price archive (3,208 files, round 20) and 1,119 days of cleared bids with ex-ante prices (round 23);
+  - `tools/fetch_rule_documents.py` and the probe scripts made smaller requests to `cdn.misoenergy.org` and `docs.misoenergy.org` (round 18).
+
+  All were polite (≤ 2 parallel requests, 0.5 s spacing, identified by a User-Agent with a contact email), but they were scripts.
+- **Whether `docs.misoenergy.org`, which serves the market-report files linked from the website, is part of "this Website"** is not stated in the terms. The safe reading is yes.
+- **Stopped on 2026-10-24** when the clause was read: the cleared-bids fetch, at operating day 2026-01-23. No further scripted request is made to any MISO host until Areeb decides. The weather fetch (IEM, public domain) continues.
+- **The decision is in `docs/rounds/round25_miso_terms.md`.**
+
+## 5. Measured vs assumed
+- **Measured:** MISO's Terms of Use (full text, supplied by Areeb); the EIA, NWS, IEM, EPU and GPR statements above, read on their pages on 2026-10-24; the World Bank catalog licence for the Global Economic Monitor; the repository's visibility.
 - **Assumed or unread:**
-  - MISO's terms (page blocked to scripts; only a search-index summary was seen);
+  - MISO's additional posted conditions for market reports or the Data Exchange, if any;
   - the Pink Sheet's licence;
   - that a private, single-user build is personal use under MISO's terms.

@@ -40,6 +40,7 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
 - **Round 22 (2026-10-24): build independently.** My instruction: "make the project independently and ask all the questions you need directly here". Missing files are now **rebuilt from this briefing and the docs**, not waited for (§4). The capital slice is rebuilt from `capital_sizing.md` and reproduces every one of its numbers (133 tests).
 - **Round 23 (2026-10-24): weather offices, cleared bids, pacing** (`docs/rounds/round23_m0_data_and_pacing.md`). Hub→office table by the nearest-load rule (§7.4); every day of cleared bids from 2023 (§7.0); the weather fetch started; work continues milestone by milestone and stops only at the §2.4 check-ins.
 - **Round 24 (2026-10-24): M0 finished** (`docs/rounds/round24_m0_finish.md`). Capital explorer rebuilt with every value computed in Python and tested in a headless browser; naming test; benchmarks; Markdown doctests; O0 DC-OPF; redistribution terms (`docs/data_sources.md`: MISO data is build-locally until its terms are read); 173 tests.
+- **Round 25 (2026-10-24): MISO's terms** (`docs/rounds/round25_miso_terms.md`). They forbid redistribution and **automated access**. MISO data is built locally and never redistributed (a user switch arrives at M1). Scripted MISO downloads are stopped until I choose between the options there. $1.5M is the final default.
 - **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 
 **First session, in order:**
@@ -218,7 +219,7 @@ Claude Science reached each data site only after I approved its domain. Your env
 1. **Before downloading anything,** probe every domain in §7.9 with one small, polite request (HEAD, or a small known file). Report a table: domain, reachable or blocked, HTTP status.
 2. **If a domain is blocked,** don't retry with other tools or proxies. Give me the exact list of domains to allow and why each is needed. While waiting, carry on with whatever doesn't need it.
 3. **If a source wants registration, an API key or an email address** (for example a sign-up form, or a "please put a contact email in your User-Agent" rule), stop and ask me. Don't register on my behalf. All sources chosen so far are keyless, so this should be rare; the design depends on keyless sources (PJM and ERCOT were excluded because they need keys).
-4. **Contact email for polite bulk downloading:** identify yourself to the servers, since the forecast fetch alone is roughly 70,000 requests to the Iowa Environmental Mesonet. Check each site's usage notes for its own rules [verify]. Send a descriptive User-Agent, e.g. `evobots/0.1 (research; contact: <CONTACT_EMAIL>)`. Store the email in `config/local.toml` (git-ignored), never in code or docs. If `<CONTACT_EMAIL>` hasn't been filled in, ask me for it before the first bulk download.
+4. **Contact email for polite bulk downloading:** identify yourself to the servers, since the forecast fetch alone is roughly 70,000 requests to the Iowa Environmental Mesonet. Check each site's usage notes for its own rules (read in round 24: `docs/data_sources.md` §2; MISO's terms forbid automated access, §5 there). Send a descriptive User-Agent, e.g. `evobots/0.1 (research; contact: <CONTACT_EMAIL>)`. Store the email in `config/local.toml` (git-ignored), never in code or docs. If `<CONTACT_EMAIL>` hasn't been filled in, ask me for it before the first bulk download.
 5. **Be polite to servers:**
    - at most 4 parallel downloads per host;
    - about 0.5 s between requests for IEM;
@@ -305,7 +306,7 @@ MISO announced that its public pricing reports would stop updating from 12 Decem
 | Parsed store (git-ignored) | `data/store/hub_prices.csv.gz` (day × hour × hub: DA/RT LMP, MCC, MLC), `locations.csv` (5,519 locations with first/last day), `daily_coverage.csv` (`tools/build_miso_hub_prices.py`) | the all-location memory-mapped store (§7.11) is still to build (M1/M8) |
 | Provenance | `data/manifest.toml`: URL, SHA-256, size, date for every file (committed) | |
 | MISO preliminary RT | last ~3 days only | not archived |
-| MISO cleared bids | **every day from 2023-01-01** (decided round 23): `tools/fetch_miso_prices.py --report cleared_bids`, with the matching DA ex-ante prices; ~5 GB | published about **90 days late** (obs.: newest 2026-07-25 on 2026-10-24); needed for O9 and the liquidity medians |
+| MISO cleared bids | **2023-01-01 → 2026-01-23** (1,119 days, with DA ex-ante prices; round 23). The fetch was stopped in round 25 because MISO's terms forbid automated access | published about **90 days late** (obs.: newest 2026-07-25 on 2026-10-24); needed for O9 and the liquidity medians |
 | NWS forecasts | **fetching** (round 23): 9 offices × 7,878 decision days, ~8 h at the polite rate | parser at M1 |
 | Henry Hub, EPU, GPR, EIA-860M | not downloaded yet | M1 |
 
@@ -866,7 +867,7 @@ Only two model fees or uplift; the rest use the raw spread, which flatters resul
 
 | Setting | Default | Range / note |
 |---|---|---|
-| `starting_capital_usd` | $1,500,000 | $250k–$5M, step $50k (Stage A) |
+| `starting_capital_usd` | $1,500,000, **final default (round 25)**; always editable | $250k–$5M, step $50k (Stage A) |
 | `daily_risk_budget_fraction` (was `daily_risk_budget`) | 0.02 | 0.005–0.05 |
 | `credit_share_fraction` (was `credit_share`) | 0.25 | 0.05–0.80 |
 | MPD | from market data, ≥ 12 | no longer a setting (§13.1); collateral functions take it as an argument |
