@@ -38,6 +38,9 @@ The project's dictionary: one word per idea (`CLAUDE.md` §14.1). Code, docs and
 |---|---|
 | trader (bot) | one evolved strategy: genome + generated source code + life (`CLAUDE.md` §9.1) |
 | genome | the trader's slot trees and numeric genes; what evolution changes |
+| trader id / genome id / behaviour id | birth identity (`R12-184213`) / hash of the genes / hash of the bids on a reference window (§9.4) |
+| training window | the 5 years of history a trader is scored on; it rolls forward a year at a time (§11) |
+| operator | a way of making a child: subtree, point, hoist, size-fair crossover, constant or category mutation (§9.6) |
 | founder | a hand-written starting trader with a stated reason (§9.5) |
 | lineage, generation | a trader's ancestors and descendants; generation = lineage depth (§9.4) |
 | selection pressure | how strongly fitness raises a trader's share of offspring (§11.2) |

@@ -1,0 +1,1326 @@
+[
+ {
+  "key": "koza1992",
+  "query_title": "Genetic programming: on the programming of computers by means of natural selection",
+  "status": "not found"
+ },
+ {
+  "key": "montana1995",
+  "query_title": "Strongly Typed Genetic Programming",
+  "title": "Strongly Typed Genetic Programming",
+  "authors": [
+   "David J. Montana"
+  ],
+  "year": 1995,
+  "venue": "Evolutionary Computation",
+  "doi": "10.1162/evco.1995.3.2.199",
+  "type": "journal-article",
+  "cited_by_count": 569,
+  "abstract": "Genetic programming is a powerful method for automatically generating computer programs via the process of natural selection (Koza, 1992). However, in its standard form, there is no way to restrict the programs it generates to those where the functions operate on appropriate data types. In the case when the programs manipulate multiple data types and contain functions designed to operate on particular data types, this can lead to unnecessarily large search times and/or unnecessarily poor generalization performance. Strongly typed genetic programming (STGP) is an enhanced version of genetic programming that enforces data-type constraints and whose use of generic functions and generic data types makes it more powerful than other approaches to type-constraint enforcement. After describing its operation, we illustrate its use on problems in two domains, matrix/vector manipulation and list manipulation, which require its generality. The examples are (1) the multidimensional least-squares regression problem, (2) the multidimensional Kalman filter, (3) the list manipulation function NTH, and (4) the list manipulation function MAPCAR.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "whigham1995",
+  "query_title": "Grammatically-based genetic programming",
+  "status": "not found"
+ },
+ {
+  "key": "mckay2010",
+  "query_title": "Grammar-based Genetic Programming: a survey",
+  "title": "Grammar-based Genetic Programming: a survey",
+  "authors": [
+   "Robert I. McKay",
+   "Nguyen Xuan Hoai",
+   "Peter Alexander Whigham",
+   "Yin Shan",
+   "Michael O’Neill"
+  ],
+  "year": 2010,
+  "venue": "Genetic Programming and Evolvable Machines",
+  "doi": "10.1007/s10710-010-9109-y",
+  "type": "journal-article",
+  "cited_by_count": 307,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "oneill2001",
+  "query_title": "Grammatical evolution",
+  "title": "Grammatical evolution",
+  "authors": [
+   "M. O'Neill",
+   "C. Ryan"
+  ],
+  "year": 2001,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/4235.942529",
+  "type": "journal-article",
+  "cited_by_count": 689,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "brameier2007",
+  "query_title": "Linear Genetic Programming",
+  "title": "Linear Genetic Programming",
+  "authors": [],
+  "year": 2007,
+  "venue": "Genetic and Evolutionary Computation",
+  "doi": "10.1007/978-0-387-31030-5",
+  "type": "book",
+  "cited_by_count": 35,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "note": "no author metadata in Crossref; matched on title, year and DOI",
+  "status": "verified"
+ },
+ {
+  "key": "miller2000",
+  "query_title": "Cartesian Genetic Programming",
+  "title": "Cartesian Genetic Programming",
+  "authors": [
+   "Julian F. Miller",
+   "Peter Thomson"
+  ],
+  "year": 2000,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/978-3-540-46239-2_9",
+  "type": "book-chapter",
+  "cited_by_count": 466,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "spector2002",
+  "query_title": "Genetic Programming and Autoconstructive Evolution with the Push Programming Language",
+  "title": "Genetic Programming and Autoconstructive Evolution with the Push Programming Language",
+  "authors": [
+   "Lee Spector",
+   "Alan Robinson"
+  ],
+  "year": 2002,
+  "venue": "Genetic Programming and Evolvable Machines",
+  "doi": "10.1023/a:1014538503543",
+  "type": "journal-article",
+  "cited_by_count": 222,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "ray1991",
+  "query_title": "An approach to the synthesis of life",
+  "status": "not found"
+ },
+ {
+  "key": "ofria2004",
+  "query_title": "Avida: A Software Platform for Research in Computational Evolutionary Biology",
+  "title": "Avida: A Software Platform for Research in Computational Evolutionary Biology",
+  "authors": [
+   "Charles Ofria",
+   "Claus O. Wilke"
+  ],
+  "year": 2004,
+  "venue": "Artificial Life",
+  "doi": "10.1162/106454604773563612",
+  "type": "journal-article",
+  "cited_by_count": 270,
+  "abstract": "Avida is a software platform for experiments with self-replicating and evolving computer programs. It provides detailed control over experimental settings and protocols, a large array of measurement tools, and sophisticated methods to analyze and post-process experimental data. We explain the general principles on which Avida is built, as well as its main components and their interactions. We also explain how experiments are set up, carried out, and analyzed.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "lenski2003",
+  "query_title": "The evolutionary origin of complex features",
+  "title": "The evolutionary origin of complex features",
+  "authors": [
+   "Richard E. Lenski",
+   "Charles Ofria",
+   "Robert T. Pennock",
+   "Christoph Adami"
+  ],
+  "year": 2003,
+  "venue": "Nature",
+  "doi": "10.1038/nature01568",
+  "type": "journal-article",
+  "cited_by_count": 496,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "stanley2002",
+  "query_title": "Evolving Neural Networks through Augmenting Topologies",
+  "title": "Evolving Neural Networks through Augmenting Topologies",
+  "authors": [
+   "Kenneth O. Stanley",
+   "Risto Miikkulainen"
+  ],
+  "year": 2002,
+  "venue": "Evolutionary Computation",
+  "doi": "10.1162/106365602320169811",
+  "type": "journal-article",
+  "cited_by_count": 2483,
+  "abstract": "An important question in neuroevolution is how to gain an advantage from evolving neural network topologies along with weights. We present a method, NeuroEvolution of Augmenting Topologies (NEAT), which outperforms the best fixed-topology method on a challenging benchmark reinforcement learning task. We claim that the increased efficiency is due to (1) employing a principled method of crossover of different topologies, (2) protecting structural innovation using speciation, and (3) incrementally growing from minimal structure. We test this claim through a series of ablation studies that demonstrate that each component is necessary to the system as a whole and to each other. What results is signicantly faster learning. NEAT is also an important contribution to GAs because it shows how it is possible for evolution to both optimize and complexify solutions simultaneously, offering the possibility of evolving increasingly complex solutions over generations, and strengthening the analogy with biological evolution.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "lehman2022",
+  "query_title": "Evolution through Large Models",
+  "title": "Evolution Through Large Models",
+  "authors": [
+   "Joel Lehman",
+   "Jonathan Gordon",
+   "Shawn Jain",
+   "Kamal Ndousse",
+   "Cathy Yeh",
+   "Kenneth O. Stanley"
+  ],
+  "year": 2023,
+  "venue": "Genetic and Evolutionary Computation",
+  "doi": "10.1007/978-981-99-3814-8_11",
+  "type": "book-chapter",
+  "cited_by_count": 63,
+  "abstract": "This paper pursues the insight that large language models (LLMs) trained to generate code can vastly improve the effectiveness of mutation operators applied to programs in genetic programming (GP). Because such LLMs benefit from training data that includes sequential changes and modifications, they can approximate likely changes that humans would make. To highlight the breadth of implications of such evolution through large models (ELM), in the main experiment ELM combined with MAP-Elites generates hundreds of thousands of functional examples of Python programs that output working ambulating robots in the Sodarace domain, which the original LLM had never seen in pre-training. These examples then help to bootstrap training a new conditional language model that can output the right walker for a particular terrain. The ability to bootstrap new models that can output appropriate artifacts for a given context in a domain where zero training data was previously available carries implications for open-endedness, deep learning, and reinforcement learning. These implications are explored here in depth in the hope of inspiring new directions of research now opened up by ELM.",
+  "title_similarity": 1.0,
+  "arxiv_id": "2206.08896",
+  "arxiv": {
+   "title": "Evolution through Large Models",
+   "authors": [
+    "Joel Lehman",
+    "Jonathan Gordon",
+    "Shawn Jain",
+    "Kamal Ndousse",
+    "Cathy Yeh",
+    "Kenneth O. Stanley"
+   ],
+   "published": "2022-06-17",
+   "abstract": "This paper pursues the insight that large language models (LLMs) trained to generate code can vastly improve the effectiveness of mutation operators applied to programs in genetic programming (GP). Because such LLMs benefit from training data that includes sequential changes and modifications, they can approximate likely changes that humans would make. To highlight the breadth of implications of such evolution through large models (ELM), in the main experiment ELM combined with MAP-Elites generates hundreds of thousands of functional examples of Python programs that output working ambulating robots in the Sodarace domain, which the original LLM had never seen in pre-training. These examples then help to bootstrap training a new conditional language model that can output the right walker for a particular terrain. The ability to bootstrap new models that can output appropriate artifacts for a given context in a domain where zero training data was previously available carries implications for open-endedness, deep learning, and reinforcement learning. These implications are explored here in depth in the hope of inspiring new directions of research now opened up by ELM."
+  },
+  "status": "verified"
+ },
+ {
+  "key": "romeraparedes2024",
+  "query_title": "Mathematical discoveries from program search with large language models",
+  "title": "Mathematical discoveries from program search with large language models",
+  "authors": [
+   "Bernardino Romera-Paredes",
+   "Mohammadamin Barekatain",
+   "Alexander Novikov",
+   "Matej Balog",
+   "M. Pawan Kumar",
+   "Emilien Dupont",
+   "Francisco J. R. Ruiz",
+   "Jordan S. Ellenberg",
+   "Pengming Wang",
+   "Omar Fawzi",
+   "Pushmeet Kohli",
+   "Alhussein Fawzi"
+  ],
+  "year": 2023,
+  "venue": "Nature",
+  "doi": "10.1038/s41586-023-06924-6",
+  "type": "journal-article",
+  "cited_by_count": 582,
+  "abstract": "Abstract Large language models (LLMs) have demonstrated tremendous capabilities in solving complex tasks, from quantitative reasoning to understanding natural language. However, LLMs sometimes suffer from confabulations (or hallucinations), which can result in them making plausible but incorrect statements 1,2 . This hinders the use of current large models in scientific discovery. Here we introduce FunSearch (short for searching in the function space), an evolutionary procedure based on pairing a pretrained LLM with a systematic evaluator. We demonstrate the effectiveness of this approach to surpass the best-known results in important problems, pushing the boundary of existing LLM-based approaches 3 . Applying FunSearch to a central problem in extremal combinatorics—the cap set problem—we discover new constructions of large cap sets going beyond the best-known ones, both in finite dimensional and asymptotic cases. This shows that it is possible to make discoveries for established open problems using LLMs. We showcase the generality of FunSearch by applying it to an algorithmic problem, online bin packing, finding new heuristics that improve on widely used baselines. In contrast to most computer search approaches, FunSearch searches for programs that describe how to solve a problem, rather than what the solution is. Beyond being an effective and scalable strategy, discovered programs tend to be more interpretable than raw solutions, enabling feedback loops between domain experts and FunSearch, and the deployment of such programs in real-world applications.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "allen1999",
+  "query_title": "Using genetic algorithms to find technical trading rules",
+  "title": "Using genetic algorithms to find technical trading rules",
+  "authors": [
+   "Franklin Allen",
+   "Risto Karjalainen"
+  ],
+  "year": 1999,
+  "venue": "Journal of Financial Economics",
+  "doi": "10.1016/s0304-405x(98)00052-x",
+  "type": "journal-article",
+  "cited_by_count": 596,
+  "abstract": "A genetic algorithm is used to learn technical trading rules for Standard and Poor's composite stock index using data from 1963-69. In the out-of-sample test period 1970-1989 the rules are able to identify periods to be in the indexwhen returns are positive and volatility is low and out when the reverse is true. Compared to a simple buy-and-hold strategy, they lead to positive excess returns after transaction costs in the period of 1970-89. Using data for other periods since 1929, the rules can identify high returns and low volatility but do not lead to excess returns after transaction costs. The results are compared to benchmark models of a random walk, an autoregressive model, and a GARCH-AR model. Bootstrapping simulations indicate that none of these models of stock returns can explain the findings.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "neely1997",
+  "query_title": "Is Technical Analysis in the Foreign Exchange Market Profitable? A Genetic Programming Approach",
+  "title": "Is Technical Analysis in the Foreign Exchange Market Profitable? A Genetic Programming Approach",
+  "authors": [
+   "Christopher Neely",
+   "Paul Weller",
+   "Rob Dittmar"
+  ],
+  "year": 1997,
+  "venue": "The Journal of Financial and Quantitative Analysis",
+  "doi": "10.2307/2331231",
+  "type": "journal-article",
+  "cited_by_count": 438,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "potvin2004",
+  "query_title": "Generating trading rules on the stock markets with genetic programming",
+  "title": "Generating trading rules on the stock markets with genetic programming",
+  "authors": [
+   "Jean-Yves Potvin",
+   "Patrick Soriano",
+   "Maxime Vallée"
+  ],
+  "year": 2004,
+  "venue": "Computers &amp; Operations Research",
+  "doi": "10.1016/s0305-0548(03)00063-7",
+  "type": "journal-article",
+  "cited_by_count": 168,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "bhattacharyya2002",
+  "query_title": "Knowledge-intensive genetic discovery in foreign exchange markets",
+  "title": "Knowledge-intensive genetic discovery in foreign exchange markets",
+  "authors": [
+   "S. Bhattacharyya",
+   "O.V. Pictet",
+   "G. Zumbach"
+  ],
+  "year": 2002,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/4235.996016",
+  "type": "journal-article",
+  "cited_by_count": 43,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "chen2007",
+  "query_title": "Failure of Genetic-Programming Induced Trading Strategies: Distinguishing between Efficient Markets and Inefficient Algorithms",
+  "title": "Failure of Genetic-Programming Induced Trading Strategies: Distinguishing between Efficient Markets and Inefficient Algorithms",
+  "authors": [
+   "Shu-Heng Chen",
+   "Nicolas Navet"
+  ],
+  "year": null,
+  "venue": "Computational Intelligence in Economics and Finance",
+  "doi": "10.1007/978-3-540-72821-4_11",
+  "type": "book-chapter",
+  "cited_by_count": 7,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "partial",
+  "note": "surname match: True; year None vs 2007"
+ },
+ {
+  "key": "wang2000",
+  "query_title": "Trading and hedging in S&P 500 spot and futures markets using genetic programming",
+  "title": "Trading and hedging in S&amp;P 500 spot and futures markets using genetic programming",
+  "authors": [
+   "Jun Wang"
+  ],
+  "year": 2000,
+  "venue": "Journal of Futures Markets",
+  "doi": "10.1002/1096-9934(200011)20:10<911::aid-fut3>3.3.co;2-b",
+  "type": "journal-article",
+  "cited_by_count": 1,
+  "abstract": "",
+  "title_similarity": 0.982,
+  "status": "verified"
+ },
+ {
+  "key": "rudin2019",
+  "query_title": "Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead",
+  "title": "Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead",
+  "authors": [
+   "Cynthia Rudin"
+  ],
+  "year": 2019,
+  "venue": "Nature Machine Intelligence",
+  "doi": "10.1038/s42256-019-0048-x",
+  "type": "journal-article",
+  "cited_by_count": 9797,
+  "abstract": "Black box machine learning models are currently being used for high-stakes decision making throughout society, causing problems in healthcare, criminal justice and other domains. Some people hope that creating methods for explaining these black box models will alleviate some of the problems, but trying to explain black box models, rather than creating models that are interpretable in the first place, is likely to perpetuate bad practice and can potentially cause great harm to society. The way forward is to design models that are inherently interpretable. This Perspective clarifies the chasm between explaining black boxes and using inherently interpretable models, outlines several key reasons why explainable black boxes should be avoided in high-stakes decisions, identifies challenges to interpretable machine learning, and provides several example applications where interpretable models could potentially replace black box models in criminal justice, healthcare and computer vision. There has been a recent rise of interest in developing methods for ‘explainable AI’, where models are created to explain how a first ‘black box’ machine learning model arrives at a specific decision. It can be argued that instead efforts should be directed at building inherently interpretable models in the first place, in particular where they are applied in applications that directly affect human lives, such as in healthcare and criminal justice.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "luke2001survey",
+  "query_title": "A survey and comparison of tree generation algorithms",
+  "status": "not found"
+ },
+ {
+  "key": "luke2000ptc",
+  "query_title": "Two fast tree-creation algorithms for genetic programming",
+  "title": "Two fast tree-creation algorithms for genetic programming",
+  "authors": [
+   "S. Luke"
+  ],
+  "year": 2000,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/4235.873237",
+  "type": "journal-article",
+  "cited_by_count": 123,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "langdon2000seeding",
+  "query_title": "Seeding Genetic Programming Populations",
+  "title": "Seeding Genetic Programming Populations",
+  "authors": [
+   "W. B. Langdon",
+   "J. P. Nordin"
+  ],
+  "year": 2000,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/978-3-540-46239-2_23",
+  "type": "book-chapter",
+  "cited_by_count": 21,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "friedrich2015",
+  "query_title": "Seeding the initial population of multi-objective evolutionary algorithms: A computational study",
+  "title": "Seeding the initial population of multi-objective evolutionary algorithms: A computational study",
+  "authors": [
+   "Tobias Friedrich",
+   "Markus Wagner"
+  ],
+  "year": 2015,
+  "venue": "Applied Soft Computing",
+  "doi": "10.1016/j.asoc.2015.04.043",
+  "type": "journal-article",
+  "cited_by_count": 48,
+  "abstract": "Graphical abstractDisplay Omitted HighlightsWe study the benefits of seeding for multi-objective optimization algorithms.We investigate two approaches for five state-of-the-art algorithms on 48 functions.Different optimization algorithms benefit very differently from seeding.AGE and SMS-EMOA typically achieve the best approximation of the true Pareto front. Most experimental studies initialize the population of evolutionary algorithms with random genotypes. In practice, however, optimizers are typically seeded with good candidate solutions either previously known or created according to some problem-specific method. This seeding has been studied extensively for single-objective problems. For multi-objective problems, however, very little literature is available on the approaches to seeding and their individual benefits and disadvantages. In this article, we are trying to narrow this gap via a comprehensive computational study on common real-valued test functions. We investigate the effect of two seeding techniques for five algorithms on 48 optimization problems with 2, 3, 4, 6, and 8 objectives. We observe that some functions (e.g., DTLZ4 and the LZ family) benefit significantly from seeding, while others (e.g., WFG) profit less. The advantage of seeding also depends on the examined algorithm.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "burke2004",
+  "query_title": "Diversity in Genetic Programming: An Analysis of Measures and Correlation With Fitness",
+  "title": "Diversity in Genetic Programming: An Analysis of Measures and Correlation With Fitness",
+  "authors": [
+   "E.K. Burke",
+   "S. Gustafson",
+   "G. Kendall"
+  ],
+  "year": 2004,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/tevc.2003.819263",
+  "type": "journal-article",
+  "cited_by_count": 265,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "mcphee1999",
+  "query_title": "Analysis of genetic diversity through population history",
+  "status": "not found"
+ },
+ {
+  "key": "dolson2020",
+  "query_title": "Interpreting the Tape of Life: Ancestry-Based Analyses Provide Insights and Intuition about Evolutionary Dynamics",
+  "title": "Interpreting the Tape of Life: Ancestry-Based Analyses Provide Insights and Intuition about Evolutionary Dynamics",
+  "authors": [
+   "Emily Dolson",
+   "Alexander Lalejini",
+   "Steven Jorgensen",
+   "Charles Ofria"
+  ],
+  "year": 2020,
+  "venue": "Artificial Life",
+  "doi": "10.1162/artl_a_00313",
+  "type": "journal-article",
+  "cited_by_count": 13,
+  "abstract": "Fine-scale evolutionary dynamics can be challenging to tease out when focused on the broad brush strokes of whole populations over long time spans. We propose a suite of diagnostic analysis techniques that operate on lineages and phylogenies in digital evolution experiments, with the aim of improving our capacity to quantitatively explore the nuances of evolutionary histories in digital evolution experiments. We present three types of lineage measurements: lineage length, mutation accumulation, and phenotypic volatility. Additionally, we suggest the adoption of four phylogeny measurements from biology: phylogenetic richness, phylogenetic divergence, phylogenetic regularity, and depth of the most-recent common ancestor. In addition to quantitative metrics, we also discuss several existing data visualizations that are useful for understanding lineages and phylogenies: state sequence visualizations, fitness landscape overlays, phylogenetic trees, and Muller plots. We examine the behavior of these metrics (with the aid of data visualizations) in two well-studied computational contexts: (1) a set of two-dimensional, real-valued optimization problems under a range of mutation rates and selection strengths, and (2) a set of qualitatively different environments in the Avida digital evolution platform. These results confirm our intuition about how these metrics respond to various evolutionary conditions and indicate their broad value.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "burlacu2013",
+  "query_title": "Visualization of genetic lineages and inheritance information in genetic programming",
+  "title": "Visualization of genetic lineages and inheritance information in genetic programming",
+  "authors": [
+   "Bogdan Burlacu",
+   "Michael Affenzeller",
+   "Michael Kommenda",
+   "Stephan Winkler",
+   "Gabriel Kronberger"
+  ],
+  "year": 2013,
+  "venue": "Proceedings of the 15th annual conference companion on Genetic and evolutionary computation",
+  "doi": "10.1145/2464576.2482714",
+  "type": "proceedings-article",
+  "cited_by_count": 22,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "angeline1997",
+  "query_title": "Subtree crossover: Building block engine or macromutation?",
+  "status": "not found"
+ },
+ {
+  "key": "luke1997",
+  "query_title": "A comparison of crossover and mutation in genetic programming",
+  "title": "A Rigorous Evaluation of Crossover and Mutation in Genetic Programming",
+  "authors": [
+   "David R. White",
+   "Simon Poulding"
+  ],
+  "year": 2009,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/978-3-642-01181-8_19",
+  "type": "book-chapter",
+  "cited_by_count": 20,
+  "abstract": "",
+  "title_similarity": 0.855,
+  "status": "partial",
+  "note": "surname match: False; year 2009 vs 1997"
+ },
+ {
+  "key": "langdon2000sizefair",
+  "query_title": "Size Fair and Homologous Tree Crossovers for Tree Genetic Programming",
+  "title": "Size Fair and Homologous Tree Crossovers for Tree Genetic Programming",
+  "authors": [
+   "W. B. Langdon"
+  ],
+  "year": 2000,
+  "venue": "Genetic Programming and Evolvable Machines",
+  "doi": "10.1023/a:1010024515191",
+  "type": "journal-article",
+  "cited_by_count": 124,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "moraglio2012",
+  "query_title": "Geometric Semantic Genetic Programming",
+  "title": "Geometric Semantic Genetic Programming",
+  "authors": [
+   "Alberto Moraglio",
+   "Krzysztof Krawiec",
+   "Colin G. Johnson"
+  ],
+  "year": 2012,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/978-3-642-32937-1_3",
+  "type": "book-chapter",
+  "cited_by_count": 282,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "uy2011",
+  "query_title": "Semantically-based crossover in genetic programming: application to real-valued symbolic regression",
+  "title": "Semantically-based crossover in genetic programming: application to real-valued symbolic regression",
+  "authors": [
+   "Nguyen Quang Uy",
+   "Nguyen Xuan Hoai",
+   "Michael O’Neill",
+   "R. I. McKay",
+   "Edgar Galván-López"
+  ],
+  "year": 2010,
+  "venue": "Genetic Programming and Evolvable Machines",
+  "doi": "10.1007/s10710-010-9121-2",
+  "type": "journal-article",
+  "cited_by_count": 258,
+  "abstract": "We investigate the effects of semantically-based crossover operators in genetic programming, applied to real-valued symbolic regression problems. We propose two new relations derived from the semantic distance between subtrees, known as semantic equivalence and semantic similarity. These relations are used to guide variants of the crossover operator, resulting in two new crossover operators—semantics aware crossover (SAC) and semantic similarity-based crossover (SSC). SAC, was introduced and previously studied, is added here for the purpose of comparison and analysis. SSC extends SAC by more closely controlling the semantic distance between subtrees to which crossover may be applied. The new operators were tested on some real-valued symbolic regression problems and compared with standard crossover (SC), context aware crossover (CAC), Soft Brood Selection (SBS), and No Same Mate (NSM) selection. The experimental results show on the problems examined that, with computational effort measured by the number of function node evaluations, only SSC and SBS were significantly better than SC, and SSC was often better than SBS. Further experiments were also conducted to analyse the perfomance sensitivity to the parameter settings for SSC. This analysis leads to a conclusion that SSC is more constructive and has higher locality than SAC, NSM and SC; we believe these are the main reasons for the improved performance of SSC.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "luke2002lexpars",
+  "query_title": "Lexicographic parsimony pressure",
+  "status": "not found"
+ },
+ {
+  "key": "poli2003tarpeian",
+  "query_title": "A Simple but Theoretically-Motivated Method to Control Bloat in Genetic Programming",
+  "title": "A Simple but Theoretically-Motivated Method to Control Bloat in Genetic Programming",
+  "authors": [
+   "Riccardo Poli"
+  ],
+  "year": 2003,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/3-540-36599-0_19",
+  "type": "book-chapter",
+  "cited_by_count": 95,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "luke2006bloat",
+  "query_title": "A Comparison of Bloat Control Methods for Genetic Programming",
+  "title": "A Comparison of Bloat Control Methods for Genetic Programming",
+  "authors": [
+   "Sean Luke",
+   "Liviu Panait"
+  ],
+  "year": 2006,
+  "venue": "Evolutionary Computation",
+  "doi": "10.1162/evco.2006.14.3.309",
+  "type": "journal-article",
+  "cited_by_count": 203,
+  "abstract": "Genetic programming has highlighted the problem of bloat, the uncontrolled growth of the average size of an individual in the population. The most common approach to dealing with bloat in tree-based genetic programming individuals is to limit their maximal allowed depth. An alternative to depth limiting is to punish individuals in some way based on excess size, and our experiments have shown that the combination of depth limiting with such a punitive method is generally more effective than either alone. Which such combinations are most effective at reducing bloat? In this article we augment depth limiting with nine bloat control methods and compare them with one another. These methods are chosen from past literature and from techniques of our own devising. esting with four genetic programming problems, we identify where each bloat control method performs well on a per-problem basis, and under what settings various methods are effective independent of problem. We report on the results of these tests, and discover an unexpected winner in the cross-platform category.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "thierens2005",
+  "query_title": "An adaptive pursuit strategy for allocating operator probabilities",
+  "title": "An adaptive pursuit strategy for allocating operator probabilities",
+  "authors": [
+   "Dirk Thierens"
+  ],
+  "year": 2005,
+  "venue": "Proceedings of the 7th annual conference on Genetic and evolutionary computation",
+  "doi": "10.1145/1068009.1068251",
+  "type": "proceedings-article",
+  "cited_by_count": 168,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "fialho2010",
+  "query_title": "Analyzing bandit-based adaptive operator selection mechanisms",
+  "title": "Analyzing bandit-based adaptive operator selection mechanisms",
+  "authors": [
+   "Álvaro Fialho",
+   "Luis Da Costa",
+   "Marc Schoenauer",
+   "Michèle Sebag"
+  ],
+  "year": 2010,
+  "venue": "Annals of Mathematics and Artificial Intelligence",
+  "doi": "10.1007/s10472-010-9213-y",
+  "type": "journal-article",
+  "cited_by_count": 156,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "cully2021",
+  "query_title": "Multi-emitter MAP-elites: improving quality and diversity and data efficiency with heterogeneous sets of emitters",
+  "arxiv_id": "2007.05352",
+  "arxiv": {
+   "title": "Multi-Emitter MAP-Elites: Improving quality, diversity and convergence speed with heterogeneous sets of emitters",
+   "authors": [
+    "Antoine Cully"
+   ],
+   "published": "2020-07-10",
+   "abstract": "Quality-Diversity (QD) optimisation is a new family of learning algorithms that aims at generating collections of diverse and high-performing solutions. Among those algorithms, the recently introduced Covariance Matrix Adaptation MAP-Elites (CMA-ME) algorithm proposes the concept of emitters, which uses a predefined heuristic to drive the algorithm's exploration. This algorithm was shown to outperform MAP-Elites, a popular QD algorithm that has demonstrated promising results in numerous applications. In this paper, we introduce Multi-Emitter MAP-Elites (ME-MAP-Elites), an algorithm that directly extends CMA-ME and improves its quality, diversity and data efficiency. It leverages the diversity of a heterogeneous set of emitters, in which each emitter type improves the optimisation process in different ways. A bandit algorithm dynamically finds the best selection of emitters depending on the current situation. We evaluate the performance of ME-MAP-Elites on six tasks, ranging from standard optimisation problems (in 100 dimensions) to complex locomotion tasks in robotics. Our comparisons against CMA-ME and MAP-Elites show that ME-MAP-Elites is faster at providing collections of solutions that are significantly more diverse and higher performing. Moreover, in cases where no fruitful synergy can be found between the different emitters, ME-MAP-Elites is equivalent to the best of the compared algorithms."
+  },
+  "abstract": "Quality-Diversity (QD) optimisation is a new family of learning algorithms that aims at generating collections of diverse and high-performing solutions. Among those algorithms, the recently introduced Covariance Matrix Adaptation MAP-Elites (CMA-ME) algorithm proposes the concept of emitters, which uses a predefined heuristic to drive the algorithm's exploration. This algorithm was shown to outperform MAP-Elites, a popular QD algorithm that has demonstrated promising results in numerous applications. In this paper, we introduce Multi-Emitter MAP-Elites (ME-MAP-Elites), an algorithm that directly extends CMA-ME and improves its quality, diversity and data efficiency. It leverages the diversity of a heterogeneous set of emitters, in which each emitter type improves the optimisation process in different ways. A bandit algorithm dynamically finds the best selection of emitters depending on the current situation. We evaluate the performance of ME-MAP-Elites on six tasks, ranging from standard optimisation problems (in 100 dimensions) to complex locomotion tasks in robotics. Our comparisons against CMA-ME and MAP-Elites show that ME-MAP-Elites is faster at providing collections of solutions that are significantly more diverse and higher performing. Moreover, in cases where no fruitful synergy can be found between the different emitters, ME-MAP-Elites is equivalent to the best of the compared algorithms.",
+  "title": "Multi-Emitter MAP-Elites: Improving quality, diversity and convergence speed with heterogeneous sets of emitters",
+  "authors": [
+   "Antoine Cully"
+  ],
+  "year": 2020,
+  "venue": "arXiv 2007.05352",
+  "title_similarity": 0.872,
+  "status": "verified"
+ },
+ {
+  "key": "kommenda2020",
+  "query_title": "Parameter identification for symbolic regression using nonlinear least squares",
+  "title": "Parameter identification for symbolic regression using nonlinear least squares",
+  "authors": [
+   "Michael Kommenda",
+   "Bogdan Burlacu",
+   "Gabriel Kronberger",
+   "Michael Affenzeller"
+  ],
+  "year": 2019,
+  "venue": "Genetic Programming and Evolvable Machines",
+  "doi": "10.1007/s10710-019-09371-3",
+  "type": "journal-article",
+  "cited_by_count": 123,
+  "abstract": "Abstract In this paper we analyze the effects of using nonlinear least squares for parameter identification of symbolic regression models and integrate it as local search mechanism in tree-based genetic programming. We employ the Levenberg–Marquardt algorithm for parameter optimization and calculate gradients via automatic differentiation. We provide examples where the parameter identification succeeds and fails and highlight its computational overhead. Using an extensive suite of symbolic regression benchmark problems we demonstrate the increased performance when incorporating nonlinear least squares within genetic programming. Our results are compared with recently published results obtained by several genetic programming variants and state of the art machine learning algorithms. Genetic programming with nonlinear least squares performs among the best on the defined benchmark suite and the local search can be easily integrated in different genetic programming algorithms as long as only differentiable functions are used within the models.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "hansen2001",
+  "query_title": "Completely Derandomized Self-Adaptation in Evolution Strategies",
+  "title": "Completely Derandomized Self-Adaptation in Evolution Strategies",
+  "authors": [
+   "Nikolaus Hansen",
+   "Andreas Ostermeier"
+  ],
+  "year": 2001,
+  "venue": "Evolutionary Computation",
+  "doi": "10.1162/106365601750190398",
+  "type": "journal-article",
+  "cited_by_count": 3855,
+  "abstract": "This paper puts forward two useful methods for self-adaptation of the mutation distribution - the concepts of derandomization and cumulation. Principle shortcomings of the concept of mutative strategy parameter control and two levels of derandomization are reviewed. Basic demands on the self-adaptation of arbitrary (normal) mutation distributions are developed. Applying arbitrary, normal mutation distributions is equiv-alent to applying a general, linear problem encoding. The underlying objective of mutative strategy parameter control is roughly to favor previously selected mutation steps in the future. If this objective is pursued rigor-ously, a completely derandomized self-adaptation scheme results, which adapts arbitrary normal mutation distributions. This scheme, called covariance matrix adaptation (CMA), meets the previously stated demands. It can still be considerably improved by cumulation - utilizing an evolution path rather than single search steps. Simulations on various test functions reveal local and global search properties of the evolution strategy with and without covariance matrix adaptation. Their performances are comparable only on perfectly scaled functions. On badly scaled, non-separable functions usually a speed up factor of several orders of magnitude is ob-served. On moderately mis-scaled functions a speed up factor of three to ten can be expected.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "helmuth2015",
+  "query_title": "Solving Uncompromising Problems With Lexicase Selection",
+  "title": "Solving Uncompromising Problems With Lexicase Selection",
+  "authors": [
+   "Thomas Helmuth",
+   "Lee Spector",
+   "James Matheson"
+  ],
+  "year": 2015,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/tevc.2014.2362729",
+  "type": "journal-article",
+  "cited_by_count": 166,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "la_cava2016",
+  "query_title": "Epsilon-Lexicase Selection for Regression",
+  "title": "Epsilon-Lexicase Selection for Regression",
+  "authors": [
+   "William La Cava",
+   "Lee Spector",
+   "Kourosh Danai"
+  ],
+  "year": 2016,
+  "venue": "Proceedings of the Genetic and Evolutionary Computation Conference 2016",
+  "doi": "10.1145/2908812.2908898",
+  "type": "proceedings-article",
+  "cited_by_count": 124,
+  "abstract": "Lexicase selection is a parent selection method that considers test cases separately, rather than in aggregate, when performing parent selection. It performs well in discrete error spaces but not on the continuous-valued problems that compose most system identification tasks. In this paper, we develop a new form of lexicase selection for symbolic regression, named ε-lexicase selection, that redefines the pass condition for individuals on each test case in a more effective way. We run a series of experiments on real-world and synthetic problems with several treatments of ε and quantify how ε affects parent selection and model performance. ε-lexicase selection is shown to be effective for regression, producing better fit models compared to other techniques such as tournament selection and age-fitness Pareto optimization. We demonstrate that ε can be adapted automatically for individual test cases based on the population performance distribution. Our experiments show that ε-lexicase selection with automatic ε produces the most accurate models across tested problems with negligible computational overhead. We show that behavioral diversity is exceptionally high in lexicase selection treatments, and that ε-lexicase selection makes use of more fitness cases when selecting parents than lexicase selection, which helps explain the performance improvement.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "mouret2015",
+  "query_title": "Illuminating search spaces by mapping elites",
+  "arxiv_id": "1504.04909",
+  "arxiv": {
+   "title": "Illuminating search spaces by mapping elites",
+   "authors": [
+    "Jean-Baptiste Mouret",
+    "Jeff Clune"
+   ],
+   "published": "2015-04-20",
+   "abstract": "Many fields use search algorithms, which automatically explore a search space to find high-performing solutions: chemists search through the space of molecules to discover new drugs; engineers search for stronger, cheaper, safer designs, scientists search for models that best explain data, etc. The goal of search algorithms has traditionally been to return the single highest-performing solution in a search space. Here we describe a new, fundamentally different type of algorithm that is more useful because it provides a holistic view of how high-performing solutions are distributed throughout a search space. It creates a map of high-performing solutions at each point in a space defined by dimensions of variation that a user gets to choose. This Multi-dimensional Archive of Phenotypic Elites (MAP-Elites) algorithm illuminates search spaces, allowing researchers to understand how interesting attributes of solutions combine to affect performance, either positively or, equally of interest, negatively. For example, a drug company may wish to understand how performance changes as the size of molecules and their cost-to-produce vary. MAP-Elites produces a large diversity of high-performing, yet qualitatively different solutions, which can be more helpful than a single, high-performing solution. Interestingly, because MAP-Elites explores more of the search space, it also tends to find a better overall solution than state-of-the-art search algorithms. We demonstrate the benefits of this new algorithm in three different problem domains ranging from producing modular neural networks to designing simulated and real soft robots. Because MAP- Elites (1) illuminates the relationship between performance and dimensions of interest in solutions, (2) returns a set of high-performing, yet diverse solutions, and (3) improves finding a single, best solution, it will advance science and engineering."
+  },
+  "abstract": "Many fields use search algorithms, which automatically explore a search space to find high-performing solutions: chemists search through the space of molecules to discover new drugs; engineers search for stronger, cheaper, safer designs, scientists search for models that best explain data, etc. The goal of search algorithms has traditionally been to return the single highest-performing solution in a search space. Here we describe a new, fundamentally different type of algorithm that is more useful because it provides a holistic view of how high-performing solutions are distributed throughout a search space. It creates a map of high-performing solutions at each point in a space defined by dimensions of variation that a user gets to choose. This Multi-dimensional Archive of Phenotypic Elites (MAP-Elites) algorithm illuminates search spaces, allowing researchers to understand how interesting attributes of solutions combine to affect performance, either positively or, equally of interest, negatively. For example, a drug company may wish to understand how performance changes as the size of molecules and their cost-to-produce vary. MAP-Elites produces a large diversity of high-performing, yet qualitatively different solutions, which can be more helpful than a single, high-performing solution. Interestingly, because MAP-Elites explores more of the search space, it also tends to find a better overall solution than state-of-the-art search algorithms. We demonstrate the benefits of this new algorithm in three different problem domains ranging from producing modular neural networks to designing simulated and real soft robots. Because MAP- Elites (1) illuminates the relationship between performance and dimensions of interest in solutions, (2) returns a set of high-performing, yet diverse solutions, and (3) improves finding a single, best solution, it will advance science and engineering.",
+  "title": "Illuminating search spaces by mapping elites",
+  "authors": [
+   "Jean-Baptiste Mouret",
+   "Jeff Clune"
+  ],
+  "year": 2015,
+  "venue": "arXiv 1504.04909",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "vassiliades2018",
+  "query_title": "Discovering the Elite Hypervolume by Leveraging Interspecies Correlation",
+  "title": "Discovering the elite hypervolume by leveraging interspecies correlation",
+  "authors": [
+   "Vassiiis Vassiliades",
+   "Jean-Baptiste Mouret"
+  ],
+  "year": 2018,
+  "venue": "Proceedings of the Genetic and Evolutionary Computation Conference",
+  "doi": "10.1145/3205455.3205602",
+  "type": "proceedings-article",
+  "cited_by_count": 65,
+  "abstract": "Evolution has produced an astonishing diversity of species, each filling a different niche. Algorithms like MAP-Elites mimic this divergent evolutionary process to find a set of behaviorally diverse but high-performing solutions, called the elites. Our key insight is that species in nature often share a surprisingly large part of their genome, in spite of occupying very different niches; similarly the elites are likely to be concentrated in a specific \"elite hypervolume\" whose shape is defined by their common features. In this paper, we first introduce the elite hypervolume concept and propose two metrics to characterize it: the genotypic spread and the genotypic similarity. We then introduce a new variation operator, called \"directional variation\", that exploits interspecies (or inter-elites) correlations to accelerate the MAP-Elites algorithm. We demonstrate the effectiveness of this operator in three problems (a toy function, a redundant robotic arm, and a hexapod robot).",
+  "title_similarity": 1.0,
+  "arxiv_id": "1804.03906",
+  "arxiv": {
+   "title": "Discovering the Elite Hypervolume by Leveraging Interspecies Correlation",
+   "authors": [
+    "Vassilis Vassiliades",
+    "Jean-Baptiste Mouret"
+   ],
+   "published": "2018-04-11",
+   "abstract": "Evolution has produced an astonishing diversity of species, each filling a different niche. Algorithms like MAP-Elites mimic this divergent evolutionary process to find a set of behaviorally diverse but high-performing solutions, called the elites. Our key insight is that species in nature often share a surprisingly large part of their genome, in spite of occupying very different niches; similarly, the elites are likely to be concentrated in a specific \"elite hypervolume\" whose shape is defined by their common features. In this paper, we first introduce the elite hypervolume concept and propose two metrics to characterize it: the genotypic spread and the genotypic similarity. We then introduce a new variation operator, called \"directional variation\", that exploits interspecies (or inter-elites) correlations to accelerate the MAP-Elites algorithm. We demonstrate the effectiveness of this operator in three problems (a toy function, a redundant robotic arm, and a hexapod robot)."
+  },
+  "status": "verified"
+ },
+ {
+  "key": "cully2017",
+  "query_title": "Quality and Diversity Optimization: A Unifying Modular Framework",
+  "title": "Quality and Diversity Optimization: A Unifying Modular Framework",
+  "authors": [
+   "Antoine Cully",
+   "Yiannis Demiris"
+  ],
+  "year": 2018,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/tevc.2017.2704781",
+  "type": "journal-article",
+  "cited_by_count": 224,
+  "abstract": "The optimization of functions to find the best solution according to one or several objectives has a central role in many engineering and research fields. Recently, a new family of optimization algorithms, named quality-diversity (QD) optimization, has been introduced, and contrasts with classic algorithms. Instead of searching for a single solution, QD algorithms are searching for a large collection of both diverse and high-performing solutions. The role of this collection is to cover the range of possible solution types as much as possible, and to contain the best solution for each type. The contribution of this paper is threefold. First, we present a unifying framework of QD optimization algorithms that covers the two main algorithms of this family (multidimensional archive of phenotypic elites and the novelty search with local competition), and that highlights the large variety of variants that can be investigated within this family. Second, we propose algorithms with a new selection mechanism for QD algorithms that outperforms all the algorithms tested in this paper. Lastly, we present a new collection management that overcomes the erosion issues observed when using unstructured collections. These three contributions are supported by extensive experimental comparisons of QD algorithms on three different experimental scenarios.",
+  "title_similarity": 1.0,
+  "arxiv_id": "1708.09251",
+  "arxiv": {
+   "title": "Quality and Diversity Optimization: A Unifying Modular Framework",
+   "authors": [
+    "Antoine Cully",
+    "Yiannis Demiris"
+   ],
+   "published": "2017-05-12",
+   "abstract": "The optimization of functions to find the best solution according to one or several objectives has a central role in many engineering and research fields. Recently, a new family of optimization algorithms, named Quality-Diversity optimization, has been introduced, and contrasts with classic algorithms. Instead of searching for a single solution, Quality-Diversity algorithms are searching for a large collection of both diverse and high-performing solutions. The role of this collection is to cover the range of possible solution types as much as possible, and to contain the best solution for each type. The contribution of this paper is threefold. Firstly, we present a unifying framework of Quality-Diversity optimization algorithms that covers the two main algorithms of this family (Multi-dimensional Archive of Phenotypic Elites and the Novelty Search with Local Competition), and that highlights the large variety of variants that can be investigated within this family. Secondly, we propose algorithms with a new selection mechanism for Quality-Diversity algorithms that outperforms all the algorithms tested in this paper. Lastly, we present a new collection management that overcomes the erosion issues observed when using unstructured collections. These three contributions are supported by extensive experimental comparisons of Quality-Diversity algorithms on three different experimental scenarios."
+  },
+  "status": "verified"
+ },
+ {
+  "key": "fontaine2019",
+  "query_title": "Covariance Matrix Adaptation for the Rapid Illumination of Behavior Space",
+  "title": "Covariance matrix adaptation for the rapid illumination of behavior space",
+  "authors": [
+   "Matthew C. Fontaine",
+   "Julian Togelius",
+   "Stefanos Nikolaidis",
+   "Amy K. Hoover"
+  ],
+  "year": 2020,
+  "venue": "Proceedings of the 2020 Genetic and Evolutionary Computation Conference",
+  "doi": "10.1145/3377930.3390232",
+  "type": "proceedings-article",
+  "cited_by_count": 102,
+  "abstract": "We focus on the challenge of finding a diverse collection of quality solutions on complex continuous domains. While quality diversity (QD) algorithms like Novelty Search with Local Competition (NSLC) and MAP-Elites are designed to generate a diverse range of solutions, these algorithms require a large number of evaluations for exploration of continuous spaces. Meanwhile, variants of the Covariance Matrix Adaptation Evolution Strategy (CMA-ES) are among the best-performing derivative-free optimizers in single-objective continuous domains. This paper proposes a new QD algorithm called Covariance Matrix Adaptation MAP-Elites (CMA-ME). Our new algorithm combines the self-adaptation techniques of CMA-ES with archiving and mapping techniques for maintaining diversity in QD. Results from experiments based on standard continuous optimization benchmarks show that CMA-ME finds better-quality solutions than MAP-Elites; similarly, results on the strategic game Hearthstone show that CMA-ME finds both a higher overall quality and broader diversity of strategies than both CMA-ES and MAP-Elites. Overall, CMA-ME more than doubles the performance of MAP-Elites using standard QD performance metrics. These results suggest that QD algorithms augmented by operators from state-of-the-art optimization algorithms can yield high-performing methods for simultaneously exploring and optimizing continuous search spaces, with significant applications to design, testing, and reinforcement learning among other domains.",
+  "title_similarity": 1.0,
+  "arxiv_id": "1912.02400",
+  "arxiv": {
+   "title": "Covariance Matrix Adaptation for the Rapid Illumination of Behavior Space",
+   "authors": [
+    "Matthew C. Fontaine",
+    "Julian Togelius",
+    "Stefanos Nikolaidis",
+    "Amy K. Hoover"
+   ],
+   "published": "2019-12-05",
+   "abstract": "We focus on the challenge of finding a diverse collection of quality solutions on complex continuous domains. While quality diver-sity (QD) algorithms like Novelty Search with Local Competition (NSLC) and MAP-Elites are designed to generate a diverse range of solutions, these algorithms require a large number of evaluations for exploration of continuous spaces. Meanwhile, variants of the Covariance Matrix Adaptation Evolution Strategy (CMA-ES) are among the best-performing derivative-free optimizers in single-objective continuous domains. This paper proposes a new QD algorithm called Covariance Matrix Adaptation MAP-Elites (CMA-ME). Our new algorithm combines the self-adaptation techniques of CMA-ES with archiving and mapping techniques for maintaining diversity in QD. Results from experiments based on standard continuous optimization benchmarks show that CMA-ME finds better-quality solutions than MAP-Elites; similarly, results on the strategic game Hearthstone show that CMA-ME finds both a higher overall quality and broader diversity of strategies than both CMA-ES and MAP-Elites. Overall, CMA-ME more than doubles the performance of MAP-Elites using standard QD performance metrics. These results suggest that QD algorithms augmented by operators from state-of-the-art optimization algorithms can yield high-performing methods for simultaneously exploring and optimizing continuous search spaces, with significant applications to design, testing, and reinforcement learning among other domains."
+  },
+  "status": "verified"
+ },
+ {
+  "key": "pugh2016",
+  "query_title": "Quality Diversity: A New Frontier for Evolutionary Computation",
+  "title": "Quality Diversity: A New Frontier for Evolutionary Computation",
+  "authors": [
+   "Justin K. Pugh",
+   "Lisa B. Soros",
+   "Kenneth O. Stanley"
+  ],
+  "year": 2016,
+  "venue": "Frontiers in Robotics and AI",
+  "doi": "10.3389/frobt.2016.00040",
+  "type": "journal-article",
+  "cited_by_count": 388,
+  "abstract": "While evolutionary computation and evolutionary robotics take inspiration from nature, they have long focused mainly on problems of performance optimization. Yet evolution in nature can be interpreted as more nuanced than a process of simple optimization. In particular, natural evolution is a divergent search that optimizes locally within each niche as it simultaneously diversifies. This tendency to discover both quality and diversity at the same time differs from many of the conventional algorithms of machine learning, and also thereby suggests a different foundation for inferring the approach of greatest potential for evolutionary algorithms. In fact, several recent evolutionary algorithms called quality diversity (QD) algorithms(e.g. novelty search with local competition and MAP-Elites) have drawn inspiration from this more nuanced view, aiming to fill a space of possibilities with the best possible example of each type of achievable behavior. The result is a new class of algorithms that return an archive of diverse, high-quality behaviors in a single run. The aim in this paper is to study the application of QD algorithms in challenging environments (in particular complex mazes) to establish their best practices for ambitious domains in the future. In addition to providing insight into cases when QD succeeds and fails, a new approach is investigated that hybridizes multiple views of behaviors (called behavior characterizations) in the same run, which succeeds in overcoming some of the challenges associated with searching for QD with respect to a behavior characterization that is not necessarily sufficient for generating both quality and diversity at the same time.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "lehman2011",
+  "query_title": "Abandoning Objectives: Evolution Through the Search for Novelty Alone",
+  "title": "Abandoning Objectives: Evolution Through the Search for Novelty Alone",
+  "authors": [
+   "Joel Lehman",
+   "Kenneth O. Stanley"
+  ],
+  "year": 2011,
+  "venue": "Evolutionary Computation",
+  "doi": "10.1162/evco_a_00025",
+  "type": "journal-article",
+  "cited_by_count": 723,
+  "abstract": "In evolutionary computation, the fitness function normally measures progress toward an objective in the search space, effectively acting as an objective function. Through deception, such objective functions may actually prevent the objective from being reached. While methods exist to mitigate deception, they leave the underlying pathology untreated: Objective functions themselves may actively misdirect search toward dead ends. This paper proposes an approach to circumventing deception that also yields a new perspective on open-ended evolution. Instead of either explicitly seeking an objective or modeling natural evolution to capture open-endedness, the idea is to simply search for behavioral novelty. Even in an objective-based problem, such novelty search ignores the objective. Because many points in the search space collapse to a single behavior, the search for novelty is often feasible. Furthermore, because there are only so many simple behaviors, the search for novelty leads to increasing complexity. By decoupling open-ended search from artificial life worlds, the search for novelty is applicable to real world problems. Counterintuitively, in the maze navigation and biped walking tasks in this paper, novelty search significantly outperforms objective-based search, suggesting the strange conclusion that some problems are best solved by methods that ignore the objective. The main lesson is the inherent limitation of the objective-based paradigm and the unexploited opportunity to guide search through other means.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "dolson2019mapelites",
+  "query_title": "Exploring Genetic Programming Systems with MAP-Elites",
+  "title": "Exploring Genetic Programming Systems with MAP-Elites",
+  "authors": [
+   "Emily Dolson",
+   "Alexander Lalejini",
+   "Charles Ofria"
+  ],
+  "year": 2019,
+  "venue": "Genetic and Evolutionary Computation",
+  "doi": "10.1007/978-3-030-04735-1_1",
+  "type": "book-chapter",
+  "cited_by_count": 11,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "justesen2019",
+  "query_title": "MAP-Elites for noisy domains by adaptive sampling",
+  "title": "MAP-Elites for noisy domains by adaptive sampling",
+  "authors": [
+   "Niels Justesen",
+   "Sebastian Risi",
+   "Jean-Baptiste Mouret"
+  ],
+  "year": 2019,
+  "venue": "Proceedings of the Genetic and Evolutionary Computation Conference Companion",
+  "doi": "10.1145/3319619.3321904",
+  "type": "proceedings-article",
+  "cited_by_count": 24,
+  "abstract": "Quality Diversity algorithms (QD) evolve a set of high-performing phenotypes that each behaves as differently as possible. However, current algorithms are all elitist, which make them unable to cope with stochastic fitness functions and behavior evaluations. In fact, many of the promising applications of QD algorithms, for instance, games and robotics, are stochastic. Here we propose two new extensions to the QD-algorithm MAP-Elites --- adaptive sampling and drifting-elites --- and demonstrate empirically that these extensions increase the quality of solutions in a noisy artificial test function and the behavioral diversity in a 2D bipedal walker environment.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "flageat2020",
+  "query_title": "Fast and stable MAP-Elites in noisy domains using deep grids",
+  "title": "Fast and stable MAP-Elites in noisy domains using deep grids",
+  "authors": [
+   "Manon Flageat",
+   "Antoine Cully"
+  ],
+  "year": 2020,
+  "venue": "The 2020 Conference on Artificial Life",
+  "doi": "10.1162/isal_a_00316",
+  "type": "proceedings-article",
+  "cited_by_count": 32,
+  "abstract": "Quality-Diversity optimisation algorithms enable the evolution of collections of both high-performing and diverse solutions. These collections offer the possibility to quickly adapt and switch from...",
+  "title_similarity": 1.0,
+  "arxiv_id": "2006.14253",
+  "arxiv": {
+   "title": "Fast and stable MAP-Elites in noisy domains using deep grids",
+   "authors": [
+    "Manon Flageat",
+    "Antoine Cully"
+   ],
+   "published": "2020-06-25",
+   "abstract": "Quality-Diversity optimisation algorithms enable the evolution of collections of both high-performing and diverse solutions. These collections offer the possibility to quickly adapt and switch from one solution to another in case it is not working as expected. It therefore finds many applications in real-world domain problems such as robotic control. However, QD algorithms, like most optimisation algorithms, are very sensitive to uncertainty on the fitness function, but also on the behavioural descriptors. Yet, such uncertainties are frequent in real-world applications. Few works have explored this issue in the specific case of QD algorithms, and inspired by the literature in Evolutionary Computation, mainly focus on using sampling to approximate the \"true\" value of the performances of a solution. However, sampling approaches require a high number of evaluations, which in many applications such as robotics, can quickly become impractical. In this work, we propose Deep-Grid MAP-Elites, a variant of the MAP-Elites algorithm that uses an archive of similar previously encountered solutions to approximate the performance of a solution. We compare our approach to previously explored ones on three noisy tasks: a standard optimisation task, the control of a redundant arm and a simulated Hexapod robot. The experimental results show that this simple approach is significantly more resilient to noise on the behavioural descriptors, while achieving competitive performances in terms of fitness optimisation, and being more sample-efficient than other existing approaches."
+  },
+  "status": "verified"
+ },
+ {
+  "key": "arthur1997",
+  "query_title": "Asset Pricing Under Endogenous Expectations in an Artificial Stock Market",
+  "title": "Asset Pricing Under Endogenous Expectations in an Artificial Stock Market",
+  "authors": [
+   "W. Brian Arthur",
+   "John H. Holland",
+   "Blake D. LeBaron",
+   "Richard G. Palmer",
+   "Paul Tayler"
+  ],
+  "year": 1997,
+  "venue": null,
+  "doi": "10.2139/ssrn.2252",
+  "type": "posted-content",
+  "cited_by_count": 226,
+  "abstract": "We propose a theory of asset pricing based on heterogeneous agents who continually adapt their expectations to the market that these expectations aggregatively create. And we explore the implications of this theory computationally using our Santa Fe artificial stock market. Asset markets, we argue, have a recursive nature in that agents' expectations are formed on the basis of their anticipations of other agents' expectations, which precludes expectations being formed by deductive means. Instead traders continually hypothesize-continually explore-expectational models, buy or sell on the basis of those that perform best, and confirm or discard these according to their performance. Thus individual beliefs or expectations become endogenous to the market, and constantly compete within an ecology of others' beliefs or expectations. The ecology of beliefs co-evolves over time. Computer experiments with this endogenous-expectations market explain one of the more striking puzzles in finance: that market traders often believe in such concepts as technical trading, market psychology, and bandwagon effects, while academic theorists believe in market efficiency and a lack of speculative opportunities. Both views, we show, are correct, but within different regimes. Within a regime where investors explore alternative expectational models at a low rate, the market settles into the rational-expectations equilibrium of the efficient-market literature. Within a regime where the rate of exploration of alternative expectations is higher, the market self-organizes into a complex pattern. It acquires a rich psychology, technical trading emerges, temporary bubbles and crashes occur, and asset prices and trading volume show statistical features-in particular, GARCH behavior-characteristic of actual market data.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "lo2004",
+  "query_title": "The Adaptive Markets Hypothesis",
+  "title": "The Adaptive Markets Hypothesis",
+  "authors": [
+   "Andrew W. Lo"
+  ],
+  "year": 2004,
+  "venue": "The Journal of Portfolio Management",
+  "doi": "10.3905/jpm.2004.442611",
+  "type": "journal-article",
+  "cited_by_count": 1416,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "bailey2014dsr",
+  "query_title": "The Deflated Sharpe Ratio: Correcting for Selection Bias and Backtest Overfitting",
+  "status": "not found"
+ },
+ {
+  "key": "bailey2014charlatanism",
+  "query_title": "Pseudo-Mathematics and Financial Charlatanism: The Effects of Backtest Overfitting on Out-of-Sample Performance",
+  "title": "Pseudo-Mathematics and Financial Charlatanism: The Effects of Backtest Overfitting on Out-of-Sample Performance",
+  "authors": [
+   "David H. Bailey",
+   "Jonathan M. Borwein",
+   "Marcos López de Prado",
+   "Qiji Jim Zhu"
+  ],
+  "year": 2014,
+  "venue": "Notices of the American Mathematical Society",
+  "doi": "10.1090/noti1105",
+  "type": "journal-article",
+  "cited_by_count": 176,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "bailey2017pbo",
+  "query_title": "The probability of backtest overfitting",
+  "title": "The probability of backtest overfitting",
+  "authors": [
+   "David Bailey",
+   "Jonathan Borwein",
+   "Marcos López de Prado",
+   "Qiji Jim Zhu"
+  ],
+  "year": 2016,
+  "venue": "The Journal of Computational Finance",
+  "doi": "10.21314/jcf.2016.322",
+  "type": "journal-article",
+  "cited_by_count": 65,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "white2000",
+  "query_title": "A Reality Check for Data Snooping",
+  "title": "A Reality Check for Data Snooping",
+  "authors": [
+   "Halbert White"
+  ],
+  "year": 2000,
+  "venue": "Econometrica",
+  "doi": "10.1111/1468-0262.00152",
+  "type": "journal-article",
+  "cited_by_count": 1360,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "hansen2005spa",
+  "query_title": "A Test for Superior Predictive Ability",
+  "title": "A Test for Superior Predictive Ability",
+  "authors": [
+   "Peter Reinhard Hansen"
+  ],
+  "year": 2005,
+  "venue": "Journal of Business &amp; Economic Statistics",
+  "doi": "10.1198/073500105000000063",
+  "type": "journal-article",
+  "cited_by_count": 992,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "romano2005",
+  "query_title": "Stepwise Multiple Testing as Formalized Data Snooping",
+  "title": "Stepwise Multiple Testing as Formalized Data Snooping",
+  "authors": [
+   "Joseph P. Romano",
+   "Michael Wolf"
+  ],
+  "year": 2005,
+  "venue": "Econometrica",
+  "doi": "10.1111/j.1468-0262.2005.00615.x",
+  "type": "journal-article",
+  "cited_by_count": 775,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "hansen2011mcs",
+  "query_title": "The Model Confidence Set",
+  "title": "The Model Confidence Set",
+  "authors": [],
+  "year": 2011,
+  "venue": "Econometrica",
+  "doi": "10.3982/ecta5771",
+  "type": "journal-article",
+  "cited_by_count": 2075,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "note": "no author metadata in Crossref; matched on title, year and DOI",
+  "status": "verified"
+ },
+ {
+  "key": "politis1994",
+  "query_title": "The Stationary Bootstrap",
+  "title": "The Stationary Bootstrap",
+  "authors": [
+   "Dimitris N. Politis",
+   "Joseph P. Romano"
+  ],
+  "year": 1994,
+  "venue": "Journal of the American Statistical Association",
+  "doi": "10.1080/01621459.1994.10476870",
+  "type": "journal-article",
+  "cited_by_count": 2277,
+  "abstract": "Abstract This article introduces a resampling procedure called the stationary bootstrap as a means of calculating standard errors of estimators and constructing confidence regions for parameters based on weakly dependent stationary observations. Previously, a technique based on resampling blocks of consecutive observations was introduced to construct confidence intervals for a parameter of the m-dimensional joint distribution of m consecutive observations, where m is fixed. This procedure has been generalized by constructing a “blocks of blocks” resampling scheme that yields asymptotically valid procedures even for a multivariate parameter of the whole (i.e., infinite-dimensional) joint distribution of the stationary sequence of observations. These methods share the construction of resampling blocks of observations to form a pseudo-time series, so that the statistic of interest may be recalculated based on the resampled data set. But in the context of applying this method to stationary data, it is natural...",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "rockafellar2000",
+  "query_title": "Optimization of conditional value-at-risk",
+  "title": "Optimization of conditional value-at-risk",
+  "authors": [
+   "R. Tyrrell Rockafellar",
+   "Stanislav Uryasev"
+  ],
+  "year": 2000,
+  "venue": "The Journal of Risk",
+  "doi": "10.21314/jor.2000.038",
+  "type": "journal-article",
+  "cited_by_count": 5552,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "kelly1956",
+  "query_title": "A New Interpretation of Information Rate",
+  "title": "A New Interpretation of Information Rate",
+  "authors": [
+   "J. L. Kelly"
+  ],
+  "year": 1956,
+  "venue": "Bell System Technical Journal",
+  "doi": "10.1002/j.1538-7305.1956.tb03809.x",
+  "type": "journal-article",
+  "cited_by_count": 1161,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "page1954",
+  "query_title": "Continuous Inspection Schemes",
+  "title": "Continuous Inspection Schemes",
+  "authors": [
+   "E. S. Page"
+  ],
+  "year": 1954,
+  "venue": "Biometrika",
+  "doi": "10.2307/2333009",
+  "type": "journal-article",
+  "cited_by_count": 1554,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "barber2020",
+  "query_title": "Learning Fast or Slow?",
+  "title": "Learning, Fast or Slow",
+  "authors": [
+   "Brad M Barber",
+   "Yi-Tsung Lee",
+   "Yu-Jane Liu",
+   "Terrance Odean",
+   "Ke Zhang"
+  ],
+  "year": 2019,
+  "venue": "The Review of Asset Pricing Studies",
+  "doi": "10.1093/rapstu/raz006",
+  "type": "journal-article",
+  "cited_by_count": 34,
+  "abstract": "Abstract Rational models claim “trading to learn” explains widespread excessive speculative trading and challenge behavioral explanations of excessive trading. We argue rational learning models do not explain speculative trading by studying day traders in Taiwan. Consistent with previous studies of learning, unprofitable day traders are more likely than profitable traders to quit. Consistent with models of overconfidence and biased learning (but not with rational learning), the aggregate performance of day traders is negative; 74% of day trading volume is generated by traders with a history of losses; and 97% of day traders are likely to lose money in future day trading. Received: March 4, 2019; Editorial decision: May 16, 2019 by Editor: Jeffrey Pontiff. Authors have furnished an Internet Appendix, which is available on the Oxford University Press Web site next to the link to the final published paper online.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "getmansky2004",
+  "query_title": "Sifting Through the Wreckage: Lessons from Recent Hedge-Fund Liquidations",
+  "title": "SIFTING THROUGH THE WRECKAGE: LESSONS FROM RECENT HEDGE-FUND LIQUIDATIONS",
+  "authors": [
+   "Mila Getmansky",
+   "Andrew W. Lo",
+   "Shauna X. Mei"
+  ],
+  "year": 2005,
+  "venue": "The World of Hedge Funds",
+  "doi": "10.1142/9789812569448_0002",
+  "type": "book-chapter",
+  "cited_by_count": 31,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "kupiec1995",
+  "query_title": "Techniques for Verifying the Accuracy of Risk Measurement Models",
+  "title": "Techniques for Verifying the Accuracy of Risk Measurement Models",
+  "authors": [
+   "Paul H. Kupiec"
+  ],
+  "year": 1995,
+  "venue": "The Journal of Derivatives",
+  "doi": "10.3905/jod.1995.407942",
+  "type": "journal-article",
+  "cited_by_count": 1822,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "christoffersen1998",
+  "query_title": "Evaluating Interval Forecasts",
+  "title": "Evaluating Interval Forecasts",
+  "authors": [
+   "Peter F. Christoffersen"
+  ],
+  "year": 1998,
+  "venue": "International Economic Review",
+  "doi": "10.2307/2527341",
+  "type": "journal-article",
+  "cited_by_count": 2058,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "acerbi2014",
+  "query_title": "Backtesting Expected Shortfall",
+  "status": "not found"
+ },
+ {
+  "key": "powell2019",
+  "query_title": "A unified framework for stochastic optimization",
+  "title": "A unified framework for stochastic optimization",
+  "authors": [
+   "Warren B. Powell"
+  ],
+  "year": 2019,
+  "venue": "European Journal of Operational Research",
+  "doi": "10.1016/j.ejor.2018.07.014",
+  "type": "journal-article",
+  "cited_by_count": 310,
+  "abstract": "Abstract Stochastic optimization is an umbrella term that includes over a dozen fragmented communities, using a patchwork of sometimes overlapping notational systems with algorithmic strategies that are suited to specific classes of problems. This paper reviews the canonical models of these communities, and proposes a universal modeling framework that encompasses all of these competing approaches. At the heart is an objective function that optimizes over policies that is standard in some approaches, but foreign to others. We then identify four meta-classes of policies that encompasses all of the approaches that we have identified in the research literature or industry practice. In the process, we observe that any adaptive learning algorithm, whether it is derivative-based or derivative-free, is a form of policy that can be tuned to optimize either the cumulative reward (similar to multi-armed bandit problems) or final reward (as is used in ranking and selection or stochastic search). We argue that the principles of bandit problems, long a niche community, should become a core dimension of mainstream stochastic optimization.",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "chen2000ocba",
+  "query_title": "Simulation Budget Allocation for Further Enhancing the Efficiency of Ordinal Optimization",
+  "title": "Simulation Budget Allocation for Further Enhancing the Efficiency of Ordinal Optimization",
+  "authors": [
+   "Chun-Hung Chen",
+   "Jianwu Lin",
+   "Enver Yücesan",
+   "Stephen E. Chick"
+  ],
+  "year": 2000,
+  "venue": "Discrete Event Dynamic Systems",
+  "doi": "10.1023/a:1008349927281",
+  "type": "journal-article",
+  "cited_by_count": 618,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "deb2002",
+  "query_title": "A fast and elitist multiobjective genetic algorithm: NSGA-II",
+  "title": "A fast and elitist multiobjective genetic algorithm: NSGA-II",
+  "authors": [
+   "K. Deb",
+   "A. Pratap",
+   "S. Agarwal",
+   "T. Meyarivan"
+  ],
+  "year": 2002,
+  "venue": "IEEE Transactions on Evolutionary Computation",
+  "doi": "10.1109/4235.996017",
+  "type": "journal-article",
+  "cited_by_count": 44738,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "birge2017",
+  "query_title": "Limits to Arbitrage in Electricity Markets: A Case Study of MISO",
+  "title": "Limits to arbitrage in electricity markets: A case study of MISO",
+  "authors": [
+   "John R. Birge",
+   "Ali Hortaçsu",
+   "Ignacia Mercadal",
+   "J. Michael Pavlin"
+  ],
+  "year": 2018,
+  "venue": "Energy Economics",
+  "doi": "10.1016/j.eneco.2018.08.024",
+  "type": "journal-article",
+  "cited_by_count": 41,
+  "abstract": "Abstract We study the case of financial traders in the Midwest electricity market, where they are expected to arbitrage price differences that result in inefficiencies. Using exogenous variation in financial trading from the financial crisis and a period of high transaction costs, we show speculators had only a weak effect. Moreover, while arbitrage was restricted by transaction costs imposed by regulation, some financial players bet in exactly the opposite direction of the pricing gap, sustaining large losses while doing so. We show this is consistent with price manipulation intended to increase the value of a related instrument that bets on local price differences (FTRs).",
+  "title_similarity": 1.0,
+  "status": "verified"
+ },
+ {
+  "key": "baltaoglu2018",
+  "query_title": "Algorithmic Bidding for Virtual Trading in Electricity Markets",
+  "title": "Algorithmic Bidding for Virtual Trading in Electricity Markets",
+  "authors": [
+   "Sevi Baltaoglu",
+   "Lang Tong",
+   "Qing Zhao"
+  ],
+  "year": 2019,
+  "venue": "IEEE Transactions on Power Systems",
+  "doi": "10.1109/tpwrs.2018.2862246",
+  "type": "journal-article",
+  "cited_by_count": 57,
+  "abstract": "We consider the problem of optimal bidding for virtual trading in two-settlement electricity markets. A virtual trader aims to arbitrage on differences between day-ahead and real-time market prices that are random and unknown to market participants. An online learning algorithm is proposed to maximize the cumulative payoff over a finite number of trading sessions by allocating the trader's budget among his bids for $K$ options in each session. It is shown that the expected payoff of the proposed algorithm converges, with an almost optimal convergence rate, to the expected payoff of the global optimal corresponding to the case when the underlying price distribution is known. The proposed algorithm is also generalized for trading strategies with a risk measure. By using both cumulative payoff and Sharpe ratio as performance metrics, evaluations were performed based on the historical data spanning ten year period of NYISO and PJM markets. It was shown that the proposed strategy outperforms standard benchmarks and the S&P 500 index over the same period.",
+  "title_similarity": 1.0,
+  "arxiv_id": "1802.03010",
+  "arxiv": {
+   "title": "Algorithmic Bidding for Virtual Trading in Electricity Markets",
+   "authors": [
+    "Sevi Baltaoglu",
+    "Lang Tong",
+    "Qing Zhao"
+   ],
+   "published": "2018-02-08",
+   "abstract": "We consider the problem of optimal bidding for virtual trading in two-settlement electricity markets. A virtual trader aims to arbitrage on the differences between day-ahead and real-time market prices; both prices, however, are random and unknown to market participants. An online learning algorithm is proposed to maximize the cumulative payoff over a finite number of trading sessions by allocating the trader's budget among his bids for K options in each session. It is shown that the proposed algorithm converges, with an almost optimal convergence rate, to the global optimal corresponding to the case when the underlying price distribution is known. The proposed algorithm is also generalized for trading strategies with a risk measure. By using both cumulative payoff and Sharpe ratio as performance metrics, evaluations were performed based on historical data spanning ten year period of NYISO and PJM markets. It was shown that the proposed strategy outperforms standard benchmarks and the S&amp;P 500 index over the same period."
+  },
+  "status": "verified"
+ },
+ {
+  "key": "white2009",
+  "query_title": "A Rigorous Evaluation of Crossover and Mutation in Genetic Programming",
+  "title": "A Rigorous Evaluation of Crossover and Mutation in Genetic Programming",
+  "authors": [
+   "David R. White",
+   "Simon Poulding"
+  ],
+  "year": 2009,
+  "venue": "Lecture Notes in Computer Science",
+  "doi": "10.1007/978-3-642-01181-8_19",
+  "type": "book-chapter",
+  "cited_by_count": 20,
+  "abstract": "",
+  "title_similarity": 1.0,
+  "status": "verified"
+ }
+]

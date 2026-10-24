@@ -44,3 +44,5 @@ convention = "google"
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
 "tools/**" = ["D"]
+# Its HTML template lines are long by nature; wrapping them would hurt readability.
+"tools/build_design_preview.py" = ["D", "E501"]
