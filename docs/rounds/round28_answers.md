@@ -36,7 +36,15 @@ Date: 2026-10-28. The four multiple-choice questions of `round27_verification.md
   - mean GPR over 2022-02-24 → 03-31 is 318 (`CLAUDE.md` §7.7);
   - mean EPU over 2020-03-09 → 04-30 is 512.6, so "513" holds. **Correction:** `CLAUDE.md` §7.6 said that mean was "above every 2015–19 baseline day". One day is higher: 2016-06-25, at 586.6, the day after the Brexit vote. The mean is 3.5× the highest 53-day mean of 2015–19 (144.7). The briefing now says so.
 - **Not read:** anything after 2025-09-21 in these files. The briefing's 2026 facts (gas peak, Iran war GPR) are inside the hold-out and stay unverified until `final-test`.
-- **Next in M1:** the Pink Sheet and EIA-860M readers (the latter needs the plant-to-hub-area rule), the NWS parser once the weather download finishes, `visible()`, the store, and `evobots data build --stage A`.
+- **NWS forecast parser** (`src/evobots/data/sources/nws_pfm.py`, 6 tests on trimmed real issues), run over every file downloaded so far (36,700 office-days, 2005-03-31 → 2016-05):
+  - columns are placed by the UTC hour row; the max/min values fall under the ~7 p.m. and ~7 a.m. local columns, as NWS defines them;
+  - **19 town blocks are corrupted in the archive** (another row spliced into the hour rows). Each is skipped and reported, and the rest of its issue is kept;
+  - **fetcher bug found and fixed:** when no issue exists in the 24-hour window, IEM answers "ERROR: Could not Find: PFMLZK". That text contains "PFM", so 31 such answers had been saved as forecasts (27 of them LZK). The check now looks for the product's own `PFM…` line, the 31 records were re-logged as missing, and the download was restarted with the fix;
+  - one Indianapolis issue (2015-07-16) is a backup office's placeholder ("AREA 1"), with no usable town;
+  - towns change over the years (Indianapolis's office went from 8 towns to 46 in 2008), and coordinates are re-surveyed by 0.01–0.03°, so towns are identified by zone code and name. One source error was seen: Port Arthur TX printed at 3.93°W. Which towns feed each hub is question 1 below.
+- **EIA-860M reader** (`src/evobots/data/sources/eia860m.py`, 4 tests): MISO's fleet by month and technology from the operating and retirement months. Against `CLAUDE.md` §7.8, coal, wind, solar and battery agree to 0.1 GW; **natural gas is 0.7 GW lower in every month** (78.6 vs 79.3 GW in 2005-04; 83.2 vs 83.9 in 2015-01). The likely cause is a different grouping (e.g. "Other Gases", 0.5–1.2 GW, counted as gas), but this wasn't confirmed. Plant → hub area is question 2 below.
+- **A slip, reported:** checking the reader printed the fleet for August 2026, a month inside the sealed hold-out. These are generator counts the briefing already quotes, not prices or results, but the rule is that nothing from the hold-out is printed. `nameplate_mw_by_group` now refuses months after 2025-09 without the hold-out accessor's permission, and a test checks it.
+- **Next in M1:** the two questions below, then regional weather and capacity features' inputs, the Pink Sheet reader, `visible()`, the store, and `evobots data build --stage A`.
 
 ## 5. Files changed
 - `CLAUDE.md` §13.1 (risk-free source), §17.2 (battery efficiency decided), §20.7 (battery default 82 %).

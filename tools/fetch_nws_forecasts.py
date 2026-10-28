@@ -118,7 +118,10 @@ def fetch_forecast(office, decision_day, user_agent):
                 request, timeout=TIMEOUT_SECONDS, context=ssl.create_default_context()
             ) as response:
                 body = response.read()
-            status = "downloaded" if b"PFM" in body[:400] else "missing"
+            # IEM answers "ERROR: Could not Find: PFMXXX" when no issue exists in the
+            # window; that text contains "PFM", so check for the product's own pil line.
+            is_product = b"\nPFM" in body[:400] and not body.startswith(b"ERROR")
+            status = "downloaded" if is_product else "missing"
             break
         # A truncated chunked response raises IncompleteRead, an HTTPException.
         except (urllib.error.URLError, http.client.HTTPException, OSError) as error:
