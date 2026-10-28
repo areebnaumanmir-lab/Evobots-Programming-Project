@@ -16,7 +16,21 @@ Date: 2026-10-28.
   - Beaumont: TXZ215 → TXZ515 from the 2023-03-09 issue.
 - **Fix:** `src/evobots/data/regions.py` lets a town carry several zone codes. Tests cover both renumberings, and a test checks that "East New Orleans" (LAZ078) is not matched.
 - **Also seen:** in 2007–08 the Lake Charles office alternated two coordinate pairs for "BEAUMONT-TEXAS TX" (29.95N 94.03W and 30.08N 94.15W). Same zone and name, so the same town for our purposes.
-- **Results after the fix:** see §3 (filled in when the rebuild finishes).
+- **Results after the fix** (obs., rebuilt table, 7,479 operating days per hub, 2005-04-01 → 2025-09-21):
+
+| Hub | Days with a forecast high |
+|---|---|
+| ARKANSAS | 99.60 % |
+| ILLINOIS | 99.93 % |
+| INDIANA | 99.95 % |
+| LOUISIANA | 99.96 % (was 83.1 %) |
+| MICHIGAN | 99.95 % |
+| MINN | 99.96 % |
+| MS | 99.96 % |
+| TEXAS | 99.97 % (was 87.6 %) |
+
+- **Row statuses** (both target days): 119,552 ok, 66 unparsed issue (corrupted archive blocks), 18 missing town, 18 missing file, 2 bad issue time (the "4305" typo).
+- **No stored issue is later than its decision time** (0 rows).
 
 ## 3. Measured vs assumed
 - **Measured:** the counts above (`data/raw/nws/downloads.jsonl`); the zone switch dates (a scan of every downloaded issue for each town's block).

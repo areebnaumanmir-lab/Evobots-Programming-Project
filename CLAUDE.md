@@ -312,7 +312,7 @@ MISO announced that its public pricing reports would stop updating from 12 Decem
 | Provenance | `data/manifest.toml`: URL, SHA-256, size, date for every file (committed) | |
 | MISO preliminary RT | last ~3 days only | not archived |
 | MISO cleared bids | **2023-01-01 → 2026-01-23** (1,119 days, with DA ex-ante prices; round 23). The fetch was stopped in round 25 because MISO's terms forbid automated access | published about **90 days late** (obs.: newest 2026-07-25 on 2026-10-24); needed for O9 and the liquidity medians |
-| NWS forecasts | **fetching** (round 23): 9 offices × 7,878 decision days, ~8 h at the polite rate | parser at M1 |
+| NWS forecasts | **downloaded** (round 31): 70,898 of 70,938 office-days (40 had no issue before the deadline); hold-out days stored apart. Parsed into `data/store/hub_forecasts.csv.gz` (git-ignored): every hub has a forecast high on 99.6–99.97 % of operating days | NWS renumbered the New Orleans (2022-04-06) and Beaumont (2023-03-09) zones; both codes are accepted (`regions.py`) |
 | Henry Hub, EPU, GPR, EIA-860M | not downloaded yet | M1 |
 
 **Check against Claude Science (obs., round 21, `tools/check_against_claude_science.py` → `docs/data/claude_science_check.csv`):** from the downloaded archive, for 2019-01-01 → 2025-09-21:
