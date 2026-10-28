@@ -5,8 +5,10 @@ from dataclasses import fields
 from pathlib import Path
 
 from evobots.config.capital import CapitalSettings
+from evobots.config.data import DataSettings
 
 CAPITAL_TABLE = "capital"
+DATA_TABLE = "data"
 
 
 def load_capital(config_path=None, overrides=None):
@@ -37,3 +39,20 @@ def load_capital(config_path=None, overrides=None):
         if value is not None:
             values[name] = value
     return CapitalSettings(**values)
+
+
+def load_data_settings(config_path=None):
+    """Build DataSettings from the code defaults and a TOML `[data]` table.
+
+    Raises:
+        ValueError: for an unknown key or a non-boolean switch.
+    """
+    known_names = {setting.name for setting in fields(DataSettings)}
+    table = {}
+    if config_path is not None:
+        with Path(config_path).open("rb") as config_file:
+            table = tomllib.load(config_file).get(DATA_TABLE, {})
+    unknown = set(table) - known_names
+    if unknown:
+        raise ValueError(f"unknown [data] keys: {', '.join(sorted(unknown))}")
+    return DataSettings(**table)

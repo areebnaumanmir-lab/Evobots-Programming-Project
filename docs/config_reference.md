@@ -19,3 +19,9 @@ Every TOML key: meaning, unit, default, bounds, who sets it (`CLAUDE.md` §13.1)
 - **From the trader's account:** collateral, the Virtual MWh Limit in use, the position scale, and the trailing 1-in-100-day loss.
 
 Command-line flags: `--starting-capital`, `--daily-risk-budget`, `--credit-share`, `--max-mw-per-hub-hour`, `--ruin-floor-fraction`, `--ruin-floor-usd` (`python -m evobots.cli capital --help`).
+
+## `[data]` (`configs/10_miso_hubs.toml`)
+
+| Key | Meaning | Unit | Default | Bounds | Who sets it | Source |
+|---|---|---|---|---|---|---|
+| `is_miso_redistribution_allowed` | whether shareable bundles may contain MISO-derived files | true/false | false | – | your choice; switch on only with MISO's written permission | [data_sources.md](data_sources.md) §3 (decided round 25) |

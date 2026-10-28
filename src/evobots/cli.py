@@ -1,6 +1,13 @@
-"""Command line: `python -m evobots.cli capital [config] [--starting-capital …]`."""
+"""Command line.
+
+- `python -m evobots.cli capital [config] [--starting-capital …]`: the capital settings.
+- `python -m evobots.cli data build --stage A [--raw …] [--store …] [--workers N]`: the hub
+  price store from the MISO files on disk, checked against the recorded statistics (M1).
+"""
 
 import argparse
+import sys
+from pathlib import Path
 
 from evobots.capital_summary import capital_summary
 from evobots.config import load_capital
@@ -71,7 +78,16 @@ def main(argv=None):
     capital.add_argument("--max-mw-per-hub-hour", type=float, dest="max_mw_per_hub_hour")
     capital.add_argument("--ruin-floor-fraction", type=float, dest="ruin_floor_fraction")
     capital.add_argument("--ruin-floor-usd", type=float, dest="ruin_floor_usd")
+    data = commands.add_parser("data", help="build the data store (offline)")
+    data_commands = data.add_subparsers(dest="data_command", required=True)
+    build = data_commands.add_parser("build", help="build and check a stage's store")
+    build.add_argument("--stage", choices=["A", "D", "C"], default="A")
+    build.add_argument("--raw", type=Path, default=Path("data/raw/miso"))
+    build.add_argument("--store", type=Path, default=Path("data/store"))
+    build.add_argument("--workers", type=int, default=4)
     arguments = parser.parse_args(argv)
+    if arguments.command == "data":
+        return run_data_build(arguments)
     overrides = {
         name: getattr(arguments, name)
         for name in (
@@ -90,5 +106,17 @@ def main(argv=None):
     print("\n".join(capital_report_lines(settings)))
 
 
+def run_data_build(arguments):
+    """`data build`: build the store for a stage and print the checks; 1 if any fails."""
+    if arguments.stage != "A":
+        print(f"Stage {arguments.stage} is built at M8; only stage A exists so far.")
+        return 1
+    from evobots.data.build import build_stage_a
+
+    lines, is_passing = build_stage_a(arguments.raw, arguments.store, arguments.workers)
+    print("\n".join(lines))
+    return 0 if is_passing else 1
+
+
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -79,6 +79,15 @@ Date: 2026-10-28. The four multiple-choice questions of `round27_verification.md
 - **D-92 (Claude, reversible):** the briefing's "lag 1 day" didn't say at what time of day. H.15 posts the T-bill rate in the afternoon, and EPU and GPR post at unrecorded times, so those three are usable from the start of the second day after the observation (business days for the T-bill). Gas and oil spot prices are public by the evening of the trade day, so they stay at the next business day.
 - **`src/evobots/data/holdout.py`:** `open_holdout(run, trader, who)` appends to the committed `data/holdout_access_log.jsonl` and returns the only object readers accept for hold-out days; a permission can't be made any other way. Tests check that no module other than the accessor (and the future final-test module) imports it or names the hold-out folder, and that the committed log says "Sealed: never opened".
 
+## 5c. `evobots data build --stage A`, the synthetic market and the redistribution switch (M1)
+- **`evobots data build --stage A`** (`src/evobots/data/build.py`, 5 tests on a hand-made archive) reads each operating day 2005-04-01 → 2025-09-21 through the era reader (offline, from the files on disk), writes `data/store/hub_prices.csv.gz` (1,153,392 day-hour-hub rows), and checks itself. Run on the real archive (7 minutes on 4 cores):
+  - `hub_volume_stats.csv`: **64 of 64** values agree;
+  - `hub_price_stats.csv`: **176 of 176** values agree at the recorded precision, after one correction below;
+  - the evolution-period rows are identical to the round-26 table built by `tools/build_miso_hub_prices.py`; the old table also held the forward days after the hold-out (2026-09-22 → 2026-10-24), which the stage-A build leaves out.
+- **Correction to round 21.** Round 21 reported "176/176 values agree to rounding", but its check allowed a 0.05 % relative tolerance. The eight excess-kurtosis values were about 0.01 % low (e.g. ARKANSAS 3,165.124 against 3,165.393). Claude Science used the bias-corrected sample kurtosis (pandas' `kurt`), which reproduces all eight to the third decimal. The builder and `tools/check_against_claude_science.py` now use it (`maths.md` §3.2), and `CLAUDE.md` §7.0 says so. Nothing else used kurtosis.
+- **`src/evobots/data/synthetic.py`** (7 tests): seeded synthetic hub prices with noise, GARCH(1,1) or regime-switching spreads, and an optional planted rule (RT raised on hot afternoons), for M4's planted-signal test.
+- **`is_miso_redistribution_allowed`** (decided round 25): a `[data]` table in `configs/10_miso_hubs.toml`, default false; `shareable_sources()` leaves MISO out of any shareable bundle unless it is switched on (4 tests; `config_reference.md`).
+
 ## 6. Files changed
 - `CLAUDE.md` §13.1 (risk-free source), §17.2 (battery efficiency decided), §20.7 (battery default 82 %).
 - `docs/decisions_log.md`, `docs/design_rationale.md` (D-86 … D-89), `docs/change_ledger.md`, `docs/data_sources.md` (FRED row and terms), `docs/market_rules.md` §4.1 (MPD estimate), `tools/list_verify_markers.py` and the regenerated register.

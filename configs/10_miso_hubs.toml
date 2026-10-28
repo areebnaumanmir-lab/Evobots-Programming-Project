@@ -9,3 +9,8 @@ liquidity_share_fraction = 0.05       # cap ≤ 5 % of the hub's median cleared 
 # Capital floors are off by default; the default death is "out of money" (CLAUDE.md §10.1).
 # ruin_floor_fraction = 0.6667        # relative floor preset (round 16)
 # ruin_floor_usd = 1_000_000          # absolute floor inspired by MISO's $1M net-worth route
+
+[data]
+# MISO's terms forbid redistribution: leave false unless MISO grants written permission
+# (docs/data_sources.md §3). When false, shareable bundles contain no MISO-derived file.
+is_miso_redistribution_allowed = false

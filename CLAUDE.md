@@ -314,7 +314,7 @@ MISO announced that its public pricing reports would stop updating from 12 Decem
 | Henry Hub, EPU, GPR, EIA-860M | not downloaded yet | M1 |
 
 **Check against Claude Science (obs., round 21, `tools/check_against_claude_science.py` → `docs/data/claude_science_check.csv`):** from the downloaded archive, for 2019-01-01 → 2025-09-21:
-- **all 176 values** of `docs/data/hub_price_stats.csv` agree to rounding;
+- **all 176 values** of `docs/data/hub_price_stats.csv` agree to rounding. Correction (round 28): in round 21 the eight excess-kurtosis values agreed only within a 0.05 % tolerance; Claude Science used the bias-corrected sample estimate (pandas' `kurt`), and with it all 176 agree at the recorded precision (`evobots data build --stage A`);
 - the 12 full-size benchmark numbers of `capital_sizing.md` §4 agree to the dollar (e.g. always-INC 1-in-100-day loss $27,897, worst day $492,173 on 2022-12-23; always-DEC worst day $176,554 on 2021-02-18);
 - the point-in-time trailing p99 of §4b agrees exactly: the eight table rows, the range $10,432–$44,843, median $24,155, the 2019-04-06 end of warm-up, and the **2.16 %** breach rate with every yearly value.
 - So the archive is the same data as the calibration sample, and `sizing.py`'s rules are pinned down independently. §4b's lost figure is redrawn as `docs/data/figures/point_in_time_full_size_threshold.svg`.

@@ -153,6 +153,21 @@ minimise Σ_k c_k g_k over 0 ≤ g_k ≤ Ḡ_k, subject to
   ```
 - **Test:** `tests/test_series.py::test_daily_risk_free_log_return_worked_example`.
 
+### 3.2 Hub spread statistics: excess kurtosis
+- **Formula:** for spreads s₁ … sₙ with mean s̄, central moments m₂ = Σ(sᵢ − s̄)²/n and m₄ = Σ(sᵢ − s̄)⁴/n, the moment estimate is g₂ = m₄/m₂² − 3, and the bias-corrected sample estimate is G₂ = ((n + 1) g₂ + 6)(n − 1) / ((n − 2)(n − 3)).
+- **Which one `hub_price_stats.csv` uses:** G₂ (round 28). For ARKANSAS.HUB 2019-01-01 → 2025-09-21 (n = 58,944 hours): g₂ = 3,165.124 and G₂ = 3,165.393, the recorded value.
+- **Worked example:** s = (5, −5, 0, 2, −2): s̄ = 0, m₂ = 58/5 = 11.6, m₄ = 1,282/5 = 256.4, so g₂ = 256.4/134.56 − 3 = −1.0945 and G₂ = ((6)(−1.0945) + 6)(4)/((3)(2)) = −0.3781.
+
+  ```python
+  >>> import numpy as np
+  >>> from evobots.data.build import hub_price_statistics
+  >>> statistics = hub_price_statistics(np.array([5.0, -5, 0, 2, -2]), np.zeros(5))
+  >>> round(statistics["spread_excess_kurtosis"], 4)
+  -0.3781
+
+  ```
+- **Function:** `evobots.data.build.hub_price_statistics`. **Check:** `evobots data build --stage A` compares all 176 values with the recorded file.
+
 ## 4. Still to write
 - The market simulator (M3);
 - fitness under the career model (M5);

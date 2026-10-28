@@ -80,7 +80,13 @@ def hub_statistics(da_prices, rt_prices):
     spread = da_prices - rt_prices
     absolute_spread = np.abs(spread)
     centred = spread - spread.mean()
-    excess_kurtosis = (centred**4).mean() / (centred**2).mean() ** 2 - 3
+    count = len(spread)
+    moment_excess_kurtosis = (centred**4).mean() / (centred**2).mean() ** 2 - 3
+    # Bias-corrected sample excess kurtosis (pandas' kurt), which Claude Science used
+    # (round 28: exact to the third decimal; the moment estimate is ~0.01 % lower).
+    excess_kurtosis = (
+        ((count + 1) * moment_excess_kurtosis + 6) * (count - 1) / ((count - 2) * (count - 3))
+    )
     return {
         "hours": len(spread),
         "DA_median": np.median(da_prices),
