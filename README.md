@@ -4,6 +4,20 @@ Evolves small, readable trading bots for virtual bidding at MISO's eight electri
 
 **Preview.** The bots use a simplified rule genome (conditions, a score formula, side thresholds, a limit-price offset and a size). Fees and uplift are labelled estimates. This is a research tool, not investment advice; real trading needs MISO registration and collateral.
 
+## Open it as a website
+
+Once the repository owner has switched on GitHub Pages (below), anyone can open evobots at `https://<owner>.github.io/<repository>/`. Nothing to install:
+- the same page and sliders run evobots' Python inside the browser (Pyodide); the first visit downloads about 17 MB;
+- the website uses synthetic demo prices, because MISO's terms forbid publishing MISO data;
+- if you built the MISO hub table with the downloadable app, load it on the page. It is read in your browser and never uploaded anywhere.
+
+**Switching it on (repository owner, once):**
+1. GitHub Pages needs a public repository, or a paid GitHub plan for a private one.
+2. In the repository: Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+3. Merge this work into `main`. The workflow `.github/workflows/pages.yml` builds the site with `tools/build_website.py` and publishes it on every push to `main`; you can also run it by hand under Actions → "Publish website".
+
+To try the website locally: `uv run python tools/build_website.py`, then `python -m http.server --directory site_build`, and open `http://127.0.0.1:8000/`.
+
 ## Quick start (one click)
 
 1. Download the app: in a running copy use **Download the whole app**, or get this repository as a zip, and unzip it.

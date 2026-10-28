@@ -277,3 +277,9 @@ Running record of what we have agreed. It references question numbers in decisio
 | Topic | User's input | Result |
 |---|---|---|
 | Deployment | **Decided:** "one click … a page with a bunch of sliders … download the code of the best bot … rerun the evolution on variations of the best bot … download this whole application" | local app with one-click launchers; preview genome and quick gates, stated as such; the zip excludes MISO data and MISO-derived tables |
+
+## Round 30 (2026-10-28): website on GitHub Pages; rounds/round30_website.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Website | **Decided:** "make it a website people can open directly from github" | static site running evobots' Python in the browser (Pyodide), demo data only, own hub table loadable locally; published by a Pages workflow from `main`. Visibility and enabling Pages are Areeb's steps |

@@ -32,6 +32,12 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 - `tests/conftest.py` also accepts `EVOBOTS_CHROMIUM_PATH`, or the cloud container's pre-installed browser.
 - Without a browser, the page tests are skipped and say why.
 
+## Website (vendored, not Python dependencies)
+
+| Library | Version | Licence | Purpose |
+|---|---|---|---|
+| Pyodide (with its numpy 2.0.2, Jinja2 3.1.3 and MarkupSafe 2.1.5 wheels) | 0.27.7 | MPL-2.0 (obs., round 30: the npm package's licence field); numpy, Jinja2 and MarkupSafe BSD-3-Clause | runs evobots' Python in the visitor's browser on the GitHub Pages website. Downloaded once by `tools/build_website.py`, checked against pinned SHA-256 values, and served from the site, not from a CDN |
+
 ## Build
 
 | Tool | Licence | Purpose |

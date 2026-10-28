@@ -47,6 +47,11 @@ HUB_PRICES_PATH = Path("data/store/hub_prices.csv.gz")
 # A cached copy of the arrays, rebuilt when the CSV changes (git-ignored, under data/store).
 ARRAY_CACHE_PATH = Path("data/store/hub_arrays.npz")
 HOURS_PER_DAY = 24
+# Demo data: a planted DA premium (DA above RT on average) in hours ending 7–22, like the
+# real MISO premium at every hub (capital_sizing.md §1), so the search has something it can
+# find from the price features. Demo only; real data has no planted pattern.
+DEMO_PREMIUM_USD_PER_MWH = 2.0
+DEMO_PREMIUM_HOURS = (7, 22)
 # Final RT for day t is public from t+5, so on decision day D−1 the newest is D−6.
 NEWEST_SPREAD_LAG_DAYS = 6
 SHORT_WINDOW_DAYS = 7
@@ -154,7 +159,7 @@ def read_miso_hub_market(path=HUB_PRICES_PATH, cache_path=ARRAY_CACHE_PATH):
 
 
 def synthetic_hub_market(days=3653, seed=0, last_day=EVOLUTION_LAST_DAY):
-    """A demo HubMarket from the synthetic generator (GARCH spreads, a planted summer rule)."""
+    """A demo HubMarket: GARCH spreads plus a planted DA premium in hours 7–22 (see above)."""
     generated = synthetic_market(
         days=days,
         hubs=len(STAGE_A_HUBS),
@@ -162,13 +167,18 @@ def synthetic_hub_market(days=3653, seed=0, last_day=EVOLUTION_LAST_DAY):
         seed=seed,
         planted_premium_usd_per_mwh=6.0,
     )
+    hour_ending = np.arange(1, HOURS_PER_DAY + 1)
+    is_premium_hour = (hour_ending >= DEMO_PREMIUM_HOURS[0]) & (
+        hour_ending <= DEMO_PREMIUM_HOURS[1]
+    )
+    real_time = generated.real_time - DEMO_PREMIUM_USD_PER_MWH * is_premium_hour[None, :, None]
     first_day = last_day - datetime.timedelta(days=days - 1)
     day_list = tuple(first_day + datetime.timedelta(days=offset) for offset in range(days))
     return HubMarket(
         day_list,
         tuple(STAGE_A_HUBS),
         generated.day_ahead,
-        generated.real_time,
+        real_time,
         "synthetic demo data",
     )
 

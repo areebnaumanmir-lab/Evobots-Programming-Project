@@ -28,3 +28,6 @@ runs/
 tests/screenshots/
 playwright-report/
 test-results/
+
+# Built website (tools/build_website.py); deployed by .github/workflows/pages.yml
+site_build/

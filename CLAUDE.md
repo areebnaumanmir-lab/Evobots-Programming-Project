@@ -44,6 +44,7 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
 - **Round 26 (2026-10-24):** I keep all downloaded MISO data for private use. New scripted MISO downloads stay paused until the commercial-only fine print I mentioned is recorded or I say to resume (`docs/data_sources.md` §4).
 - **Round 27 (2026-10-24): every unchecked-fact marker checked** against primary sources (`docs/rounds/round27_verification.md`).
 - **Round 28 (2026-10-28): my answers to round 27** (`docs/rounds/round28_answers.md`): I download the Rates Factors file myself; risk-free rate = FRED DTB3; D2 kept; battery round-trip efficiency 82 %.
+- **Round 30 (2026-10-28): website** (`docs/rounds/round30_website.md`): the same page on GitHub Pages, running evobots' Python in the browser (Pyodide), on demo data.
 - **Round 29 (2026-10-28): deployable preview app** (`docs/rounds/round29_preview_app.md`): one-click launchers, a slider page, run / refine / download best bot / download app. It uses a simplified genome and quick gates; the full M2–M7 work still replaces those parts.
 - **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 

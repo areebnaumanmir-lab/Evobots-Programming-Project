@@ -454,8 +454,9 @@ class Service:
                 "machine; the sealed hold-out (2025-09-22 → 2026-09-21) is never read."
             )
         return (
-            "Demo mode: synthetic prices (no MISO data built on this machine). To use real "
-            "data, see “Use real MISO data” in README.md."
+            "Demo mode: synthetic prices with a planted pattern (DA above RT by $2/MWh in "
+            "hours 7–22), as no MISO data is built on this machine. To use real data, see "
+            "“Use real MISO data” in README.md."
         )
 
 
