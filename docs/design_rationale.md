@@ -257,6 +257,8 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-87 | Risk-free rate from FRED DTB3 (28) | Areeb | one keyless daily series covering 2005–2026, public domain; Treasury's own CSVs changed layout over the years; zero would flatter strategies in 2006–07 and 2023–25 |
 | D-88 | Sunday NERC holiday flags the Sunday and the following Monday (28) | Areeb (confirms D2) | NERC keeps the holiday on the Sunday, but businesses observe the Monday, when load is holiday-low |
 | D-89 | Battery round-trip efficiency default 82 % (28) | Areeb | EIA's measured 2019 US fleet average; 85 % was an unsourced assumption and 90 % flatters battery profit |
+| D-90 | Each hub's weather from one fixed load-centre town (28) | Areeb | present in every year (town lists changed, e.g. 8 → 46 towns at Indianapolis in 2008); an average over a changing set would add breaks; a fixed-set average would mix Louisiana towns into TEXAS |
+| D-91 | Generators assigned to the hub with the nearest load-centre town (28) | Areeb | one set of points for weather and capacity; a state table needs arbitrary picks for Iowa, Wisconsin, Missouri and Kentucky |
 
 ## Part E. Visual design (Q20)
 

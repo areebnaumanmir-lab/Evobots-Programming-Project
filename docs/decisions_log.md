@@ -268,3 +268,5 @@ Running record of what we have agreed. It references question numbers in decisio
 | Risk-free rate | **Decided:** FRED 3-month T-bill (DTB3) | keyless CSV, Federal Reserve H.15, public domain with citation requested |
 | Sunday holiday | **Decided:** Sunday and Monday | D2 confirmed |
 | Battery efficiency | **Decided:** 82 % (EIA fleet average) | O4's default round-trip efficiency |
+| Hub weather | **Decided:** load-centre town | one fixed forecast town per hub: Minneapolis, Detroit, Indianapolis, Peoria, Little Rock, Jackson, New Orleans, Beaumont; missing town → missing input |
+| Plant → hub area | **Decided:** nearest hub town | great-circle distance to the same eight towns; Iowa splits near Des Moines |

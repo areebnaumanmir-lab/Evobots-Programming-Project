@@ -46,14 +46,44 @@ Date: 2026-10-28. The four multiple-choice questions of `round27_verification.md
 - **A slip, reported:** checking the reader printed the fleet for August 2026, a month inside the sealed hold-out. These are generator counts the briefing already quotes, not prices or results, but the rule is that nothing from the hold-out is printed. `nameplate_mw_by_group` now refuses months after 2025-09 without the hold-out accessor's permission, and a test checks it.
 - **Next in M1:** the two questions below, then regional weather and capacity features' inputs, the Pink Sheet reader, `visible()`, the store, and `evobots data build --stage A`.
 
-## 5. Files changed
+## 5. Two more questions, answered the same day
+
+| # | Question | Answer |
+|---|---|---|
+| 1 | Which towns make up a hub's weather forecast? | **Load-centre town**: one fixed town per hub |
+| 2 | Which hub area does a generator belong to? | **Nearest hub town**: the nearest of the same eight towns, by great-circle distance |
+
+**The eight towns** (`src/evobots/data/regions.py`; zone codes and coordinates as printed in the forecasts, obs.):
+
+| Hub | Office | Zone | Town | Coordinates |
+|---|---|---|---|---|
+| MINN | MPX | MNZ060 | Minneapolis | 44.88N 93.22W |
+| MICHIGAN | DTX | MIZ076 | Detroit | 42.43N 83.02W |
+| INDIANA | IND | INZ047 | Indianapolis airport | 39.73N 86.28W |
+| ILLINOIS | ILX | ILZ029 | Peoria | 40.67N 89.68W |
+| ARKANSAS | LZK | ARZ044 | Little Rock | 34.73N 92.24W |
+| MS | JAN | MSZ049 | Jackson | 32.32N 90.08W |
+| LOUISIANA | LIX | LAZ061 | New Orleans | 29.98N 90.25W (30.00N from about 2012) |
+| TEXAS | LCH | TXZ215 | Beaumont | 29.95N 94.03W |
+
+- Towns are matched by zone code and the start of the name, since printed coordinates and county suffixes changed (e.g. "BEAUMONT-JEFFERSON TX" and "BEAUMONT-TEXAS TX").
+- **Presence (obs.):** each of the eight towns appears in at least 98 % of its office's parsed issues in every year 2005–2021 (every third downloaded file sampled).
+- If a hub's town is missing from an issue, that hub's weather inputs are missing that day; no other town is substituted (`CLAUDE.md` §8).
+- **What the area rule does** (MISO generators in the September 2026 workbook; months up to 2025-09):
+  - North Dakota, South Dakota, Montana, most of Wisconsin and Michigan's Upper Peninsula go to MINN; most of Missouri and eastern Iowa to ILLINOIS; Kentucky to INDIANA;
+  - **Iowa is split** near Des Moines (345 km from Peoria, 367 km from Minneapolis). Of Iowa's 12.9 GW of wind operating in 2025-09, 10.2 GW counts for MINN and 2.7 GW for ILLINOIS;
+  - wind by area in 2025-09: MINN 20.0 GW, ILLINOIS 6.5, MICHIGAN 3.8, INDIANA 2.1, ARKANSAS 0.3, the three southern hubs 0.0. Solar: ILLINOIS 5.1, INDIANA 4.4, MINN 2.4, ARKANSAS 2.4, MICHIGAN 2.0, MS 0.9, LOUISIANA 0.6, TEXAS 0.5.
+
+## 6. Files changed
 - `CLAUDE.md` §13.1 (risk-free source), §17.2 (battery efficiency decided), §20.7 (battery default 82 %).
 - `docs/decisions_log.md`, `docs/design_rationale.md` (D-86 … D-89), `docs/change_ledger.md`, `docs/data_sources.md` (FRED row and terms), `docs/market_rules.md` §4.1 (MPD estimate), `tools/list_verify_markers.py` and the regenerated register.
+- Hub areas: `src/evobots/data/regions.py`, `tests/test_regions.py`, `CLAUDE.md` §7.4 and §7.8.
 - M1: `tools/fetch_series.py`, `tools/write_data_manifest.py`, `data/manifest.toml`, `src/evobots/data/sources/series.py`, `tests/test_series.py`, `docs/maths.md` §3.1, `docs/data_sources.md` §1b, `CLAUDE.md` §7.6.
 
-## 6. Measured vs assumed
+## 7. Measured vs assumed
 - **Measured:** the FRED terms and the DTB3 series metadata, read on their pages on 2026-10-28; the series facts in §4, computed by `tests/test_series.py`.
 - **Assumed:**
   - equal charge and discharge efficiencies (√0.82 each), unless the battery study chooses otherwise;
   - MPD = $12 every year, labelled "estimate", until MISO's published values are supplied;
-  - a one-business-day publication lag for H.15.
+  - a one-business-day publication lag for H.15;
+  - that a single load-centre town represents a hub's weather, and that distance to these towns is a fair proxy for which hub's prices a generator affects (both chosen by Areeb, round 28).

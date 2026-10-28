@@ -387,7 +387,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 - **Use:** the latest issue before the DA deadline.
 - **Size:** about 1.4 GB raw to fetch (one issue per office per day, about 20 KB each); the parsed table is about 16 MB.
 - **Plan:** fetch once, parse, and **bundle the parsed table** plus the script.
-- **Hub → office link (decided round 23, nearest-load rule):** MINN→MPX, MICHIGAN→DTX, INDIANA→IND, **ILLINOIS→ILX** (MISO's Illinois is Ameren's central and southern Illinois; Chicago is PJM), ARKANSAS→LZK, MS→JAN, **LOUISIANA→LIX**, **TEXAS→LCH**. LOT is fetched but feeds no hub. The town lists are checked against the load centres while parsing (M1).
+- **Hub → office link (decided round 23, nearest-load rule):** MINN→MPX, MICHIGAN→DTX, INDIANA→IND, **ILLINOIS→ILX** (MISO's Illinois is Ameren's central and southern Illinois; Chicago is PJM), ARKANSAS→LZK, MS→JAN, **LOUISIANA→LIX**, **TEXAS→LCH**. LOT is fetched but feeds no hub. **Town (decided round 28):** each hub uses one fixed load-centre town of its office: Minneapolis, Detroit, Indianapolis, Peoria, Little Rock, Jackson, New Orleans, Beaumont (`src/evobots/data/regions.py`); a missing town means missing inputs that day.
 - **Fetch (round 23):** `tools/fetch_nws_forecasts.py`, one request per office per decision day for the newest issue in the 24 hours before 10:30 EPT on D−1; hold-out days go to `data/holdout/raw/nws/`.
 - **Set aside:**
   - GFS MOS machine forecasts (IEM `cgi-bin/request/mos.py`) only start 2007-05-03;
@@ -430,7 +430,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 - **Rebuild:** MW operating per region per month, from operating and retirement dates.
   - Filter `Balancing Authority Code == "MISO"` (today's code).
   - Count a plant only from the date its area joined MISO (MISO South: December 2013).
-  - Assign each plant to the nearest hub area by latitude/longitude.
+  - Assign each plant to the hub whose forecast town (§7.4) is nearest by great-circle distance (decided round 28; Iowa splits near Des Moines).
   - Technology groups: Wind, Solar, Battery, Coal, Natural Gas, Nuclear, Other.
 - **Observed MISO fleet (GW):**
 
