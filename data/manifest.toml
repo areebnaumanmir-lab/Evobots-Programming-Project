@@ -70865,6 +70865,96 @@ sha256 = "bcef74e1af991680731aeecfda967f5950db4ce739bb584edd8b8774c7e6da17"
 size_bytes = 14013970
 
 [[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2016.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2016.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:23Z
+sha256 = "6876f2e13d0830a482de14eb70f825062f09af2057a4f810e8001d56e6d86908"
+size_bytes = 3266359
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2017.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2017.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:24Z
+sha256 = "c08b4bef9ef35bc0d9fc08c4981a210cc5c2956df587dd54a68ffc3336c469df"
+size_bytes = 3804562
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2018.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2018.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:26Z
+sha256 = "ef8b11926e123f9804846238d0e9183917f552c89e3efd73e5a08d393a883b06"
+size_bytes = 7323710
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2019.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2019.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:27Z
+sha256 = "6c53cd3496536d3c6b397e8ef4538389581905155191c4ec2558d4cf0b6cb712"
+size_bytes = 7697518
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2020.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2020.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:28Z
+sha256 = "b5f43ed9e0e2ddd77b86565067f28aec41471cff768051e7af196bd3128a1ed5"
+size_bytes = 8090926
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2021.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2021.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:29Z
+sha256 = "73b7cd55d05f001df5911eacb93cd6c7a9644d91a7730abf60031e5eaba019e3"
+size_bytes = 8411993
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2022.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2022.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:30Z
+sha256 = "397111d77b2d264f8561d8ff271b2f681241759ec1a3ea63d69bb716d2e079a4"
+size_bytes = 8837301
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2023.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2023.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:31Z
+sha256 = "52c173bfbef46d4850355e89a3f786cc4f749f9d2c9c01a73f74c31795ec5ec1"
+size_bytes = 9417676
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2024.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2024.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:32Z
+sha256 = "d8fd6cd287dde8f0cafa4f511d4e2f92583a88ff912b5e03a569b5653958c6a7"
+size_bytes = 9808201
+
+[[file]]
+name = "eia_860m_archive/2026-10-28_january_generator2025.xlsx"
+source = "eia_860m_archive"
+url = "https://www.eia.gov/electricity/data/eia860m/archive/xls/january_generator2025.xlsx"
+status = "downloaded"
+retrieved_at_utc = 2026-10-28T19:04:34Z
+sha256 = "a4648d046ef136582a4aaa957086795329f62c38db7c8e55a548374eb4dcdf0f"
+size_bytes = 12570814
+
+[[file]]
 name = "eia_henry_hub/2026-10-28_RNGWHHDd.xls"
 source = "eia_henry_hub"
 url = "https://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls"

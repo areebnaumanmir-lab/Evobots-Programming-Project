@@ -2,6 +2,10 @@
 
 Usage:
     python tools/fetch_series.py [--only fred_dtb3,epu] [--force]
+    python tools/fetch_series.py --eia-860m-vintages 2016-01,2017-01
+
+The second form downloads archived EIA-860M monthly workbooks (source "eia_860m_archive"),
+used to measure how much EIA corrects past months between vintages (CLAUDE.md §7.8).
 
 Each source is one file (CLAUDE.md §7.5–7.8, round 28 for FRED). Files go to
 data/raw/series/<source>/ with write-then-rename, and every attempt is appended to
@@ -48,6 +52,9 @@ EIA_GENERATOR_INVENTORY_URL_TEMPLATE = (
     "https://www.eia.gov/electricity/data/eia860m/xls/{month_name}_generator{year}.xlsx"
 )
 EIA_GENERATOR_INVENTORY_MONTHS_TO_TRY = 6
+EIA_GENERATOR_INVENTORY_ARCHIVE_URL_TEMPLATE = (
+    "https://www.eia.gov/electricity/data/eia860m/archive/xls/{month_name}_generator{year}.xlsx"
+)
 FIXED_URL_BY_SOURCE = {
     # Risk-free rate (round 28): 3-month T-bill, discount basis, percent, daily.
     "fred_dtb3": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3",
@@ -172,7 +179,29 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--only", default="", help="comma-separated sources (default: all)")
     parser.add_argument("--force", action="store_true", help="download again even if logged")
+    parser.add_argument(
+        "--eia-860m-vintages", default="", help="comma-separated YYYY-MM archived workbooks"
+    )
     arguments = parser.parse_args()
+    if arguments.eia_860m_vintages:
+        user_agent = user_agent_from_config(CONFIG_PATH)
+        logged_urls = {
+            record["url"] for record in logged_records() if record["status"] == "downloaded"
+        }
+        for vintage in arguments.eia_860m_vintages.split(","):
+            year, month = (int(part) for part in vintage.split("-"))
+            month_name = datetime.date(year, month, 1).strftime("%B").lower()
+            url = EIA_GENERATOR_INVENTORY_ARCHIVE_URL_TEMPLATE.format(
+                month_name=month_name, year=year
+            )
+            if url in logged_urls:
+                print(f"{vintage}: already downloaded", flush=True)
+                continue
+            record = download_source("eia_860m_archive", url, user_agent)
+            with DOWNLOAD_LOG_PATH.open("a", encoding="utf-8") as log_file:
+                log_file.write(json.dumps(record, sort_keys=True) + "\n")
+            print(f"{vintage}: {record['status']} {record.get('size_bytes', '')}", flush=True)
+        return
     sources = [name for name in arguments.only.split(",") if name] or list(ALL_SOURCES)
     unknown = sorted(set(sources) - set(ALL_SOURCES))
     if unknown:

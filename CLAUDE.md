@@ -445,7 +445,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
   Full table: `docs/data/miso_capacity_by_tech_monthly.csv`.
 - **Planned projects:** only monthly snapshots from January 2016 (the January 2013–2015 files aren't on EIA's server), so they are **reporting only**.
 - **Transmission:** no free, consistent dataset found; its effect shows up in the congestion features.
-- **Corrections (obs., round 27, EIA-860M page):** "Estimates will be corrected without specific acknowledgment or explanation in subsequent month's inventory." Monthly files are archived from January 2015, so M1 measures the size of the corrections by comparing them.
+- **Corrections (obs., round 27, EIA-860M page):** "Estimates will be corrected without specific acknowledgment or explanation in subsequent month's inventory." Monthly files are archived from January 2015, so M1 measures the size of the corrections by comparing them. **Measured (round 28, `tools/compare_eia860m_vintages.py` → `docs/data/eia860m_vintage_comparison.csv`, January vintages 2017–2025 against September 2026):** MISO wind differs by at most 1.2 % (median 0.7 %) and solar by at most 4.4 % (median 2.0 %), mostly late-reported units filled in later. So the capacity features differ from what a trader knew at the time by about 1–2 %. Coal and gas differ by up to about 4 % because a coal unit converted to gas is relabelled gas for its whole life (e.g. Barry unit 1, coal in the 2016 vintage, gas from 2018). Coal and gas history is therefore not point-in-time, but it is reporting only. Workbooks before 2021 have no balancing-authority column, and January 2016 has no nameplate column.
 
 ### 7.9 Complete source list and the domains to allow
 
