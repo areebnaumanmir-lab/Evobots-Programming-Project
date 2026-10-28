@@ -21,6 +21,11 @@ def test_town_identity_ignores_case_and_county_suffix():
     assert beaumont.is_town("TXZ215", "BEAUMONT-TEXAS TX")
     assert beaumont.is_town("TXZ215", "Beaumont-Jefferson TX")
     assert not beaumont.is_town("TXZ216", "BEAUMONT-TEXAS TX")
+    # NWS renumbered the zone on 2023-03-09 (obs., round 31).
+    assert beaumont.is_town("TXZ515", "Beaumont-Jefferson TX")
+    new_orleans = regions.FORECAST_TOWN_BY_HUB["LOUISIANA.HUB"]
+    assert new_orleans.is_town("LAZ077", "New Orleans-Western Orleans LA")
+    assert not new_orleans.is_town("LAZ078", "East New Orleans-Eastern Orleans LA")
 
 
 @pytest.mark.parametrize(
