@@ -1,0 +1,16 @@
+# Stage A: the MISO trading hubs. Every key is described in docs/config_reference.md.
+
+[capital]
+starting_capital_usd = 1_500_000      # your choice; Stage A range $250k–$5M (capital_sizing.md §6)
+daily_risk_budget_fraction = 0.02     # a 1-in-100 day may cost 2 % of equity (§4)
+credit_share_fraction = 0.25          # share of capital pledged as MISO collateral (§7)
+max_mw_per_hub_hour = 5.0             # absolute cap per hub-hour, MW (§3)
+liquidity_share_fraction = 0.05       # cap ≤ 5 % of the hub's median cleared virtual MW (§3)
+# Capital floors are off by default; the default death is "out of money" (CLAUDE.md §10.1).
+# ruin_floor_fraction = 0.6667        # relative floor preset (round 16)
+# ruin_floor_usd = 1_000_000          # absolute floor inspired by MISO's $1M net-worth route
+
+[data]
+# MISO's terms forbid redistribution: leave false unless MISO grants written permission
+# (docs/data_sources.md §3). When false, shareable bundles contain no MISO-derived file.
+is_miso_redistribution_allowed = false

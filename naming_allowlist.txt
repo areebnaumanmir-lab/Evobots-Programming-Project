@@ -1,0 +1,62 @@
+# Words and abbreviations allowed in identifiers (CLAUDE.md §14.1). One per line, lower case.
+# tests/test_naming.py splits every identifier into words; a word of one or two letters, or one
+# on the test's list of common abbreviations, must appear here. Add a line to allow a word.
+
+# Approved abbreviations (§14.1).
+da
+rt
+lmp
+mw
+mwh
+inc
+dec
+mpd
+rsg
+vmew
+iso
+miso
+eia
+nws
+epu
+gpr
+hdd
+cdd
+pnl
+p99
+qd
+gp
+cusum
+pbo
+cscv
+id
+config
+# Power-flow terms of the ORFE track (O0, CLAUDE.md §20.3; glossary: DC-OPF).
+dc
+opf
+ptdf
+
+# MISO's Mississippi hub, MS.HUB, by its market name.
+ms
+
+# Units used in names (§14.1).
+usd
+degf
+
+# Short English words.
+a
+an
+as
+at
+be
+by
+do
+if
+in
+is
+it
+no
+of
+on
+or
+to
+up

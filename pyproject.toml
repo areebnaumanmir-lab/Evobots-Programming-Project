@@ -1,0 +1,66 @@
+[project]
+name = "evobots"
+version = "0.1.0"
+description = "evobots: evolving MISO virtual-trading bots with quality-diversity search."
+readme = "README.md"
+requires-python = ">=3.13"
+# Runtime dependencies are added milestone by milestone (CLAUDE.md §5.2);
+# each new one is recorded with its licence in docs/dependencies.md.
+dependencies = [
+    "fastapi>=0.162.0",
+    "jinja2>=3.1.6",
+    "numpy",
+    "openpyxl>=3.1.5",
+    "scipy>=1.18.1",
+    "uvicorn>=0.54.0",
+    "xlrd>=2.0.2",
+]
+
+[project.scripts]
+evobots = "evobots.cli:main"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "playwright==1.64.1",
+    "pytest",
+    "pytest-socket",
+    "ruff",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/evobots"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src", "docs"]
+# Networking is blocked for the whole suite; only localhost is allowed (CLAUDE.md §14.4).
+addopts = "--disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1 --doctest-modules --doctest-glob=*.md"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src", "tests", "tools", "benchmarks"]
+# Code blocks in the docs are illustrations, formatted by hand.
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+# E/F/W: pycodestyle and pyflakes; N: pep8-naming (§14.1); D: docstrings (§14.2); I: import order.
+select = ["E", "F", "W", "N", "D", "I"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+"tools/**" = ["D"]
+# Their HTML/SVG markup lines are long by nature; wrapping them would hurt readability.
+"tools/build_design_preview.py" = ["D", "E501"]
+"tools/check_against_claude_science.py" = ["D", "E501"]
+"tools/build_capital_explorer.py" = ["D", "E501"]
+# Generated-code template and SVG markup: long lines are the output's own lines.
+"src/evobots/bots/codegen.py" = ["E501"]
+"src/evobots/service.py" = ["E501"]

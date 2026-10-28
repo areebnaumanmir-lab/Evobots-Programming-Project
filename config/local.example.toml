@@ -1,0 +1,7 @@
+# Template for config/local.toml, which is git-ignored (CLAUDE.md §5.4).
+# Copy this file to config/local.toml and fill in your own values.
+
+[network]
+# Sent in the User-Agent of every download so server operators can reach us,
+# e.g. "evobots/0.1 (research; contact: you@example.org)".
+contact_email = ""
