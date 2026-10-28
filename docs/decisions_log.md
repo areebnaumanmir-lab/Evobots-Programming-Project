@@ -270,3 +270,4 @@ Running record of what we have agreed. It references question numbers in decisio
 | Battery efficiency | **Decided:** 82 % (EIA fleet average) | O4's default round-trip efficiency |
 | Hub weather | **Decided:** load-centre town | one fixed forecast town per hub: Minneapolis, Detroit, Indianapolis, Peoria, Little Rock, Jackson, New Orleans, Beaumont; missing town → missing input |
 | Plant → hub area | **Decided:** nearest hub town | great-circle distance to the same eight towns; Iowa splits near Des Moines |
+| Series timing | – (Claude, D-92) | T-bill, EPU and GPR usable two days after the observation (posting time unknown or after 10:30); gas and oil one business day |

@@ -395,7 +395,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 
 ### 7.5 US natural gas: EIA Henry Hub spot (bot input)
 - **URL:** `https://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls`. Keyless; read with `sheet_name="Data 1"` (or index 1), `skiprows=2`.
-- **Coverage (obs.):** daily, 1997-01 → 2026-09-22, trading days only. Lag 1 trading day.
+- **Coverage (obs.):** daily, 1997-01 → 2026-09-22, trading days only. Lag 1 trading day (`src/evobots/data/visible.py`).
 - **Observed:** US gas peaked at **$30.72/MMBtu on 2026-01-23**, before the Iran war (cause not checked). In March 2026 Henry Hub **fell 16 %** (Feb mean $3.62 → Mar mean $3.04) while WTI rose 42 %.
 - **Not used as inputs:**
   - EIA gas futures `RNGC1d.xls` stop 2024-04-05;
@@ -404,7 +404,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 ### 7.6 Policy uncertainty: EPU (bot input)
 - **Source:** Baker, Bloom & Davis US Economic Policy Uncertainty, daily, newspaper-based. Keyless.
   - URL: `https://www.policyuncertainty.com/media/All_Daily_Policy_Data.csv`, with columns (obs.) `day, month, year, daily_policy_index`.
-- **Coverage (obs.):** 1985 → 2026-09-25. Lag 1 day.
+- **Coverage (obs.):** 1985 → 2026-09-25. Posted the day after; usable at the decision two days after the observation, since the posting time of day is unrecorded (D-92, round 28).
 - **Why it's kept** (my decision, round 11): it is the only input that flagged COVID (EPU's mean over 2020-03-09 → 04-30 was 513, 3.5× the highest 53-day mean of 2015–19 (145) and above every single 2015–19 day except 2016-06-25 (587, the day after the Brexit vote); obs., round 28, `tests/test_series.py`; the round-11 wording "above every baseline day" was not exact).
 
 ### 7.7 Geopolitical risk: GPR (reporting only)

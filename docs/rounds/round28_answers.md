@@ -74,6 +74,11 @@ Date: 2026-10-28. The four multiple-choice questions of `round27_verification.md
   - **Iowa is split** near Des Moines (345 km from Peoria, 367 km from Minneapolis). Of Iowa's 12.9 GW of wind operating in 2025-09, 10.2 GW counts for MINN and 2.7 GW for ILLINOIS;
   - wind by area in 2025-09: MINN 20.0 GW, ILLINOIS 6.5, MICHIGAN 3.8, INDIANA 2.1, ARKANSAS 0.3, the three southern hubs 0.0. Solar: ILLINOIS 5.1, INDIANA 4.4, MINN 2.4, ARKANSAS 2.4, MICHIGAN 2.0, MS 0.9, LOUISIANA 0.6, TEXAS 0.5.
 
+## 5b. Point-in-time access and the hold-out accessor (M1)
+- **`src/evobots/data/visible.py`:** the decision time (10:30 Eastern on D−1, daylight saving followed), one publication rule per source, a `Column` type whose observations carry `available_at`, and `visible(column, decision_time)`. The look-ahead test changes every observation published after a random decision time and adds new ones, 50 times, and checks that nothing visible changes. The final-RT rule reproduces `sizing.py`'s D−6.
+- **D-92 (Claude, reversible):** the briefing's "lag 1 day" didn't say at what time of day. H.15 posts the T-bill rate in the afternoon, and EPU and GPR post at unrecorded times, so those three are usable from the start of the second day after the observation (business days for the T-bill). Gas and oil spot prices are public by the evening of the trade day, so they stay at the next business day.
+- **`src/evobots/data/holdout.py`:** `open_holdout(run, trader, who)` appends to the committed `data/holdout_access_log.jsonl` and returns the only object readers accept for hold-out days; a permission can't be made any other way. Tests check that no module other than the accessor (and the future final-test module) imports it or names the hold-out folder, and that the committed log says "Sealed: never opened".
+
 ## 6. Files changed
 - `CLAUDE.md` §13.1 (risk-free source), §17.2 (battery efficiency decided), §20.7 (battery default 82 %).
 - `docs/decisions_log.md`, `docs/design_rationale.md` (D-86 … D-89), `docs/change_ledger.md`, `docs/data_sources.md` (FRED row and terms), `docs/market_rules.md` §4.1 (MPD estimate), `tools/list_verify_markers.py` and the regenerated register.

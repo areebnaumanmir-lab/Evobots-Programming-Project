@@ -37,21 +37,23 @@ import xlrd
 
 from evobots.data.periods import EVOLUTION_LAST_DAY
 
-# Days from an observation's date until a trader can see it, by series name. A trading
-# or business day counts as one; the visible() layer applies these (M1).
-# - DTB3: the Federal Reserve's H.15 release is published the next business day
-#   (assumption, round 28; `docs/rounds/round28_answers.md` §3).
-# - Henry Hub: lag 1 trading day (`CLAUDE.md` §7.5).
-# - EPU: lag 1 day (`CLAUDE.md` §7.6).
-# - GPR and WTI are reporting only; their lag is recorded for the reports' event analysis.
+# Days from an observation's date until a trader can use it at 10:30, by series name; the
+# visible() layer applies these from the start of that day (business days for gas, oil and
+# the T-bill). Where the posting time of day is unknown or after 10:30, one more day is
+# added so nothing is seen early (decided round 28, D-92):
+# - DTB3: H.15 posts the previous business day's rates in the afternoon, so day t's rate
+#   is usable on the second business day after t.
+# - Henry Hub and WTI: spot prices for trade day t are public by the evening of t (market
+#   reports), so usable the next business day (`CLAUDE.md` §7.5).
+# - EPU and GPR: posted the day after t at an unrecorded time, so usable two days after t.
 PUBLICATION_LAG_DAYS_BY_SERIES = {
-    "treasury_bill_3_month_discount_fraction": 1,
+    "treasury_bill_3_month_discount_fraction": 2,
     "henry_hub_usd_per_mmbtu": 1,
     "wti_usd_per_barrel": 1,
-    "epu_index": 1,
-    "gpr_index": 1,
-    "gpr_threat_index": 1,
-    "gpr_act_index": 1,
+    "epu_index": 2,
+    "gpr_index": 2,
+    "gpr_threat_index": 2,
+    "gpr_act_index": 2,
 }
 # The 3-month bill matures in 91 days; discount rates are quoted on a 360-day year.
 TREASURY_BILL_DAYS = 91

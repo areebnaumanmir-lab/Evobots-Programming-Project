@@ -259,6 +259,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-89 | Battery round-trip efficiency default 82 % (28) | Areeb | EIA's measured 2019 US fleet average; 85 % was an unsourced assumption and 90 % flatters battery profit |
 | D-90 | Each hub's weather from one fixed load-centre town (28) | Areeb | present in every year (town lists changed, e.g. 8 → 46 towns at Indianapolis in 2008); an average over a changing set would add breaks; a fixed-set average would mix Louisiana towns into TEXAS |
 | D-91 | Generators assigned to the hub with the nearest load-centre town (28) | Areeb | one set of points for weather and capacity; a state table needs arbitrary picks for Iowa, Wisconsin, Missouri and Kentucky |
+| D-92 | Daily series usable from the start of day t+lag, with one extra day where the posting time is unknown or after 10:30: T-bill and EPU/GPR 2 days, gas and oil 1 business day (28) | Claude | the briefing's "lag 1 day" didn't say when in the day; H.15 posts in the afternoon and EPU/GPR at unrecorded times, so the cautious reading can't see anything early. Reversible |
 
 ## Part E. Visual design (Q20)
 
