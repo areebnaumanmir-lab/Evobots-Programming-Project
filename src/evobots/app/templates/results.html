@@ -1,0 +1,40 @@
+{# Results section, also served alone by GET /results. Data: Service.results_view(). #}
+{% if results %}
+<section class="section">
+  <h2>{% if results.is_best %}Best bot: {{ results.trader_id }}{% else %}Do nothing: no trader passes the gates{% endif %}</h2>
+  <p class="description">{{ status.message }}</p>
+  {% if not results.is_best %}<p class="description">Nearest candidate {{ results.trader_id }} {{ results.failed_gate }}. Its code can still be downloaded for study.</p>{% endif %}
+  <p class="description">Genome {{ results.genome_id }} · born by {{ results.origin }} · parents {{ results.parents }}</p>
+  <ul class="rules">{% for line in results.rules %}<li>{{ line }}</li>{% endfor %}</ul>
+</section>
+<section class="section">
+  <h2>Career</h2>
+  <p class="description">Training {{ results.training_window }} (used by the search); test year {{ results.test_window }} (never seen by the search). Fitness is log-growth of equity minus a small penalty per rule.</p>
+  <div class="scroll"><table>
+    <tr><th></th><th class="number">Final equity</th><th class="number">Fitness</th><th class="number">Worst fall from peak</th><th>Outcome</th><th class="number">Net direction</th><th class="number">Hub-hours bid</th></tr>
+    {% for label, career in [("Training", results.training), ("Test year", results.test), ("Test year, doubled costs", results.test_doubled)] %}
+    <tr><td>{{ label }}</td><td class="number">{{ career.final_equity }}</td><td class="number">{{ career.fitness }}</td><td class="number">{{ career.drawdown }}</td><td>{{ career.alive }}</td><td class="number">{{ career.direction }}</td><td class="number">{{ career.selectivity }}</td></tr>
+    {% endfor %}
+  </table></div>
+</section>
+<section class="section">
+  <h2>Equity</h2>
+  <p class="description">How to read this: the line is the bot's money each day over training, then the unseen test year (dashed box), which is drawn continuing from where training ended; the table above restarts the test year at the starting capital.</p>
+  {{ results.equity_svg | safe }}
+</section>
+<section class="section">
+  <h2>Map of surviving trader kinds</h2>
+  <p class="description">How to read this: left = mostly INC (betting DA above RT), right = mostly DEC; bottom = bids rarely, top = bids almost every hub-hour. Darker = higher training fitness; white = no survivor of that kind yet.</p>
+  <div class="scroll">{{ results.map_svg | safe }}</div>
+</section>
+<section class="section">
+  <h2>Top elites</h2>
+  <p class="description">The best traders of the archive by training fitness, and how they did in the test year.</p>
+  <div class="scroll"><table>
+    <tr><th>Trader</th><th>Born by</th><th class="number">Training fitness</th><th class="number">Test fitness</th><th>Gates</th></tr>
+    {% for elite in results.elites %}<tr><td>{{ elite.trader_id }}</td><td>{{ elite.origin }}</td><td class="number">{{ elite.training }}</td><td class="number">{{ elite.test }}</td><td>{{ elite.gate }}</td></tr>{% endfor %}
+  </table></div>
+</section>
+{% else %}
+<section class="section"><h2>Results</h2><p class="description">Run a simulation to see the best bot, its career and the map.</p></section>
+{% endif %}

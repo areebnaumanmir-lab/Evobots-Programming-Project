@@ -3,6 +3,7 @@
 - `python -m evobots.cli capital [config] [--starting-capital …]`: the capital settings.
 - `python -m evobots.cli data build --stage A [--raw …] [--store …] [--workers N]`: the hub
   price store from the MISO files on disk, checked against the recorded statistics (M1).
+- `evobots serve [--port 8765] [--no-browser] [--demo]`: the local app in the browser.
 """
 
 import argparse
@@ -85,7 +86,13 @@ def main(argv=None):
     build.add_argument("--raw", type=Path, default=Path("data/raw/miso"))
     build.add_argument("--store", type=Path, default=Path("data/store"))
     build.add_argument("--workers", type=int, default=4)
+    serve = commands.add_parser("serve", help="open the app in the browser (localhost only)")
+    serve.add_argument("--port", type=int, default=8765)
+    serve.add_argument("--no-browser", action="store_true")
+    serve.add_argument("--demo", action="store_true", help="use synthetic demo data")
     arguments = parser.parse_args(argv)
+    if arguments.command == "serve":
+        return run_serve(arguments)
     if arguments.command == "data":
         return run_data_build(arguments)
     overrides = {
@@ -104,6 +111,26 @@ def main(argv=None):
     except ValueError as error:
         parser.error(str(error))
     print("\n".join(capital_report_lines(settings)))
+
+
+def run_serve(arguments):
+    """`serve`: start the app on localhost and open the browser."""
+    import threading
+    import webbrowser
+
+    import uvicorn
+
+    from evobots.app import server
+    from evobots.service import Service
+
+    print("Loading data …")
+    server.service_holder["service"] = Service(is_synthetic=arguments.demo)
+    address = f"http://127.0.0.1:{arguments.port}/"
+    print(f"evobots is running at {address} (close this window or press Ctrl+C to stop)")
+    if not arguments.no_browser:
+        threading.Timer(1.0, lambda: webbrowser.open(address)).start()
+    uvicorn.run(server.app, host="127.0.0.1", port=arguments.port, log_level="warning")
+    return 0
 
 
 def run_data_build(arguments):

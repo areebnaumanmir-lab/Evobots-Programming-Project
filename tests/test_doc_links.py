@@ -10,6 +10,8 @@ from pathlib import Path
 
 import pytest
 
+from evobots.service import MISO_DERIVED_FILES
+
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SKIPPED_DIRECTORY_NAMES = {".git", ".venv", "data", "runs", "node_modules", ".pytest_cache"}
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
@@ -51,7 +53,11 @@ def broken_links(markdown_path):
         path_part, _, fragment = target.partition("#")
         target_path = (markdown_path.parent / path_part).resolve() if path_part else markdown_path
         if not target_path.exists():
-            problems.append(f"{target}: no such file")
+            # A downloaded copy of the app leaves MISO-derived tables out on purpose.
+            is_inside = target_path.is_relative_to(REPOSITORY_ROOT)
+            relative = target_path.relative_to(REPOSITORY_ROOT).as_posix() if is_inside else ""
+            if relative not in MISO_DERIVED_FILES:
+                problems.append(f"{target}: no such file")
         elif fragment and target_path.suffix == ".md" and fragment not in anchors_in(target_path):
             problems.append(f"{target}: no heading #{fragment}")
     return problems

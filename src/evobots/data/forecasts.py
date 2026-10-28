@@ -32,8 +32,13 @@ from pathlib import Path
 from evobots.data.periods import EVOLUTION_LAST_DAY, MARKET_FIRST_DAY
 from evobots.data.regions import FORECAST_TOWN_BY_HUB
 from evobots.data.sources.nws_pfm import ForecastFormatError, parse_product
+from evobots.data.visible import decision_time
 
 NWS_RAW_DIRECTORY = Path("data/raw/nws")
+# The fetch keeps the newest issue in the 24 hours before the decision time; an issue time
+# printed outside that window is a typo in the source (obs.: "4305" for 2005 in LIX's
+# 2005-06-20 issue), so the row is marked "bad issue time" and left empty, never repaired.
+ISSUE_WINDOW = datetime.timedelta(hours=24)
 FORECAST_TABLE_FILE_NAME = "hub_forecasts.csv.gz"
 # Local hours from noon onward carry the day's high; earlier hours carry the morning low.
 NOON_LOCAL_HOUR = 12
@@ -128,6 +133,9 @@ def forecast_rows_for_decision_day(raw_directory, decision_day):
             )
             if town is not None:
                 status = "ok"
+                cutoff = decision_time(decision_day + datetime.timedelta(days=1))
+                if not cutoff - ISSUE_WINDOW <= town.issued_at_utc <= cutoff:
+                    status, town = "bad issue time", None
         for target_day in targets:
             row = {column: "" for column in FORECAST_COLUMNS}
             row.update(

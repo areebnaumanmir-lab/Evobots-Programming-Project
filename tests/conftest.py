@@ -2,8 +2,22 @@
 
 import glob
 import os
+from pathlib import Path
 
 import pytest
+
+# A downloaded copy of the app has no MISO-derived tables (MISO's terms; docs/data_sources.md
+# §3), so the tests that reproduce capital_sizing.md from them are skipped there.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+MISO_BENCHMARK_PATH = REPOSITORY_ROOT / "docs/data/benchmark_full_size_daily_pnl.csv"
+collect_ignore = []
+if not MISO_BENCHMARK_PATH.exists():
+    collect_ignore = [
+        "test_calibration_tables.py",
+        "test_sizing.py",
+        "test_storms.py",
+        "test_capital_explorer_browser.py",
+    ]
 
 # Where to look for a Chromium when Playwright's own download is absent (CLAUDE.md §14.4:
 # browser tests run offline). EVOBOTS_CHROMIUM_PATH wins; then the cloud container's

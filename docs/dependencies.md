@@ -10,6 +10,10 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 | scipy | 1.18.1 | BSD-3-Clause (obs.: the three-clause licence text in the package metadata) | linear programs (HiGHS) for the DC-OPF explanation (O0), then O2 and O4 |
 | xlrd | 2.0.2 | BSD-3-Clause (obs., round 27: the LICENSE file has the endorsement clause) | old-format `.xls` spreadsheets: Henry Hub (EIA) and GPR |
 | openpyxl (with et-xmlfile 2.0.0) | 3.1.5 | MIT | `.xlsx` spreadsheets: EIA-860M and the World Bank Pink Sheet |
+| FastAPI | 0.162.0 | MIT | the local app's routes (UI option A, round 17; added round 29) |
+| uvicorn (with click 8.5.0, h11 0.16.0) | 0.54.0 | BSD-3-Clause (click BSD-3-Clause, h11 MIT) | serves the app on localhost |
+| Jinja2 (with MarkupSafe 3.0.4) | 3.1.6 | BSD-3-Clause (MarkupSafe BSD-3-Clause) | page templates |
+| starlette, pydantic, anyio | 1.10.0, 2.14.1, 4.15.1 | BSD-3-Clause, MIT, MIT | pulled in by FastAPI |
 
 ## Development and tests
 
@@ -17,6 +21,7 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 |---|---|---|---|
 | pytest | 9.1.1 | MIT | test runner; doctests in `src/` |
 | pytest-socket | 0.8.1 | MIT | blocks networking in tests, apart from localhost (§14.4) |
+| httpx | 0.28.1 | BSD-3-Clause | FastAPI's test client (app route tests) |
 | ruff | 0.17.2 | MIT | lint (pycodestyle, pyflakes, pep8-naming, docstrings, import order) and format |
 | playwright | 1.64.1 | Apache-2.0 | headless-browser tests of pages: no console errors, no network requests, values shown (§14.4) |
 | pluggy, iniconfig, packaging, Pygments | 1.7.0, 2.3.1, 26.3, 2.21.0 | MIT, MIT, Apache-2.0 OR BSD-2-Clause, BSD-2-Clause | pulled in by pytest |
@@ -39,6 +44,5 @@ Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §
 |---|---|---|---|
 | numba | M3 | BSD-2-Clause (obs., round 27: PyPI says "BSD"; the repository's LICENSE has the two redistribution clauses and no endorsement clause) | the fast simulator engine (§14.3) |
 | pyarrow or polars | M1 | Apache-2.0 / MIT (obs., PyPI metadata, round 27) | CSV ingestion |
-| FastAPI, Jinja2, uvicorn | M1.5 | MIT, BSD-3-Clause, BSD-3-Clause (obs., round 27: PyPI metadata; Jinja2's LICENSE.txt has three clauses) | the local app (option A) |
 | cvxpy, Clarabel | O2–O3 | Apache-2.0 (obs., PyPI metadata, round 27) | convex models (CVaR, log-growth) |
 | statsmodels | O1, O6 | BSD-3-Clause (obs., PyPI metadata, round 27) | regime switching, quantile regression, Cox models |

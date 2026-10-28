@@ -1,0 +1,49 @@
+{# Home page. Endpoints: GET /, POST /api/run, POST /api/refine, POST /api/stop,
+   GET /api/status, GET /results, GET /download/*. Explanations: CLAUDE.md §15.2.
+   No formulas here: every number shown is computed in evobots.service. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>evobots</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/theme.css">
+</head>
+<body>
+<main class="single">
+  <div class="top">
+    <h1>evobots</h1>
+    <div class="actions"><a href="#results">Best bot</a></div>
+  </div>
+  <p class="description">Evolves small, readable trading bots for virtual bidding at MISO's eight trading hubs, scores each on a training window and an unseen test year, and hands you the best one as a standalone Python file. Preview: simplified rules; costs are labelled estimates; not investment advice.</p>
+  <p class="description" id="data-status">{{ data_status }}</p>
+
+  <section class="section">
+    <h2>Settings</h2>
+    <p class="description">Every value here is your choice. Move a slider, then choose an action below.</p>
+    <form id="settings" class="sliders">
+      {% for slider in sliders %}
+      <div class="slider">
+        <label for="{{ slider.name }}">{{ slider.label }} <output id="{{ slider.name }}-value" data-format="{{ slider.format }}" data-unit="{{ slider.unit }}"></output></label>
+        <input type="range" id="{{ slider.name }}" name="{{ slider.name }}" min="{{ slider.minimum }}" max="{{ slider.maximum }}" step="{{ slider.step }}" value="{{ slider.default }}">
+        <div class="description">{{ slider.explanation }} <span class="badge">Your choice</span></div>
+      </div>
+      {% endfor %}
+    </form>
+    <div class="action-words">
+      <button type="button" id="run">Run simulation</button>
+      <button type="button" id="refine" {% if not results %}disabled{% endif %}>Refine the best bot (variations of it)</button>
+      <button type="button" id="stop">Stop</button>
+      <a href="/download/best-bot.py" id="download-code">Download best bot code</a>
+      <a href="/download/best-bot.json">Download best bot genome</a>
+      <a href="/download/evobots.zip">Download the whole app</a>
+    </div>
+    <p class="status" id="status" role="status">{{ status.message }}</p>
+  </section>
+
+  <div id="results">{% include "results.html" %}</div>
+</main>
+<script src="/static/page.js"></script>
+</body>
+</html>

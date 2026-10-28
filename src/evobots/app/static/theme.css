@@ -1,0 +1,108 @@
+/* evobots theme: every colour, font, size and spacing value lives here (CLAUDE.md §14.5).
+   Change a value here and every page follows (docs/how_to/change_the_ui.md).
+   Rules: white surfaces only, no fills, no shadows, no rounded boxes; links are words. */
+
+:root {
+  /* Colours: ink, one secondary text tone, hairlines, white, and one signal colour. */
+  --colour-ink: #111111;              /* text, chart lines, active navigation */
+  --colour-secondary-text: #5f5f5f;   /* one-line descriptions, axis labels */
+  --colour-hairline: #e4e4e4;         /* rules between sections, gridlines */
+  --colour-background: #ffffff;       /* the only surface colour */
+  --colour-signal: #a3271f;           /* reserved for losses and deaths */
+
+  /* Type: system fonts only, so the app works offline (CLAUDE.md §14.4). */
+  --font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-size-small: 12px;
+  --font-size-body: 14px;
+  --font-size-label: 16px;
+  --font-size-title: 22px;
+  --line-height: 1.5;
+
+  /* Spacing scale. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+
+  --navigation-width: 200px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--colour-background);
+  color: var(--colour-ink);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height);
+}
+
+a { color: var(--colour-ink); text-decoration: none; }
+a:hover, a:focus-visible { text-decoration: underline; }
+
+.layout { display: flex; min-height: 100vh; }
+
+.navigation {
+  width: var(--navigation-width);
+  padding: var(--space-4) var(--space-3);
+  border-right: 1px solid var(--colour-hairline);
+  flex-shrink: 0;
+}
+.navigation a { display: block; padding: var(--space-1) 0; color: var(--colour-secondary-text); }
+.navigation a.is-active { color: var(--colour-ink); font-weight: 600; }
+.navigation .sub { padding-left: var(--space-3); }
+
+.content { flex: 1; padding: var(--space-4) var(--space-5); max-width: 1200px; }
+
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
+.top h1 { font-size: var(--font-size-title); font-weight: 600; margin: 0; }
+.top .actions { display: flex; gap: var(--space-4); align-items: baseline; }
+.search { border: none; border-bottom: 1px solid var(--colour-hairline); font: inherit; padding: var(--space-1) 0; width: 180px; background: transparent; }
+
+.filters {
+  display: flex; gap: var(--space-4); padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--colour-hairline); color: var(--colour-secondary-text);
+}
+
+.section { padding: var(--space-4) 0; border-bottom: 1px solid var(--colour-hairline); }
+.section h2, .metric h2 { font-size: var(--font-size-label); font-weight: 600; margin: 0; }
+.description { color: var(--colour-secondary-text); margin: var(--space-1) 0 var(--space-3); max-width: 70ch; }
+
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.metric { padding: var(--space-4) var(--space-4) var(--space-4) 0; border-bottom: 1px solid var(--colour-hairline); }
+.metric + .metric { padding-left: var(--space-4); border-left: 1px solid var(--colour-hairline); }
+.metric .value { font-size: var(--font-size-title); font-variant-numeric: tabular-nums; margin-top: var(--space-3); }
+
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: var(--space-2) var(--space-3) var(--space-2) 0; border-bottom: 1px solid var(--colour-hairline); }
+th { font-weight: 600; }
+td.number, th.number { text-align: right; }
+
+.negative { color: var(--colour-signal); }
+.help { color: var(--colour-secondary-text); cursor: help; }
+svg text { font-family: var(--font-family); font-size: var(--font-size-small); fill: var(--colour-secondary-text); }
+
+/* App page: sliders, action words, status line. */
+.single { max-width: 1100px; margin: 0 auto; padding: var(--space-4) var(--space-3); }
+.sliders { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 var(--space-5); }
+.slider { padding: var(--space-3) 0; border-bottom: 1px solid var(--colour-hairline); }
+.slider label { font-weight: 600; display: flex; justify-content: space-between; gap: var(--space-3); }
+.slider output { font-variant-numeric: tabular-nums; font-weight: 400; }
+.slider input[type=range] { width: 100%; accent-color: var(--colour-ink); }
+.badge { color: var(--colour-secondary-text); font-size: var(--font-size-small); font-weight: 400; }
+.action-words { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); padding: var(--space-3) 0; }
+.action-words button, .action-words a {
+  border: none; background: none; padding: 0; font: inherit; color: var(--colour-ink);
+  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.action-words button:disabled { color: var(--colour-secondary-text); cursor: default; text-decoration: none; }
+.status { color: var(--colour-secondary-text); min-height: 1.5em; }
+.status.is-error { color: var(--colour-signal); }
+.rules { margin: 0; padding-left: var(--space-3); }
+.scroll { overflow-x: auto; }
+svg .axis { font-size: var(--font-size-small); fill: var(--colour-secondary-text); }
+@media (max-width: 600px) {
+  .metric + .metric { padding-left: 0; border-left: none; }
+}

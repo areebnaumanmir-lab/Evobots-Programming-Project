@@ -271,3 +271,9 @@ Running record of what we have agreed. It references question numbers in decisio
 | Hub weather | **Decided:** load-centre town | one fixed forecast town per hub: Minneapolis, Detroit, Indianapolis, Peoria, Little Rock, Jackson, New Orleans, Beaumont; missing town → missing input |
 | Plant → hub area | **Decided:** nearest hub town | great-circle distance to the same eight towns; Iowa splits near Des Moines |
 | Series timing | – (Claude, D-92) | T-bill, EPU and GPR usable two days after the observation (posting time unknown or after 10:30); gas and oil one business day |
+
+## Round 29 (2026-10-28): deployable preview app; rounds/round29_preview_app.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Deployment | **Decided:** "one click … a page with a bunch of sliders … download the code of the best bot … rerun the evolution on variations of the best bot … download this whole application" | local app with one-click launchers; preview genome and quick gates, stated as such; the zip excludes MISO data and MISO-derived tables |

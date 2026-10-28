@@ -67,6 +67,8 @@ def test_rounding_to_the_bid_step_rounds_halves_up():
 
 
 def test_volume_constants_equal_the_volume_table():
+    if not (REPOSITORY_ROOT / "docs/data/hub_volume_stats.csv").exists():
+        pytest.skip("MISO-derived table not in this copy (docs/data_sources.md §3)")
     with (REPOSITORY_ROOT / "docs/data/hub_volume_stats.csv").open(encoding="utf-8") as table:
         medians = {row["hub"]: float(row["total_MW_median"]) for row in csv.DictReader(table)}
     assert medians == HUB_MEDIAN_CLEARED_VIRTUAL_MW

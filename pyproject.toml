@@ -7,14 +7,21 @@ requires-python = ">=3.13"
 # Runtime dependencies are added milestone by milestone (CLAUDE.md §5.2);
 # each new one is recorded with its licence in docs/dependencies.md.
 dependencies = [
+    "fastapi>=0.162.0",
+    "jinja2>=3.1.6",
     "numpy",
     "openpyxl>=3.1.5",
     "scipy>=1.18.1",
+    "uvicorn>=0.54.0",
     "xlrd>=2.0.2",
 ]
 
+[project.scripts]
+evobots = "evobots.cli:main"
+
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "playwright==1.64.1",
     "pytest",
     "pytest-socket",
@@ -54,3 +61,6 @@ convention = "google"
 "tools/build_design_preview.py" = ["D", "E501"]
 "tools/check_against_claude_science.py" = ["D", "E501"]
 "tools/build_capital_explorer.py" = ["D", "E501"]
+# Generated-code template and SVG markup: long lines are the output's own lines.
+"src/evobots/bots/codegen.py" = ["E501"]
+"src/evobots/service.py" = ["E501"]

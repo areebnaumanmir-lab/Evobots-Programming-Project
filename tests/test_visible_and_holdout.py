@@ -121,11 +121,15 @@ def test_only_the_final_test_path_imports_the_holdout_accessor():
     assert offenders == []
 
 
+# service.py names the folder only to leave it out of the downloadable app zip.
+HOLDOUT_FOLDER_NAME_ALLOWLIST = HOLDOUT_IMPORT_ALLOWLIST | {"service.py"}
+
+
 def test_only_the_accessor_names_the_holdout_folder():
     offenders = [
         path.relative_to(SOURCE_ROOT).as_posix()
         for path in SOURCE_ROOT.rglob("*.py")
         if "data/holdout" in path.read_text(encoding="utf-8")
-        and path.relative_to(SOURCE_ROOT).as_posix() not in HOLDOUT_IMPORT_ALLOWLIST
+        and path.relative_to(SOURCE_ROOT).as_posix() not in HOLDOUT_FOLDER_NAME_ALLOWLIST
     ]
     assert offenders == []
