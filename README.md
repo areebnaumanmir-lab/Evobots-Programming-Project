@@ -61,7 +61,6 @@ uv run pytest                    # the test suite (offline)
 
 ## Where to read more
 
-- `CLAUDE.md`: the full project briefing.
 - `docs/design_rationale.md`: why each decision was made.
 - `docs/market_rules.md`: MISO's virtual-trading rules.
 - `docs/maths.md`: every formula with a worked example.
