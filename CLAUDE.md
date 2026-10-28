@@ -42,6 +42,8 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
 - **Round 24 (2026-10-24): M0 finished** (`docs/rounds/round24_m0_finish.md`). Capital explorer rebuilt with every value computed in Python and tested in a headless browser; naming test; benchmarks; Markdown doctests; O0 DC-OPF; redistribution terms (`docs/data_sources.md`: MISO data is build-locally until its terms are read); 173 tests.
 - **Round 25 (2026-10-24): MISO's terms** (`docs/rounds/round25_miso_terms.md`). They forbid redistribution and **automated access**. MISO data is built locally and never redistributed (a user switch arrives at M1). Scripted MISO downloads are stopped until I choose between the options there. $1.5M is the final default.
 - **Round 26 (2026-10-24):** I keep all downloaded MISO data for private use. New scripted MISO downloads stay paused until the commercial-only fine print I mentioned is recorded or I say to resume (`docs/data_sources.md` §4).
+- **Round 27 (2026-10-24): every unchecked-fact marker checked** against primary sources (`docs/rounds/round27_verification.md`).
+- **Round 28 (2026-10-28): my answers to round 27** (`docs/rounds/round28_answers.md`): I download the Rates Factors file myself; risk-free rate = FRED DTB3; D2 kept; battery round-trip efficiency 82 %.
 - **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 
 **First session, in order:**
@@ -908,7 +910,7 @@ Every value in the app and the config carries one of three badges. Only **Your c
 | `ruin_floor_fraction`, `ruin_floor_usd`, drawdown limit, quit hazard, CUSUM | **Your choice**, off by default | §10.1 |
 | `mpd_usd_per_mwh` | **From market data** (was a user input) | computed by Attachment L's formula: 50th-percentile DA−RT differential over the prior 12 months, reset each May 1, floor $12 (`market_rules.md` §4.1) |
 | Schedule 17/24 fees, RSG rates | **From market data** (were constants) | cost table by month and era (§6.2); "estimate" until the Rates Factors file arrives |
-| Risk-free rate | **From market data** | needs a keyless T-bill series [verify source; Fed H.15 was dropped in Claude Science] |
+| Risk-free rate | **From market data** | FRED's 3-month T-bill rate (DTB3, Federal Reserve H.15, public domain; decided round 28) |
 | Fixed yearly costs ($50k) | **Your choice**, labelled **assumption** | round 18 found no fixed MISO fee; it covers audit, accounting, legal |
 | Collateral, Virtual MWh Limit, position scale, trailing p99 loss | **From the trader's account** | computed from its own bids and P&L |
 
@@ -1207,7 +1209,7 @@ service.py  the single bridge: validates input, calls the core, returns plain da
 - Size gene: stays out until the tests in §9.7 justify it.
 - Whether to add any further input; it must exist 2005–2026, be point-in-time and keyless. Keep the count at 25 unless I agree to a swap.
 - **ORFE track (§20):**
-  - battery parameters (power, energy, efficiency, degradation cost);
+  - battery parameters (power, energy, degradation cost; round-trip efficiency decided in round 28: 82 %);
   - the CVaR level α and the risk-aversion λ defaults;
   - whether a better tail estimator (O5) should replace the trailing empirical p99 in the sizing rule (a change to a decided design point);
   - whether the optimization bidder and the CVaR portfolio become candidates for `current_bot.json`, or stay benchmarks only;
@@ -1226,10 +1228,10 @@ I said "NOW is the time to fix any of the previous decisions", so Claude decided
 | R19-6 | Documenting local variables (§14.2) | full-word names + comments |
 | R19-7 | Visual reference (§14.5) | supplied by me in round 20 |
 | D1 (r18) | Decision time | 10:30 EPT on D−1 for every year |
-| D2 (r18) | Sunday NERC holiday | flag the Sunday and the following Monday |
+| D2 (r18) | Sunday NERC holiday | flag the Sunday and the following Monday (confirmed by me in round 28) |
 | D3 (r18) | Fees before the Rates Factors file | build with labelled placeholder rates |
 
-Still needed from me: **R1**, MISO's *Market Settlements Rates Factors* file (Cloudflare blocks scripts; download in a browser into `data/inbox/`).
+Still needed from me: **R1**, MISO's *Market Settlements Rates Factors* file (Cloudflare blocks scripts; I download it in a browser and attach it; decided round 28). Until then fees and RSG are labelled estimates and the MPD is the $12 floor, labelled "estimate".
 
 ---
 
@@ -1400,7 +1402,7 @@ A second, physical decision problem on the same price data: a small battery buyi
 - **Label it as a study, not a deployable strategy.** A real battery is a physical resource that needs MISO registration and interconnection.
 - **Parameters** (configurable `[battery]` table; defaults are an open decision §17.2):
   - power P MW and energy E MWh (e.g. 5 MW / 20 MWh, small enough to be a price-taker under the same cap logic);
-  - charge and discharge efficiencies η_c, η_d (EIA, Today in Energy 2021-02-12: the US battery fleet averaged a monthly round-trip efficiency of 82 % in 2019; default to be decided, §17.2);
+  - charge and discharge efficiencies η_c, η_d (EIA, Today in Energy 2021-02-12: the US battery fleet averaged a monthly round-trip efficiency of 82 % in 2019; **default 82 %**, decided round 28);
   - degradation cost κ $/MWh throughput;
   - start-of-day and end-of-day state of charge.
 - **Dynamics:** e_{t+1} = e_t + η_c·c_t − d_t/η_d, with 0 ≤ e_t ≤ E and 0 ≤ c_t, d_t ≤ P. Revenue Σ p_t·(d_t − c_t) − κ·(c_t + d_t).

@@ -223,7 +223,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 - **Missing decisions:** deployment levels L0–L3 (D-05); the two-fidelity simulator (D-07, superseded); multi-instrument scope (D-02, superseded); the persistent universe (D-23, superseded); the round-4 look-ahead rule (D-17, superseded); the `credit_share` meaning (D-42); the round-13 capitalization question and its round-18 answer (D-36).
 - **No conflicts** were found between the log and the current briefing: every difference is a later round replacing an earlier one, recorded above.
 
-## Part D. Rounds 17–27
+## Part D. Rounds 17–28
 
 | ID | Decision (round) | Status | Logic |
 |---|---|---|---|
@@ -253,6 +253,10 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-83 | `epu` history treated as revised data (27) | Claude | EPU revises the previous 30 days daily and keeps no vintages; the hindsight check (§8) already tests bots without `epu` |
 | D-84 | The simulator never rejects a bid for its limit price (27) | Claude | caps specific to virtual bids weren't found; a limit beyond any cap only means "clear at any price", so results can't depend on the caps |
 | D-85 | The report card flags price-insensitive bidding (27) | Claude | the IMM screens price-insensitive virtuals as potential manipulation; a deployable trader shouldn't look like one |
+| D-86 | Fee and RSG history from MISO's Rates Factors workbook, downloaded by Areeb (28) | Areeb | the exact monthly and hourly costs; a manual browser download respects MISO's no-automated-access clause. Labelled estimates until it arrives |
+| D-87 | Risk-free rate from FRED DTB3 (28) | Areeb | one keyless daily series covering 2005–2026, public domain; Treasury's own CSVs changed layout over the years; zero would flatter strategies in 2006–07 and 2023–25 |
+| D-88 | Sunday NERC holiday flags the Sunday and the following Monday (28) | Areeb (confirms D2) | NERC keeps the holiday on the Sunday, but businesses observe the Monday, when load is holiday-low |
+| D-89 | Battery round-trip efficiency default 82 % (28) | Areeb | EIA's measured 2019 US fleet average; 85 % was an unsourced assumption and 90 % flatters battery profit |
 
 ## Part E. Visual design (Q20)
 

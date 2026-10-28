@@ -259,3 +259,12 @@ Running record of what we have agreed. It references question numbers in decisio
 | Markers | "independently verify all these markers and facts" | K, L, O and almost all of A resolved against primary sources; corrections listed in the round doc. Open: F (fees), P (MPD), the risk-free source, and Areeb's commercial-use source |
 | MPD | – | the tariff wording was tested on the full archive and doesn't reproduce MISO's published values; no MPD history can be computed from public data |
 | Weather download | "Continue the download" | resumed; relaunched after each 2-hour limit |
+
+## Round 28 (2026-10-28): answers to the round-27 questions; rounds/round28_answers.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| MISO fee and RSG rates | **Decided:** "I'll download the file" | Areeb downloads the *Market Settlements Rates Factors* workbook and attaches it; saved to `data/inbox/` with its SHA-256. Labelled estimates until then (D3). The MPD stays the $12 floor, labelled "estimate", since the file doesn't contain it |
+| Risk-free rate | **Decided:** FRED 3-month T-bill (DTB3) | keyless CSV, Federal Reserve H.15, public domain with citation requested |
+| Sunday holiday | **Decided:** Sunday and Monday | D2 confirmed |
+| Battery efficiency | **Decided:** 82 % (EIA fleet average) | O4's default round-trip efficiency |

@@ -28,13 +28,14 @@ GROUPS = {
         "Fee and RSG rates",
         "accept as labelled estimates now (decided D3, round 20); resolved by the Rates Factors "
         "file (request R1)",
-        "open",
+        "Areeb downloads the Rates Factors file (round 28); labelled estimates until then",
     ),
     "P": (
         "MISO's published MPD",
         "see question 1 (round 27): MISO's method can't be reproduced from public data; "
         "collateral doesn't bind at Stage A",
-        "open",
+        "decided round 28: the $12 floor every year, labelled estimate, until MISO's published "
+        "values are supplied",
     ),
     "R": (
         "Facts Claude can measure from the downloaded data",
@@ -57,9 +58,9 @@ GROUPS = {
     "A": (
         "Rules and data details that don't change Stage A results",
         "accept: moot under decisions D1/D2, or too small to matter at 5 MW per hub-hour; "
-        "the risk-free source returns at M5 and the price caps at M3",
-        "resolved in round 27 except the risk-free source (question 2) and Areeb's "
-        "commercial-use source",
+        "the price caps return at M3",
+        "resolved in round 27; risk-free source decided in round 28 (FRED DTB3); open: "
+        "Areeb's commercial-use source",
     ),
     "L": (
         "Literature citations not yet checked",
