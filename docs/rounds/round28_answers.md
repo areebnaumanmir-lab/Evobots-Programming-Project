@@ -92,6 +92,8 @@ Date: 2026-10-28. The four multiple-choice questions of `round27_verification.md
 
 - **EIA-860M corrections measured** (`tools/compare_eia860m_vintages.py`; ten January vintages 2016–2025, 76 MB, against September 2026): wind at most 1.2 % (median 0.7 %), solar at most 4.4 % (median 2.0 %), coal and gas up to about 4 %. Coal and gas differ because conversions relabel a unit's technology for its whole history (Barry unit 1: coal in 2016, gas from 2018). The wind and solar features, built from the newest vintage, are therefore within about 1–2 % of what was known at the time. The newest vintage stays in use; the reports say so.
 
+- **Hub forecast table** (`src/evobots/data/forecasts.py`, 3 tests; part of `data build --stage A` when forecasts are on disk). For each decision day and hub it keeps the hub town's forecast for the operating day and the day after (the latter for `temp_fcst_change`): forecast high and low, mean 3-hourly temperature and wind, and the cloud codes. Each row has a status ("ok", "missing file", "unparsed issue", "missing town"). Target days after 2025-09-21 are never stored. The build checks that no stored issue is later than its decision time.
+
 ## 6. Files changed
 - `CLAUDE.md` §13.1 (risk-free source), §17.2 (battery efficiency decided), §20.7 (battery default 82 %).
 - `docs/decisions_log.md`, `docs/design_rationale.md` (D-86 … D-89), `docs/change_ledger.md`, `docs/data_sources.md` (FRED row and terms), `docs/market_rules.md` §4.1 (MPD estimate), `tools/list_verify_markers.py` and the regenerated register.

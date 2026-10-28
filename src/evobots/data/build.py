@@ -10,6 +10,9 @@ checks itself:
 - when the cleared-bids files are present, the hub liquidity statistics against
   `docs/data/hub_volume_stats.csv` (the 15th of each month 2023-01 → 2025-09; round 26).
 
+When the weather forecasts are on disk it also writes `hub_forecasts.csv.gz`
+(`evobots.data.forecasts`) and checks that no stored issue is later than its decision time.
+
 Example:
     >>> import numpy as np
     >>> day_ahead = np.array([30.0, 40.0, 35.0, 32.0, 38.0])
@@ -29,6 +32,7 @@ from pathlib import Path
 
 import numpy as np
 
+from evobots.data.forecasts import FORECAST_TABLE_FILE_NAME, NWS_RAW_DIRECTORY, build_forecast_table
 from evobots.data.periods import EVOLUTION_LAST_DAY, MARKET_FIRST_DAY
 from evobots.data.sources.miso_cleared_bids import hub_volume_statistics, read_day_volumes
 from evobots.data.sources.miso_eras import read_day
@@ -273,7 +277,29 @@ def hub_volume_statistics_from_raw(raw_directory=RAW_DIRECTORY):
     return hub_volume_statistics(volumes, len(sample_days) * HOURS_PER_DAY)
 
 
-def build_stage_a(raw_directory=RAW_DIRECTORY, store_directory=STORE_DIRECTORY, worker_count=4):
+def forecast_issues_after_decision_time(path):
+    """Rows of the forecast table whose issue time is after their decision time (should be 0)."""
+    from evobots.data.visible import decision_time
+
+    late = 0
+    with gzip.open(path, "rt", encoding="utf-8") as table:
+        for row in csv.DictReader(table):
+            if not row["issued_at_utc"]:
+                continue
+            operating_day = datetime.date.fromisoformat(row["decision_day"]) + datetime.timedelta(
+                days=1
+            )
+            issued = datetime.datetime.fromisoformat(row["issued_at_utc"])
+            late += issued > decision_time(operating_day)
+    return late
+
+
+def build_stage_a(
+    raw_directory=RAW_DIRECTORY,
+    store_directory=STORE_DIRECTORY,
+    worker_count=4,
+    nws_directory=NWS_RAW_DIRECTORY,
+):
     """Build the Stage A store and check it; return report lines and whether every check passed.
 
     Returns:
@@ -298,4 +324,16 @@ def build_stage_a(raw_directory=RAW_DIRECTORY, store_directory=STORE_DIRECTORY, 
         lines.append(f"hub_volume_stats.csv: {agreeing} values agree, {len(disagreements)} differ")
         lines += [f"  differs: {text}" for text in disagreements]
         is_passing = is_passing and not disagreements
+    if Path(nws_directory).exists():
+        forecast_path = Path(store_directory) / FORECAST_TABLE_FILE_NAME
+        count_by_status = build_forecast_table(nws_directory, forecast_path)
+        summary = ", ".join(
+            f"{status} {count:,}" for status, count in sorted(count_by_status.items())
+        )
+        lines.append(f"Wrote {forecast_path}: {summary}")
+        late = forecast_issues_after_decision_time(forecast_path)
+        lines.append(f"forecast issues after their decision time: {late}")
+        is_passing = is_passing and late == 0
+    else:
+        lines.append("hub_forecasts.csv.gz: not built (no weather forecasts on disk)")
     return lines, is_passing
