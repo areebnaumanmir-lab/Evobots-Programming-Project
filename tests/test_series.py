@@ -139,3 +139,41 @@ def test_real_gpr_russia_ukraine_period():
         if datetime.date(2022, 2, 24) <= day <= datetime.date(2022, 3, 31)
     ]
     assert round(sum(values) / len(values)) == 318
+
+
+def pink_sheet_rows(month_values):
+    """Pink Sheet rows: four title rows, names, units, then one row per month."""
+    columns = list(series.PINK_SHEET_SERIES_NAME_BY_COLUMN)
+    return (
+        [["World Bank Commodity Price Data (The Pink Sheet)"], [], [], []]
+        + [[None, *columns], [None, *["($/mmbtu)"] * len(columns)]]
+        + [[month, *[value] * len(columns)] for month, value in month_values]
+    )
+
+
+def test_pink_sheet_months_cut_before_september_2025():
+    rows = pink_sheet_rows([("2025M08", 2.9), ("2025M09", 3.0), ("2025M10", "…")])
+    result = series.pink_sheet_rows_to_series(rows)
+    gas = result["global_gas_us_usd_per_mmbtu"]
+    assert gas.months == ((2025, 8),)
+    with_permission = series.pink_sheet_rows_to_series(rows, holdout_permission=object())
+    assert with_permission["global_gas_us_usd_per_mmbtu"].months == ((2025, 8), (2025, 9))
+
+
+def test_real_pink_sheet_henry_hub_matches_eia_daily_mean():
+    # The Pink Sheet's "Natural gas, US" is Henry Hub; its August 2022 average should match
+    # the mean of EIA's daily Henry Hub prices that month to a few cents.
+    pink = series.read_pink_sheet(newest_download("worldbank_pink_sheet", "*.xlsx"))
+    monthly = dict(
+        zip(
+            *[
+                pink["global_gas_us_usd_per_mmbtu"].months,
+                pink["global_gas_us_usd_per_mmbtu"].values,
+            ]
+        )
+    )
+    daily = series.read_eia_daily_spot(newest_download("eia_henry_hub", "*.xls"), "RNGWHHD")
+    august = [
+        value for day, value in zip(daily.days, daily.values) if (day.year, day.month) == (2022, 8)
+    ]
+    assert monthly[(2022, 8)] == pytest.approx(sum(august) / len(august), abs=0.10)

@@ -33,6 +33,7 @@ import dataclasses
 import datetime
 import math
 
+import openpyxl
 import xlrd
 
 from evobots.data.periods import EVOLUTION_LAST_DAY
@@ -353,3 +354,99 @@ def read_gpr(path, holdout_permission=None):
         )
         for name, observations in gpr_rows_to_observations(rows).items()
     }
+
+
+# The Pink Sheet's monthly sheet, its header rows and the columns kept (reporting only).
+PINK_SHEET_NAME = "Monthly Prices"
+PINK_SHEET_HEADER_ROW = 4
+PINK_SHEET_UNIT_ROW = 5
+PINK_SHEET_SERIES_NAME_BY_COLUMN = {
+    "Natural gas, US": "global_gas_us_usd_per_mmbtu",
+    "Natural gas, Europe": "global_gas_europe_usd_per_mmbtu",
+    "Liquefied natural gas, Japan": "global_lng_japan_usd_per_mmbtu",
+    "Crude oil, Brent": "global_oil_brent_usd_per_barrel",
+    "Coal, Australian": "global_coal_australia_usd_per_tonne",
+}
+
+
+@dataclasses.dataclass(frozen=True)
+class MonthlySeries:
+    """One monthly series: (year, month) keys and values, as published.
+
+    Attributes:
+        name: code name with its unit.
+        unit: unit as printed by the source, e.g. "($/mmbtu)".
+        source: the file's origin.
+        months: (year, month) tuples, increasing.
+        values: one float per month.
+    """
+
+    name: str
+    unit: str
+    source: str
+    months: tuple
+    values: tuple
+
+
+def last_complete_evolution_month():
+    """The last month that ends inside the evolution period.
+
+    A monthly average for September 2025 includes hold-out days (from the 22nd), so it is
+    left out without permission.
+    """
+    first_of_month = EVOLUTION_LAST_DAY.replace(day=1)
+    previous_month_end = first_of_month - datetime.timedelta(days=1)
+    return (previous_month_end.year, previous_month_end.month)
+
+
+def pink_sheet_rows_to_series(rows, holdout_permission=None):
+    """Turn the Pink Sheet's monthly rows into MonthlySeries for the kept columns.
+
+    Args:
+        rows: the sheet's rows; row 4 has the names, row 5 the units, then "1960M01" rows.
+            Missing values are printed as "…".
+        holdout_permission: None keeps months up to `last_complete_evolution_month()`.
+
+    Returns:
+        {series name: MonthlySeries}.
+
+    Raises:
+        SeriesFormatError: when a kept column is missing.
+
+    Example:
+        >>> last_complete_evolution_month()
+        (2025, 8)
+    """
+    header = list(rows[PINK_SHEET_HEADER_ROW])
+    units = list(rows[PINK_SHEET_UNIT_ROW])
+    missing = [column for column in PINK_SHEET_SERIES_NAME_BY_COLUMN if column not in header]
+    if missing:
+        raise SeriesFormatError(f"Pink Sheet lacks columns {missing}")
+    last_month = last_complete_evolution_month()
+    result = {}
+    for column, name in PINK_SHEET_SERIES_NAME_BY_COLUMN.items():
+        index = header.index(column)
+        months, values = [], []
+        for row in rows[PINK_SHEET_UNIT_ROW + 1 :]:
+            if not row or not isinstance(row[0], str) or "M" not in row[0]:
+                continue
+            year_text, month_text = row[0].split("M")
+            month = (int(year_text), int(month_text))
+            if holdout_permission is None and month > last_month:
+                continue
+            value = row[index]
+            if isinstance(value, (int, float)):
+                months.append(month)
+                values.append(float(value))
+        result[name] = MonthlySeries(
+            name, str(units[index]), "World Bank Pink Sheet", tuple(months), tuple(values)
+        )
+    return result
+
+
+def read_pink_sheet(path, holdout_permission=None):
+    """Read the World Bank Pink Sheet's monthly prices (reporting only, `CLAUDE.md` §7.9)."""
+    workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    rows = [list(row) for row in workbook[PINK_SHEET_NAME].iter_rows(values_only=True)]
+    workbook.close()
+    return pink_sheet_rows_to_series(rows, holdout_permission)

@@ -88,6 +88,8 @@ Date: 2026-10-28. The four multiple-choice questions of `round27_verification.md
 - **`src/evobots/data/synthetic.py`** (7 tests): seeded synthetic hub prices with noise, GARCH(1,1) or regime-switching spreads, and an optional planted rule (RT raised on hot afternoons), for M4's planted-signal test.
 - **`is_miso_redistribution_allowed`** (decided round 25): a `[data]` table in `configs/10_miso_hubs.toml`, default false; `shareable_sources()` leaves MISO out of any shareable bundle unless it is switched on (4 tests; `config_reference.md`).
 
+- **Pink Sheet reader** (`read_pink_sheet`, reporting only): monthly gas, oil and coal prices to 2025-08 (September 2025's average includes hold-out days). Its US gas series matches the mean of EIA's daily Henry Hub to 2 cents (2022-08: $8.79 against $8.81). **Licence:** the workbook has no licence text and names Bloomberg and Refinitiv among its sources, so it is kept private and left out of shareable bundles until CC BY is confirmed for these series (`data_sources.md` §2).
+
 ## 6. Files changed
 - `CLAUDE.md` §13.1 (risk-free source), §17.2 (battery efficiency decided), §20.7 (battery default 82 %).
 - `docs/decisions_log.md`, `docs/design_rationale.md` (D-86 … D-89), `docs/change_ledger.md`, `docs/data_sources.md` (FRED row and terms), `docs/market_rules.md` §4.1 (MPD estimate), `tools/list_verify_markers.py` and the regenerated register.

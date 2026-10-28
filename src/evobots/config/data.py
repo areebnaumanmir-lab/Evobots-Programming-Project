@@ -7,7 +7,7 @@ sources are public domain or CC BY and may be shared with their acknowledgments.
 
 Example:
     >>> shareable_sources(DataSettings())
-    ('eia', 'epu', 'fred', 'gpr', 'nws', 'worldbank')
+    ('eia', 'epu', 'fred', 'gpr', 'nws')
     >>> "miso" in shareable_sources(DataSettings(is_miso_redistribution_allowed=True))
     True
 """
@@ -15,7 +15,9 @@ Example:
 from dataclasses import dataclass
 
 # Sources whose terms allow redistribution with acknowledgment (docs/data_sources.md §2).
-FREELY_SHAREABLE_SOURCES = ("eia", "epu", "fred", "gpr", "nws", "worldbank")
+# The World Bank Pink Sheet is left out until its licence is confirmed: the workbook carries
+# no licence text and names Bloomberg and Refinitiv among its sources (round 28).
+FREELY_SHAREABLE_SOURCES = ("eia", "epu", "fred", "gpr", "nws")
 
 
 @dataclass(frozen=True)
