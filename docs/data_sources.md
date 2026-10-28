@@ -17,6 +17,20 @@ Provenance marks (`CLAUDE.md` §2.2): **(obs.)** = read on the source's own page
 | World Bank Pink Sheet | global commodity context (reporting only) | M1 | – |
 | FRED 3-month T-bill (DTB3), Federal Reserve H.15 | the risk-free rate in fitness (decided round 28) | M1 | – |
 
+## 1b. File formats and readers (M1, round 28)
+
+All series files are downloaded once by `tools/fetch_series.py` into `data/raw/series/<source>/` (git-ignored), named `<download date>_<original name>`, and logged in `data/raw/series/downloads.jsonl` (URL, SHA-256, size, time), from which `data/manifest.toml` is written. Readers live in `src/evobots/data/sources/series.py`; each cuts its series at 2025-09-21 unless given the hold-out accessor's permission.
+
+| Source | File | Layout (obs., round 28) | Reader | Coverage before the cut |
+|---|---|---|---|---|
+| FRED DTB3 | `fredgraph.csv?id=DTB3` → `DTB3.csv` | header `observation_date,DTB3`; blank value on holidays | `read_fred_dtb3` | 1954-01-04 → 2025-09-19; 5,123 days from 2005-04-01 |
+| EIA Henry Hub | `RNGWHHDd.xls` | sheet `Data 1`: row 1 `Sourcekey, RNGWHHD`, row 2 `Date, …`, then Excel serial date and $/MMBtu | `read_eia_daily_spot(path, "RNGWHHD")` | 1997-01-07 → 2025-09-19, 5,444 trading days |
+| EIA WTI | `RWTCd.xls` | same layout, key `RWTC`, $/barrel | `read_eia_daily_spot(path, "RWTC")` | 1986-01-02 → 2025-09-19 (minimum −$36.98, 2020-04-20) |
+| EPU | `All_Daily_Policy_Data.csv` | header `day,month,year,daily_policy_index` | `read_epu` | 1985-01-01 → 2025-09-21 |
+| GPR | `data_gpr_daily_recent.xls` | one sheet; `DAY` as yyyymmdd text, `GPRD`, `GPRD_THREAT`, `GPRD_ACT`, moving averages, `event`, `var_name` | `read_gpr` (three series) | 1985-01-01 → 2025-09-21 |
+| World Bank Pink Sheet | `CMO-Historical-Data-Monthly.xlsx` (URL changes monthly; read from the commodity-markets page) | reader at M1 (reporting only) | – | – |
+| EIA-860M | newest `{month}_generator{year}.xlsx` (September 2026 on 2026-10-28; superseded months redirect to the archive) | reader at M1 | – | – |
+
 ## 2. Terms of use and what they allow (checked 2026-10-24)
 
 | Source | Terms | Status | May it be bundled? |

@@ -133,7 +133,27 @@ minimise Σ_k c_k g_k over 0 ≤ g_k ≤ Ḡ_k, subject to
   - `::test_line_shadow_price_equals_saving_from_one_more_mw_of_limit`;
   - `::test_prices_do_not_depend_on_the_reference_bus`.
 
-## 3. Still to write
+## 3. Data series
+
+### 3.1 The risk-free rate from the 3-month Treasury bill
+- **Quote:** FRED's DTB3 gives the bill's discount rate in percent (decided round 28); the reader stores it as a fraction d. A 91-day bill quoted at d costs P = 1 − d · 91/360 per dollar of face value.
+- **Daily log return:** holding it to maturity earns r = −ln(P) / 91 per calendar day. In fitness (§10.2 of `CLAUDE.md`), r_f T is the sum of r over the days of the window, each day using the newest quote visible at its decision time.
+- **Worked example:** d = 0.05 (quoted 5.00 %):
+  - P = 1 − 0.05 × 91/360 = 0.987361;
+  - −ln P = 0.0127194, so r = 0.000139774 per day;
+  - over 365 days, 5.1018 % continuously compounded.
+- **Function:** `evobots.data.sources.series.daily_risk_free_log_return`.
+- **Run as a doctest:**
+
+  ```python
+  >>> from evobots.data.sources.series import daily_risk_free_log_return
+  >>> round(daily_risk_free_log_return(0.05) * 365, 6)
+  0.051018
+
+  ```
+- **Test:** `tests/test_series.py::test_daily_risk_free_log_return_worked_example`.
+
+## 4. Still to write
 - The market simulator (M3);
 - fitness under the career model (M5);
 - MAP-Elites (M6);

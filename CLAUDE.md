@@ -405,7 +405,7 @@ Server: `https://docs.misoenergy.org/marketreports/` (keyless). Three file eras 
 - **Source:** Baker, Bloom & Davis US Economic Policy Uncertainty, daily, newspaper-based. Keyless.
   - URL: `https://www.policyuncertainty.com/media/All_Daily_Policy_Data.csv`, with columns (obs.) `day, month, year, daily_policy_index`.
 - **Coverage (obs.):** 1985 → 2026-09-25. Lag 1 day.
-- **Why it's kept** (my decision, round 11): it is the only input that flagged COVID (EPU 513 over 2020-03-09 → 04-30, above every 2015–19 baseline day).
+- **Why it's kept** (my decision, round 11): it is the only input that flagged COVID (EPU's mean over 2020-03-09 → 04-30 was 513, 3.5× the highest 53-day mean of 2015–19 (145) and above every single 2015–19 day except 2016-06-25 (587, the day after the Brexit vote); obs., round 28, `tests/test_series.py`; the round-11 wording "above every baseline day" was not exact).
 
 ### 7.7 Geopolitical risk: GPR (reporting only)
 - **Source:** Caldara & Iacoviello (Federal Reserve Board), daily.
