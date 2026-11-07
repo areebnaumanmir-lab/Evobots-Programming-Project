@@ -7,6 +7,7 @@
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -90,7 +91,32 @@ def main(argv=None):
     serve.add_argument("--port", type=int, default=8765)
     serve.add_argument("--no-browser", action="store_true")
     serve.add_argument("--demo", action="store_true", help="use synthetic demo data")
+    run = commands.add_parser("run", help="run a MAP-Elites search (checkpoints, then exits)")
+    run.add_argument("--run-id", help="R<n> (default: the next free number)")
+    run.add_argument("--evaluations", type=int, default=20_000, help="budget, in traders scored")
+    run.add_argument("--hours", type=float, help="stop after this many hours (resume later)")
+    run.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
+    run.add_argument("--seed", type=int, default=1)
+    run.add_argument("--selection-pressure", type=float, default=0.5)
+    run.add_argument("--window-years", type=int, default=5)
+    run.add_argument("--no-founders", action="store_true", help="the no-founder control run")
+    run.add_argument("--demo", action="store_true", help="synthetic demo data")
+    run.add_argument("--runs", type=Path, default=Path("runs"))
+    resume = commands.add_parser("resume", help="continue a run from its last checkpoint")
+    resume.add_argument("directory", type=Path)
+    resume.add_argument("--hours", type=float)
+    resume.add_argument("--demo", action="store_true")
+    life = commands.add_parser("life", help="run Life mode, the market-time ecology")
+    life.add_argument("--seed", type=int, default=1)
+    life.add_argument("--initial-random", type=int, default=60)
+    life.add_argument("--demo", action="store_true")
     arguments = parser.parse_args(argv)
+    if arguments.command == "run":
+        return run_search(arguments)
+    if arguments.command == "resume":
+        return resume_search(arguments)
+    if arguments.command == "life":
+        return run_life_mode(arguments)
     if arguments.command == "serve":
         return run_serve(arguments)
     if arguments.command == "data":
@@ -130,6 +156,82 @@ def run_serve(arguments):
     if not arguments.no_browser:
         threading.Timer(1.0, lambda: webbrowser.open(address)).start()
     uvicorn.run(server.app, host="127.0.0.1", port=arguments.port, log_level="warning")
+    return 0
+
+
+def evaluator_for(is_demo):
+    """The MISO evaluator from the data built here, or the synthetic one (with a notice)."""
+    from evobots.qd.evaluation import Evaluator
+
+    evaluator = None if is_demo else Evaluator.from_store()
+    if evaluator is None:
+        print("Using synthetic demo data (no MISO hub table built on this machine).")
+        evaluator = Evaluator.synthetic()
+    return evaluator
+
+
+def next_run_id(runs_directory):
+    """R<n> with n one more than the highest existing run."""
+    numbers = [
+        int(path.name[1:]) for path in Path(runs_directory).glob("R*") if path.name[1:].isdigit()
+    ]
+    return f"R{max(numbers, default=0) + 1}"
+
+
+def print_progress(run):
+    """One status line per batch."""
+    best = max((elite.evaluation.fitness for elite in run.archive.values()), default=float("nan"))
+    print(
+        f"{run.evaluations_done:,}/{run.settings.evaluations:,} traders, window "
+        f"{run.window_index + 1}/{len(run.windows)}, {len(run.archive)} elites, best F {best:+.3f}",
+        flush=True,
+    )
+
+
+def run_search(arguments):
+    """`run`: a MAP-Elites search; checkpoints every 10 minutes and at the end."""
+    from evobots.qd.run import Run, SearchSettings
+
+    run_id = arguments.run_id or next_run_id(arguments.runs)
+    settings = SearchSettings(
+        run_id=run_id,
+        seed=arguments.seed,
+        evaluations=arguments.evaluations,
+        workers=arguments.workers,
+        selection_pressure=arguments.selection_pressure,
+        window_years=arguments.window_years,
+        is_using_founders=not arguments.no_founders,
+    )
+    run = Run(settings, evaluator_for(arguments.demo), arguments.runs / run_id)
+    deadline = None if arguments.hours is None else arguments.hours * 3600
+    run.run_until_done(deadline_seconds=deadline, progress=print_progress)
+    print(f"Saved {arguments.runs / run_id}; deployable decision: {run.current_bot()['decision']}")
+    return 0
+
+
+def resume_search(arguments):
+    """`resume`: continue a run from its checkpoint."""
+    from evobots.qd.run import Run
+
+    run = Run.resume(arguments.directory, evaluator_for(arguments.demo))
+    deadline = None if arguments.hours is None else arguments.hours * 3600
+    run.run_until_done(deadline_seconds=deadline, progress=print_progress)
+    print(f"Saved {arguments.directory}; deployable decision: {run.current_bot()['decision']}")
+    return 0
+
+
+def run_life_mode(arguments):
+    """`life`: simulate the ecology and print its summary."""
+    from evobots.qd.life import LifeSettings, run_life
+
+    result = run_life(
+        evaluator_for(arguments.demo),
+        LifeSettings(seed=arguments.seed, initial_random=arguments.initial_random),
+    )
+    print(
+        f"{len(result.traders)} traders lived; deepest lineage {result.deepest_generation()} "
+        f"generations; {int(result.population_by_day[-1])} alive on {result.days[-1]}"
+    )
     return 0
 
 

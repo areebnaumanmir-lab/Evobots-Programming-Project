@@ -132,6 +132,7 @@ MISO_DERIVED_FILES = (
     "docs/data/capital_sweep.csv",
     "docs/data/claude_science_check.csv",
     "docs/data/feature_distributions_by_year.csv",
+    "docs/data/quit_hazard_fit.json",
     "docs/data/fixed_cost_capital_floor.csv",
     "docs/data/headroom_trailing.csv",
     "docs/data/hub_price_stats.csv",

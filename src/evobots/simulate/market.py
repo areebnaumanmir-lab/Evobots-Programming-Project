@@ -286,3 +286,33 @@ def point_in_time_features(market):
         "hour": np.array(hour),
         "weekday": np.broadcast_to(weekday[:, None, None], shape).copy(),
     }
+
+
+def planted_hub_market(
+    days, seed=0, planted_premium_usd_per_mwh=6.0, model="noise", last_day=EVOLUTION_LAST_DAY
+):
+    """A test market from `evobots.data.synthetic.synthetic_market` without the demo premium.
+
+    Returns (HubMarket, forecast high per day and hub): on hub-hours where the synthetic
+    forecast high exceeds 85 °F and the hour ending is 14–19, RT is raised by the planted
+    premium (0 = pure noise), so a DEC bid there earns it on average (M4's planted-signal test).
+    """
+    generated = synthetic_market(
+        days=days,
+        hubs=len(STAGE_A_HUBS),
+        model=model,
+        seed=seed,
+        planted_premium_usd_per_mwh=planted_premium_usd_per_mwh,
+    )
+    first_day = last_day - datetime.timedelta(days=days - 1)
+    day_list = tuple(first_day + datetime.timedelta(days=offset) for offset in range(days))
+    congestion = generated.day_ahead - generated.day_ahead.mean(axis=2, keepdims=True)
+    market = HubMarket(
+        day_list,
+        tuple(STAGE_A_HUBS),
+        generated.day_ahead,
+        generated.real_time,
+        "synthetic test data",
+        day_ahead_congestion=congestion,
+    )
+    return market, generated.forecast_high_degf, generated.is_planted

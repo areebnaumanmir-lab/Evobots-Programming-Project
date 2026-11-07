@@ -39,8 +39,23 @@ def score_constant(value):
 
 
 FOUNDERS = {
-    "always_inc": Genome(ALWAYS, ALWAYS, score_constant(-1.0), size_score_scale_usd_per_mwh=0.5),
-    "always_dec": Genome(ALWAYS, ALWAYS, score_constant(1.0), size_score_scale_usd_per_mwh=0.5),
+    # Score ±1 $/MWh with zero thresholds and a 0.5 $/MWh size scale: a full-size bid every hour.
+    "always_inc": Genome(
+        ALWAYS,
+        ALWAYS,
+        score_constant(-1.0),
+        dec_threshold_usd_per_mwh=0.0,
+        inc_threshold_usd_per_mwh=0.0,
+        size_score_scale_usd_per_mwh=0.5,
+    ),
+    "always_dec": Genome(
+        ALWAYS,
+        ALWAYS,
+        score_constant(1.0),
+        dec_threshold_usd_per_mwh=0.0,
+        inc_threshold_usd_per_mwh=0.0,
+        size_score_scale_usd_per_mwh=0.5,
+    ),
     "persistence": Genome(
         ALWAYS,
         ALWAYS,

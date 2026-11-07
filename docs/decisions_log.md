@@ -323,3 +323,11 @@ Running record of what we have agreed. It references question numbers in decisio
 | Parsimony | delegated | 0.002 per node |
 | L3 identification | delegated | β₂, β₃, β₄ fixed; β₀, β₁ fitted by simulated moments |
 | L4 and presets | delegated | k = 0.5, h = 5; prop trader 10 % limit; hedge fund 14.4 %/yr withdrawals |
+
+## Round 37 (2026-11-07): M6 search and M6b Life mode; rounds/round37_m6_search.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| G2 benchmark | delegated | null variance 1/(T − 1); effective trials by participation ratio |
+| Quick gates | delegated | G1 95 % within 50 % loss; G2 DSR ≥ 0.95; G4 doubled costs; G6 next year |
+| First real run | – | R100: do nothing (G2 fails at 442 effective trials) |
