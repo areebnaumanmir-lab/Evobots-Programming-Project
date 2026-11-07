@@ -8,6 +8,8 @@ Every library evobots uses: purpose, licence and version (`docs/design_spec.md` 
 |---|---|---|---|
 | numpy | 2.5.4 | BSD-3-Clause (bundled parts: 0BSD, MIT, Zlib, CC0-1.0) | arrays for prices, P&L and the trailing 1-in-100-day loss |
 | scipy | 1.18.1 | BSD-3-Clause (obs.: the three-clause licence text in the package metadata) | linear programs (HiGHS) for the DC-OPF explanation (O0), then O2 and O4 |
+| numba | 0.68.1 | BSD (obs.: package metadata `License: BSD`) | compiles the settlement loop and the trailing-percentile window (M3); the code falls back to the NumPy reference without it (Pyodide) |
+| llvmlite | 0.50.0 | BSD-2-Clause AND Apache-2.0 WITH LLVM-exception | Numba's compiler back end (installed with Numba) |
 | xlrd | 2.0.2 | BSD-3-Clause (obs., round 27: the LICENSE file has the endorsement clause) | old-format `.xls` spreadsheets: Henry Hub (EIA) and GPR |
 | openpyxl (with et-xmlfile 2.0.0) | 3.1.5 | MIT | `.xlsx` spreadsheets: EIA-860M and the World Bank Pink Sheet |
 | FastAPI | 0.162.0 | MIT | the local app's routes (UI option A, round 17; added round 29) |

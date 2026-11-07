@@ -300,3 +300,11 @@ Running record of what we have agreed. It references question numbers in decisio
 | Congestion share definition | delegated ("finish all of this") | ratio of 28-day means; missing near zero mean price |
 | Hub areas at Stage A | delegated | a hub is its own area on every day |
 | Gas volatility unit | delegated | fraction per day (code never stores percent) |
+
+## Round 34 (2026-11-07): M3 simulator; rounds/round34_m3_simulator.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Fee estimates until the rate file | delegated (D3) | admin $0.0902; DA RSG $0.05 placeholder; DDC $0 / $1.80 / $0.11 by era; all labelled |
+| Sizing input | delegated | the trader's own full-size P&L after fees, two-sided trailing p99 |
+| Limits | delegated | cut to the trader's cap and the Virtual MWh Limit on submitted MWh |

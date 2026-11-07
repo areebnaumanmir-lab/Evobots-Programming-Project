@@ -92,11 +92,21 @@ def milestone_cases():
     from evobots.features.inputs import synthetic_feature_inputs
     from evobots.features.store import build_feature_store
     from evobots.simulate.market import synthetic_hub_market
+    from evobots.simulate.settlement import AccountRules, constant_decisions, settle
 
     market = synthetic_hub_market(days=3653, seed=1)
     inputs = synthetic_feature_inputs(market.days, market.hubs, seed=2)
     location_days = len(market.days) * len(market.hubs)
+    decisions = constant_decisions(market, -1, 5.0)
+    settle(decisions, market, 1826, 3653, AccountRules())  # compile the Numba kernels first
+    trader_years = (3653 - 1826) / 365.25
     return [
+        (
+            "settle_5_years_8_hubs",
+            trader_years,
+            "trader-years",
+            lambda: settle(decisions, market, 1826, 3653, AccountRules()),
+        ),
         (
             "build_feature_store",
             location_days,

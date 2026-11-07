@@ -168,8 +168,45 @@ minimise Σ_k c_k g_k over 0 ≤ g_k ≤ Ḡ_k, subject to
   ```
 - **Function:** `evobots.data.build.hub_price_statistics`. **Check:** `evobots data build --stage A` compares all 176 values with the recorded file.
 
-## 4. Still to write
-- The market simulator (M3);
+## 4. The market simulator (M3)
+
+Notation: for trader k, day D, hour h and location n: side σ ∈ {+1 DEC, −1 INC, 0}, limit b, full-size power m (MW), position scale s, DA price P^DA, RT price P^RT.
+
+### 4.1 Clearing and P&L
+- **Cleared:** c = 1 when σ = +1 and P^DA ≤ b, or σ = −1 and P^DA ≥ b; else 0. Hours without both prices don't trade.
+- **Power bid:** q = ⌊10 · s · m⌋ / 10 MW (MISO's 0.1 MW step; below it is no bid).
+- **Gross P&L:** Σ_{h,n} c · σ · q · (P^RT − P^DA). DEC earns RT − DA, INC earns DA − RT.
+- **Function:** `evobots.simulate.settlement.settle` (fast) and `settle_reference` (readable).
+- **Tests:** `tests/test_settlement.py::test_fast_kernel_agrees_with_reference`, `::test_simulator_equals_the_calibrated_sizing_module`, `::test_real_benchmarks_reproduce_capital_sizing` (worst days $492,173 and $176,554; storm fitness 0.540 and −0.411).
+
+### 4.2 Fees with MISO's netting
+With net(n, h) = Σ cleared DEC MW − Σ cleared INC MW at node n:
+- admin = r_A · Σ_n |net(n, h)|; DA RSG = r_D · Σ_n max(net, 0); DDC = r_R(h) · max(−Σ_n net, 0) ([market_rules.md](market_rules.md) §3.2).
+- **Worked example** (rates of 2024, estimates: r_A = $0.0902, r_D = $0.05, r_R = $0.11): 2 MW DEC at one hub and 5 MW INC at another in one hour pays 0.0902 × 7 + 0.05 × 2 + 0.11 × 3 = **$1.0614**. In 2010 (r_R = $1.80) the same hour pays **$6.1314**.
+
+  ```python
+  >>> import datetime
+  >>> from evobots.simulate.fees import CostTable, hourly_fees_usd
+  >>> table = CostTable.estimates()
+  >>> round(hourly_fees_usd([2.0, -5.0], table.rates_for_day(datetime.date(2024, 1, 1))), 4)
+  1.0614
+  >>> round(hourly_fees_usd([2.0, -5.0], table.rates_for_day(datetime.date(2010, 6, 1))), 4)
+  6.1314
+
+  ```
+- **Function:** `evobots.simulate.fees.hourly_fees_usd`, `CostTable`. **Test:** `tests/test_settlement.py::test_fee_netting_matches_the_rules`.
+
+### 4.3 Daily limits: the trader's cap and the Virtual MWh Limit
+The scale is cut so that submitted MWh (cleared or not) stay within both limits:
+s' = s · min(1, cap_k / (s · Σ m), c · W / (MPD · 2) / (s · Σ m)).
+- **Worked example:** W = $10,000, credit share c = 0.25, MPD $12: the limit is 2,500 / 24 = 104.2 MWh. Bidding 5 MW at 192 hub-hours (960 MWh) at s = 1 is cut to 0.5425 MW per bid, rounded down to **0.5 MW**, so **96 MWh** are submitted.
+- **Test:** `tests/test_settlement.py::test_credit_limit_cuts_bids_instead_of_refusing_them`.
+
+### 4.4 Death: out of money (L0)
+Dead from the day equity ≤ 0.1 MW × MPD × 2 days = **$2.40** (at the $12 floor): it can no longer post the smallest bid's collateral. Equity then stays frozen.
+- **Function:** `AccountRules.out_of_money_equity_usd`. **Test:** `tests/test_settlement.py::test_out_of_money_death_freezes_the_account`.
+
+## 5. Still to write
 - fitness under the career model (M5);
 - MAP-Elites (M6);
 - the report-card statistics (M7);
