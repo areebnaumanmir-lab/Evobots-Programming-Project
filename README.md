@@ -8,7 +8,7 @@ Evolves small, readable trading bots for virtual bidding in MISO's day-ahead ele
 
 Once the repository owner has switched on GitHub Pages (below), anyone can open evobots at `https://<owner>.github.io/<repository>/`. Nothing to install:
 - the same page and sliders run evobots' Python inside the browser (Pyodide); the first visit downloads about 17 MB;
-- the website uses synthetic demo prices, because MISO's terms forbid publishing MISO data;
+- the website still uses synthetic demo prices (the downloadable app runs on real MISO data);
 - if you built the MISO hub table with the downloadable app, load it on the page. It is read in your browser and never uploaded anywhere.
 
 **Switching it on (repository owner, once):**
@@ -34,13 +34,13 @@ To try the website locally: `uv run python tools/build_website.py`, then `python
    - **Refine the best bot** starts a new search from the best bot and variations of it.
    - **Download the whole app** saves this application as a zip.
 
-Without MISO data on your machine, the app runs in **demo mode** on synthetic prices.
+The app runs on **real MISO data from the first start**: the hub prices (2005–2025), weather forecasts and the gas, policy-uncertainty and interest-rate series come with it in `data/bundled/` and are installed automatically. Nothing else to download. Start it with `--demo` for synthetic prices instead.
 
-**Already have a data pack?** Put `evobots-data-pack.zip` in the evobots folder or in your Downloads folder before starting. The app imports it once, by itself, and then runs on the real MISO data and the runs it holds. Whoever built the store makes one with `uv run evobots data pack`. A pack holds MISO-derived data for its owner's own use: keep it private, and never commit or publish it (it is git-ignored).
+**Want someone's runs too** (searches, report cards, paper ledgers)? Put their `evobots-data-pack.zip` in the evobots folder or in your Downloads folder before starting, and the app imports it once by itself. They make one with `uv run evobots data pack`. Packs are git-ignored; share one only under the conditions in `data/bundled/NOTICE.md`.
 
 ## Use real MISO data
 
-MISO's terms forbid redistributing its data, so no copy of evobots includes MISO prices; each user builds their own. MISO's terms also forbid automated access to its website. Read them, and download the market reports through MISO's site:
+The app already includes MISO's hub prices (above). To rebuild them yourself, or to add the all-location store (Stage C/D), download MISO's market reports through MISO's site; its terms forbid automated access:
 - the day-ahead (ex-post, and `da_lmp` before March 2015) and final real-time LMP reports, from the Market Reports pages on misoenergy.org;
 - save the files into `data/raw/miso/`, named as MISO publishes them (`docs/data_coverage.md` lists the names by era).
 
@@ -82,7 +82,7 @@ A single-file engine (`dist/evobots-<version>-<os>.pyz`, code and dependencies, 
 
 ## Acknowledgments
 
-Price data: Midcontinent Independent System Operator (MISO), used for non-commercial research and built locally on each user's machine; MISO data is not redistributed. Weather forecasts are derived from National Weather Service forecasts archived by the Iowa Environmental Mesonet, Iowa State University. Other sources:
+Price data: Midcontinent Independent System Operator, Inc. (MISO), public market reports, misoenergy.org. They are reproduced in `data/bundled/` with MISO's written permission for this project (2026-11-06), on condition that the source is acknowledged and the conditions of reproduction are made clear: **if you reproduce or reuse the MISO files, read [data/bundled/NOTICE.md](data/bundled/NOTICE.md) first**. Weather forecasts are derived from National Weather Service forecasts archived by the Iowa Environmental Mesonet, Iowa State University. Other sources:
 - U.S. Energy Information Administration (gas, oil, generator inventory);
 - Baker, Bloom & Davis, Economic Policy Uncertainty (CC BY 4.0);
 - Caldara & Iacoviello (2022), *American Economic Review* 112(4), Geopolitical Risk (CC BY);

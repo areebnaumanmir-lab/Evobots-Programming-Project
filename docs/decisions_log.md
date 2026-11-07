@@ -365,3 +365,11 @@ Running record of what we have agreed. It references question numbers in decisio
 | Exported bot | `bot_<id>.py`, written only after the 200-day equivalence check | delegated |
 | Single-file engine | `.pyz` via shiv, code and dependencies, no data | built; shipping it is Areeb's choice (§14.6) |
 
+## Round 42 (2026-11-07): MISO permission and bundled data; rounds/round42_miso_permission_bundled_data.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Publishing MISO data | allowed for this project by MISO's written permission (email, 2026-11-06), with the source acknowledged and the conditions of reproduction stated (`data/bundled/NOTICE.md`) | decided by Areeb |
+| What ships | the hub price table, forecasts and the newest gas, EPU, DTB3 and GPR files, installed on first start | delegated |
+| Still excluded | the sealed year, the raw MISO archive, automated MISO downloads | unchanged |
+
