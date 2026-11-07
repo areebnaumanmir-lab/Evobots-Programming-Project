@@ -84,6 +84,11 @@ def main(argv=None):
     capital.add_argument("--ruin-floor-usd", type=float, dest="ruin_floor_usd")
     data = commands.add_parser("data", help="build the data store (offline)")
     data_commands = data.add_subparsers(dest="data_command", required=True)
+    pack = data_commands.add_parser(
+        "pack", help="write evobots-data-pack.zip: this machine's built data and runs, for you"
+    )
+    pack.add_argument("--output", type=Path, default=Path("evobots-data-pack.zip"))
+    pack.add_argument("--runs", nargs="*", help="run ids to include (default: all)")
     build = data_commands.add_parser("build", help="build and check a stage's store")
     build.add_argument("--stage", choices=["A", "D", "C"], default="A")
     build.add_argument("--raw", type=Path, default=Path("data/raw/miso"))
@@ -213,6 +218,11 @@ def run_serve(arguments):
     from evobots.app import server
     from evobots.service import Service
 
+    if not arguments.demo:
+        from evobots.data.pack import import_data_pack
+
+        for message in import_data_pack(Path(".")):
+            print(message)
     print("Loading data …")
     server.service_holder["service"] = Service(is_synthetic=arguments.demo)
     server.app_settings["is_demo"] = arguments.demo
@@ -594,7 +604,17 @@ def run_paper(arguments):
 
 
 def run_data_build(arguments):
-    """`data build`: build the store for a stage and print the checks; 1 if any fails."""
+    """`data build`: build the store for a stage and print the checks; 1 if any fails.
+
+    `data pack` writes the personal data pack instead (`evobots.data.pack`).
+    """
+    if getattr(arguments, "data_command", None) == "pack":
+        from evobots.data.pack import build_data_pack
+
+        output = build_data_pack(Path("."), arguments.output, arguments.runs)
+        print(f"Wrote {output} ({output.stat().st_size / 2**20:.1f} MB). It holds MISO-derived ")
+        print("data for your own use: keep it private (MISO's terms, docs/data_sources.md).")
+        return 0
     if arguments.stage in ("C", "D"):
         from evobots.data.clusters import CLUSTERS_PATH, build_clusters
         from evobots.data.location_store import LOCATION_STORE_DIRECTORY, build_location_store

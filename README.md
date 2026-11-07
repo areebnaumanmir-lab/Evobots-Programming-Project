@@ -36,6 +36,8 @@ To try the website locally: `uv run python tools/build_website.py`, then `python
 
 Without MISO data on your machine, the app runs in **demo mode** on synthetic prices.
 
+**Already have a data pack?** Put `evobots-data-pack.zip` in the evobots folder or in your Downloads folder before starting. The app imports it once, by itself, and then runs on the real MISO data and the runs it holds. Whoever built the store makes one with `uv run evobots data pack`. A pack holds MISO-derived data for its owner's own use: keep it private, and never commit or publish it (it is git-ignored).
+
 ## Use real MISO data
 
 MISO's terms forbid redistributing its data, so no copy of evobots includes MISO prices; each user builds their own. MISO's terms also forbid automated access to its website. Read them, and download the market reports through MISO's site:
