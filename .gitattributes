@@ -1,0 +1,3 @@
+# Windows scripts keep their CRLF bytes exactly (no normalisation), so a downloaded ZIP has them.
+*.bat -text
+*.command text eol=lf
