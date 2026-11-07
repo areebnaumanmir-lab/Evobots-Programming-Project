@@ -10,8 +10,9 @@ app/server.py      routes only
         ▼
 service.py         the single bridge: validates input, returns plain data
         ├──► pages.py  builds every page as sections (metrics, tables, SVG charts…)
-        ├──► core: data · features · simulate · bots · career · qd · assess · orfe
+        ├──► core: data · features · simulate · bots · career · qd · assess · orfe · deploy
         └──► worker processes: `evobots run | resume | refine | report | final-test | life`
+             (`export-bot` and `paper` are command-line only)
              (each writes runs/<id>/status.json, checkpoints and a log in runs/logs/)
 ```
 
@@ -29,7 +30,14 @@ service.py         the single bridge: validates input, returns plain data
 | The navigation | `src/evobots/app/pages.toml` |
 | The layout and the section template | `src/evobots/app/templates/base.html`, `page.html` |
 | Colours, fonts, spacing | `src/evobots/app/static/theme.css` |
-| Charts | `src/evobots/charts.py` (SVG in ink and greys) |
+| Charts | `src/evobots/charts.py` (SVG in ink and greys; lines thinned to 600 points on the server) |
+| Hub prices (Stage A) | `src/evobots/simulate/market.py` from `data/store/hub_prices.csv.gz` |
+| Every location (Stage C) | `src/evobots/data/location_store.py`: `data/store/prices/{year}_*.npy`, memory-mapped |
+| Yearly groups (Stage D) | `src/evobots/data/clusters.py`: `data/store/stage_d_clusters.json` |
+| Choosing the stage | `Evaluator.from_store(stage=…)` in `src/evobots/qd/evaluation.py`; `SearchSettings.stage` |
+| Exported bot files | `src/evobots/deploy/export.py` (with `bots/source.py`) |
+| Paper trading | `src/evobots/deploy/paper.py`; daily vintages `deploy/vintages.py` |
+| The single-file engine | `tools/build_single_file.py` (shiv) |
 | The quick-run page (also the website) | `templates/index.html`, `results.html`, `static/page.js`, `static/site.js`, `static/worker.js`; engine `evobots.service.Service` |
 
 ## The quick run and the website

@@ -28,6 +28,7 @@ import subprocess
 import sys
 import time
 import tomllib
+import urllib.parse
 from pathlib import Path
 
 import numpy as np
@@ -44,6 +45,9 @@ PAGES_PATH = Path(__file__).resolve().parent / "app" / "pages.toml"
 ORFE_DIRECTORY = DOCS_DIRECTORY / "data" / "orfe"
 STOP_FILE_NAME = "stop.request"
 HOLDOUT_LOG_PATH = REPOSITORY_ROOT / "data" / "holdout_access_log.jsonl"
+TRADERS_PER_PAGE = 100
+STAGE_CLUSTERS_PATH = REPOSITORY_ROOT / "data" / "store" / "stage_d_clusters.json"
+STAGES = (("A", "A: the trading hubs"), ("D", "D: cluster representatives (yearly)"))
 STATE = {"evaluator": None, "is_demo": None, "jobs": {}}
 
 
@@ -209,6 +213,11 @@ def start_search(values, is_demo=False):
     )
     workers = validated_int(values.get("workers", 2), "Worker processes", 1, 64)
     seed = validated_int(values.get("seed", 1), "Random seed", 1, 10**9)
+    stage = str(values.get("stage", "A"))
+    if stage not in dict(STAGES):
+        raise ValueError("Locations must be stage A or D")
+    if stage == "D" and not is_demo and not STAGE_CLUSTERS_PATH.exists():
+        raise ValueError("Stage D isn't built here: run `evobots data build --stage D` first")
     run_id = next_run_id()
     arguments = [
         "run",
@@ -221,6 +230,8 @@ def start_search(values, is_demo=False):
         "--seed",
         str(seed),
     ]
+    if stage != "A" and not is_demo:
+        arguments += ["--stage", stage]
     if values.get("no_founders"):
         arguments.append("--no-founders")
     if is_demo:
@@ -726,6 +737,7 @@ def data_page(is_demo=False):
                 "chart",
                 svg=charts.line_chart(points, "DA", unit=""),
             ),
+            location_stages_section(is_demo),
             section(
                 "The 25 features",
                 "Populated status and 5th / 50th / 95th percentiles (docs/features.md).",
@@ -735,6 +747,51 @@ def data_page(is_demo=False):
             ),
         ],
     }
+
+
+def location_stages_section(is_demo=False):
+    """Data page: which location stages are built here (§7.10: A hubs, D clusters, C all)."""
+    from evobots.data.location_store import LOCATION_STORE_DIRECTORY, LocationStore
+
+    store = LocationStore(REPOSITORY_ROOT / LOCATION_STORE_DIRECTORY)
+    years = [] if is_demo else store.years()
+    clusters = (
+        None
+        if is_demo or not STAGE_CLUSTERS_PATH.exists()
+        else json.loads(STAGE_CLUSTERS_PATH.read_text(encoding="utf-8"))
+    )
+    groups = {entry["year"]: entry for entry in clusters["years"]} if clusters else {}
+    rows = [
+        [
+            year,
+            f"{store.index(year)['day_count']:,}",
+            f"{len(store.index(year)['locations']):,}",
+            f"{len(groups[year]['representatives']):,} of {groups[year]['candidates']:,}"
+            if year in groups and groups[year]["candidates"]
+            else "hubs only"
+            if year in groups
+            else "–",
+        ]
+        for year in years
+    ]
+    description = (
+        f"Stage C: {len(years)} years built, {store.size_bytes() / 2**30:.1f} GB on disk. "
+        + (
+            f"Stage D: groups cut at 1 − ρ = {clusters['threshold']} (Spearman, average linkage)."
+            if clusters
+            else "Stage D: not built (`evobots data build --stage D`)."
+        )
+        if years
+        else "Only Stage A (the trading hubs) is built here: `evobots data build --stage D` "
+        "builds every location (Stage C) and the yearly groups (Stage D)."
+    )
+    return section(
+        "Location stages",
+        description,
+        "table",
+        headers=["Year", "Days", "Locations (Stage C)", "Stage D groups"],
+        rows=rows,
+    )
 
 
 def simulator_page(is_demo=False):
@@ -824,8 +881,11 @@ def lineage_store(run_id):
     return LineageStore(path)
 
 
-def traders_page(run_id=None, query=""):
-    """Traders: search a run's lineage by id, name, origin or operator."""
+def traders_page(run_id=None, query="", page_number=1):
+    """Traders: search a run's lineage by id, name, origin or operator.
+
+    Shows TRADERS_PER_PAGE at a time, newest first.
+    """
     runs = full_runs()
     if run_id is None and runs:
         run_id = runs[0]["run_id"]
@@ -836,7 +896,12 @@ def traders_page(run_id=None, query=""):
             "sections": [],
         }
     store = lineage_store(run_id)
-    records = store.search(query, limit=200)
+    page_number = max(1, int(page_number))
+    records = store.search(
+        query, limit=TRADERS_PER_PAGE + 1, offset=(page_number - 1) * TRADERS_PER_PAGE
+    )
+    has_more = len(records) > TRADERS_PER_PAGE
+    records = records[:TRADERS_PER_PAGE]
     headers = [
         "Trader",
         "Name",
@@ -867,11 +932,23 @@ def traders_page(run_id=None, query=""):
         "method": "get",
         "fields": [
             {"name": "run", "label": "Run", "type": "text", "value": run_id},
-            {"name": "q", "label": "Id, name, origin or operator", "type": "text", "value": query},
+            {
+                "name": "query",
+                "label": "Id, name, origin or operator",
+                "type": "text",
+                "value": query,
+            },
         ],
+    }
+    query_text = urllib.parse.urlencode({"run": run_id, "query": query})
+    pager = {
+        "text": f"Page {page_number}",
+        "previous": f"/traders?{query_text}&page={page_number - 1}" if page_number > 1 else None,
+        "next": f"/traders?{query_text}&page={page_number + 1}" if has_more else None,
     }
     return {
         "title": "Traders",
+        "pager": pager,
         "description": (
             f"Run {run_id}: {store.count():,} traders, {store.distinct_behaviours():,} distinct "
             "behaviours. Newest first."
@@ -1121,6 +1198,14 @@ def evolution_page(run_id=None, is_demo=False):
                 "label": "Random seed",
                 "type": "number",
                 "value": 1,
+                "badge": "Your choice",
+            },
+            {
+                "name": "stage",
+                "label": "Locations",
+                "type": "select",
+                "options": STAGES,
+                "value": "A",
                 "badge": "Your choice",
             },
             {
@@ -1824,10 +1909,94 @@ def life_page():
 
 
 def paper_page():
-    """Paper trading (M9): today's bids from the inbox and the running ledger."""
-    from evobots.deploy.paper import ledger_summary  # noqa: PLC0415
+    """Paper trading (M9): the next day's bids and the running ledger of each paper trader."""
+    from evobots.deploy.paper import PAPER_DIRECTORY, read_paper_result
 
-    return ledger_summary()
+    folders = sorted(
+        (REPOSITORY_ROOT / PAPER_DIRECTORY).glob("*/summary.json"),
+        key=lambda path: path.stat().st_mtime,
+        reverse=True,
+    )
+    description = (
+        "Simulated money on forward data (2026-09-22 on); nothing is sent to MISO. Drop MISO's "
+        "daily DA and final RT files into data/inbox/miso/, then run `evobots paper runs/<id>` "
+        "(add --trader <id> for a named trader, --fetch to save today's EPU, GPR and Henry Hub "
+        "files; needs internet)."
+    )
+    if not folders:
+        return {"title": "Paper trading", "description": description, "sections": []}
+    sections = []
+    for path in folders:
+        summary, ledger, bids = read_paper_result(path.parent)
+        settled = [row for row in ledger if row["status"] == "settled"]
+        points = [(row["day"], float(row["equity_usd"])) for row in settled]
+        sections.append(
+            section(
+                summary["trader"],
+                summary["note"],
+                "metrics",
+                items=[
+                    ("Settled days", f"{summary['settled_days']}", "DA and final RT both in"),
+                    (
+                        "Waiting for RT",
+                        f"{summary['waiting_days']}",
+                        "final RT comes ~5 days later",
+                    ),
+                    ("P&L", f"${summary['pnl_usd']:+,.0f}", "after fees, simulated"),
+                    ("Cleared", f"{summary['cleared_mwh']:,.0f} MWh", "settled days"),
+                    (
+                        "Next day",
+                        summary["next_day"] or "–",
+                        f"{summary['next_bids']} bids"
+                        if not summary["is_doing_nothing"]
+                        else "do nothing",
+                    ),
+                ],
+            )
+        )
+        if len(points) >= 2:
+            sections.append(section("Equity", "", "chart", svg=charts.line_chart(points, "equity")))
+        if bids:
+            sections.append(
+                section(
+                    f"Bids for {summary['next_day']}",
+                    "Full-size MW × the position scale is what would be submitted.",
+                    "table",
+                    headers=["Hub", "Hour", "Side", "Full-size MW", "Scale", "Limit $/MWh"],
+                    rows=[
+                        [
+                            bid["hub"],
+                            bid["hour_ending"],
+                            bid["side"],
+                            bid["full_size_mw"],
+                            bid["position_scale"],
+                            bid["limit_usd_per_mwh"],
+                        ]
+                        for bid in bids
+                    ],
+                )
+            )
+        sections.append(
+            section(
+                "Ledger",
+                "",
+                "table",
+                headers=["Day", "Status", "Bids", "Cleared MWh", "Fees $", "P&L $", "Equity $"],
+                rows=[
+                    [
+                        row["day"],
+                        row["status"],
+                        row["bids"],
+                        row["cleared_mwh"],
+                        row["fees_usd"],
+                        row["pnl_usd"],
+                        row["equity_usd"],
+                    ]
+                    for row in reversed(ledger)
+                ],
+            )
+        )
+    return {"title": "Paper trading", "description": description, "sections": sections}
 
 
 def csv_rows(path):

@@ -128,3 +128,7 @@ pre.code { overflow-x: auto; border-left: 1px solid var(--colour-hairline); padd
 .content { min-width: 0; }
 .rules li, .description { overflow-wrap: anywhere; }
 .content .scroll > svg { max-width: 900px; height: auto; display: block; }
+
+/* Pages of a long list (Traders). */
+.pager { display: flex; gap: var(--space-3); align-items: baseline; margin-top: var(--space-3); }
+.action-form select { font: inherit; border: 1px solid var(--colour-hairline); background: var(--colour-background); color: inherit; padding: var(--space-1) var(--space-2); border-radius: 0; }

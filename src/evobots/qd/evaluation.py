@@ -129,15 +129,34 @@ class Evaluator:
         self.summary = None
 
     @classmethod
-    def from_store(cls, root=Path("."), capital=None, career=None):
-        """The MISO evaluator from the data built on this machine, or None without data."""
+    def from_store(
+        cls, root=Path("."), capital=None, career=None, stage="A", first_day=None, last_day=None
+    ):
+        """The MISO evaluator from the data built on this machine, or None without data.
+
+        Args:
+            root: the project folder.
+            capital: capital settings (default when None).
+            career: career preset (default when None).
+            stage: "A" (trading hubs), "D" (yearly cluster representatives) or "C" (every
+                location; give first_day and last_day, since the whole period doesn't fit in
+                memory).
+            first_day: first day for stages D and C (default: 2005-04-01).
+            last_day: last day for stages D and C (default: 2025-09-21).
+        """
         root = Path(root)
-        market = read_miso_hub_market(
-            root / "data/store/hub_prices.csv.gz", root / "data/store/hub_arrays.npz"
-        )
+        blank = None
+        if stage == "A":
+            market = read_miso_hub_market(
+                root / "data/store/hub_prices.csv.gz", root / "data/store/hub_arrays.npz"
+            )
+        else:
+            market, blank = location_market(root, stage, first_day, last_day)
         if market is None:
             return None
         store = build_feature_store(market, load_feature_inputs(root))
+        if blank is not None:
+            blank(market)  # Stage D: trade only where a location represents its year
         return cls(
             market,
             store,
@@ -228,6 +247,31 @@ class Evaluator:
         """The store index of an operating day (the first on or after it)."""
         ordinals = [value.toordinal() for value in self.store.days]
         return int(np.searchsorted(ordinals, day.toordinal()))
+
+
+def location_market(root, stage, first_day=None, last_day=None):
+    """(market, blank or None) of Stage D or C, or (None, None) when not built.
+
+    For Stage D, `blank(market)` must be applied after the features are built (it removes the
+    years a location doesn't represent a group, in place).
+    """
+    from evobots.data.clusters import CLUSTERS_PATH, clustered_market, read_clusters
+    from evobots.data.location_store import LOCATION_STORE_DIRECTORY, LocationStore
+    from evobots.data.periods import EVOLUTION_LAST_DAY, MARKET_FIRST_DAY
+
+    store = LocationStore(Path(root) / LOCATION_STORE_DIRECTORY)
+    if not store.years():
+        return None, None
+    first_day = first_day or MARKET_FIRST_DAY
+    last_day = min(last_day or EVOLUTION_LAST_DAY, EVOLUTION_LAST_DAY)
+    if stage == "C":
+        return store.market(first_day, last_day), None
+    if stage != "D":
+        raise ValueError(f"stage must be A, D or C, not {stage!r}")
+    clusters = read_clusters(Path(root) / CLUSTERS_PATH)
+    if clusters is None:
+        return None, None
+    return clustered_market(first_day, last_day, store, clusters)
 
 
 def max_drawdown(equity_usd, starting_capital_usd):

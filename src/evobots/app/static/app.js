@@ -6,7 +6,7 @@ for (const form of document.querySelectorAll("form[data-api]")) {
     if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) return;
     const status = form.parentElement.querySelector(".status");
     const values = {};
-    for (const input of form.querySelectorAll("input")) {
+    for (const input of form.querySelectorAll("input, select")) {
       if (input.type === "checkbox") { if (input.checked) values[input.name] = 1; }
       else if (input.value !== "") values[input.name] = input.value;
     }

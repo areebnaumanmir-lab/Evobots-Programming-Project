@@ -1,6 +1,6 @@
 # evobots
 
-Evolves small, readable trading bots for virtual bidding at MISO's eight electricity trading hubs, judges each one like a real trading career (it dies when it runs out of money), tests it on a year the search never saw, and hands you the best one as a standalone Python file.
+Evolves small, readable trading bots for virtual bidding in MISO's day-ahead electricity market (at its trading hubs, at yearly cluster representatives, or at every location), judges each one like a real trading career (it dies when it runs out of money), tests it on a year the search never saw, and hands you the best one as a standalone Python file. When no bot passes the deployment gates, it says "do nothing".
 
 **Preview.** The bots use a simplified rule genome (conditions, a score formula, side thresholds, a limit-price offset and a size). Fees and uplift are labelled estimates. This is a research tool, not investment advice; real trading needs MISO registration and collateral.
 
@@ -50,17 +50,29 @@ uv run evobots data build --stage A
 
 This writes `data/store/hub_prices.csv.gz` and checks it. Restart the app and it uses the real data. The sealed hold-out year (2025-09-22 → 2026-09-21) is never read by the app.
 
+`uv run evobots data build --stage D` also builds every location (Stage C: yearly memory-mapped arrays, about 4 GB) and the yearly cluster representatives (Stage D) that `evobots run --stage D` searches on.
+
 ## Command line
 
 ```
-uv run evobots serve             # the app (add --demo for synthetic data, --port to change the port)
-uv run evobots data build        # build the hub price store from files on disk
-uv run evobots capital           # what the capital settings imply
-uv run pytest                    # the test suite (offline)
+uv run evobots serve                          # the app (--demo for synthetic data, --port to change the port)
+uv run evobots data build [--stage A|D|C]     # build the stores from files on disk
+uv run evobots capital                        # what the capital settings imply
+uv run evobots run [--stage D] [--evaluations N]   # a MAP-Elites search; resume with `evobots resume runs/R<n>`
+uv run evobots report runs/R<n>               # the report card (gates G1–G8) as JSON and HTML
+uv run evobots export-bot runs/R<n> [--trader ID]  # one standard-library .py file, equivalence-checked
+uv run evobots paper runs/R<n> [--trader ID]  # paper trading on forward data (files in data/inbox/miso/)
+uv run evobots final-test runs/R<n> --yes     # the sealed 12-month test, once per run (logged)
+uv run pytest                                 # the test suite (offline)
 ```
+
+A single-file engine (`dist/evobots-<version>-<os>.pyz`, code and dependencies, no data) is built with `uv run --with shiv python tools/build_single_file.py`.
 
 ## Where to read more
 
+- `docs/tutorial.md`: every step, from install to paper trading.
+- `docs/orfe_report/report.md` and `summary.md`: the write-up and its two-page summary.
+- `docs/architecture.md`: how the code is organised.
 - `docs/design_rationale.md`: why each decision was made.
 - `docs/market_rules.md`: MISO's virtual-trading rules.
 - `docs/maths.md`: every formula with a worked example.

@@ -12,7 +12,11 @@ Example:
 
 import html
 
+import numpy as np
+
 WIDTH = 720
+# Points per line after server-side thinning (about one per pixel of the 720-wide chart).
+MAX_POINTS = 600
 HEIGHT = 200
 
 
@@ -30,9 +34,29 @@ def number_label(value, unit):
     return f"{value:,.4g}"
 
 
+def thinned(points, max_points=MAX_POINTS):
+    """At most max_points evenly spaced points, always keeping the first and the last.
+
+    Thinning happens here, on the server, so a 20-year daily chart sends ≈ 600 points.
+
+    Example:
+        >>> [x for x, _ in thinned([(day, 0.0) for day in range(10)], 4)]
+        [0, 3, 6, 9]
+    """
+    if len(points) <= max_points:
+        return list(points)
+    positions = np.unique(np.linspace(0, len(points) - 1, max_points).round().astype(int))
+    return [points[position] for position in positions]
+
+
 def line_chart(points, label, unit="$", series=None, width=WIDTH, height=HEIGHT):
-    """Lines of (x label, value) points; `series` adds more as {name: points} (greys)."""
-    all_series = {label: points, **(series or {})}
+    """Lines of (x label, value) points; `series` adds more as {name: points} (greys).
+
+    Each line is thinned to MAX_POINTS on the server first.
+    """
+    points = thinned(points)
+    series = {name: thinned(line) for name, line in (series or {}).items()}
+    all_series = {label: points, **series}
     values = [value for line in all_series.values() for _, value in line if value == value]
     if len(points) < 2 or not values:
         return '<p class="description">Not enough data to draw.</p>'

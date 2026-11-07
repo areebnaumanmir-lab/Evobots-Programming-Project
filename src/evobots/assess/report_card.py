@@ -12,8 +12,8 @@
   on the training window (≤ 0.5 passes)
 - G4 cost stress: the unseen year, and the whole period, with fees and uplift doubled: still
   positive
-- G5 scale-up: at the MW cap (no position scaling): still alive; on every location (Stage C) once
-  that store is built (M8)
+- G5 scale-up: at the MW cap (no position scaling): still alive; and, when the Stage C store is
+  built, re-scored on every location over the unseen year (`evobots.assess.scale_up`): still alive
 - G6 walk-forward: the unseen year after the training window: positive growth, drawdown within the
   mandate
 - G7 shock periods: results through each event of the calendar: alive through all of them (reported,
@@ -74,6 +74,8 @@ from evobots.storms import fitness_with_and_without_storms
 REPORT_VERSION = 1
 BOOTSTRAP_PATHS = 1000
 MAX_CHART_POINTS = 2000
+# Locations listed by name in the MW table; the rest are summed (Stages D and C).
+LOCATIONS_LISTED = 20
 PBO_REQUIRED = 0.5
 # The event calendar (G7). Dates from the project's own data checks where marked (obs.).
 EVENT_CALENDAR = {
@@ -227,7 +229,10 @@ def shock_results(evaluation, days, starting_capital_usd):
 
 
 def mw_by_location(evaluator, genome, start, end):
-    """Cleared MWh at full size by location, and by location type."""
+    """Cleared MWh at full size by location, and by location type.
+
+    Stages D and C list the LOCATIONS_LISTED largest and sum the rest.
+    """
     decisions = evaluator.decisions(genome, start, end)
     rows = slice(start - decisions.first_day_index, end - decisions.first_day_index)
     side = decisions.side[rows].astype(float)
@@ -246,6 +251,13 @@ def mw_by_location(evaluator, genome, start, end):
     by_type = {}
     for name, kind in zip(evaluator.store.locations, evaluator.market.types()):
         by_type[kind] = by_type.get(kind, 0.0) + by_location[name]
+    if len(by_location) > LOCATIONS_LISTED:
+        ranked_names = sorted(by_location, key=by_location.get, reverse=True)
+        rest = ranked_names[LOCATIONS_LISTED:]
+        by_location = {name: by_location[name] for name in ranked_names[:LOCATIONS_LISTED]}
+        by_location[f"{len(rest):,} other locations"] = float(
+            sum(power) - sum(by_location.values())
+        )
     return by_location, by_type
 
 
@@ -279,8 +291,12 @@ def what_happened(identity, full, unseen, gates, shocks):
     return " ".join(parts)
 
 
-def report_card(context, elite, bootstrap_paths=BOOTSTRAP_PATHS, seed=0):
-    """The full report card of one elite (see the module docstring)."""
+def report_card(context, elite, bootstrap_paths=BOOTSTRAP_PATHS, seed=0, scale_up=None):
+    """The full report card of one elite (see the module docstring).
+
+    `scale_up` is the Stage C re-score of `evobots.assess.scale_up` (None when that store
+    isn't built here); G5 then also needs the trader alive on every location.
+    """
     evaluator = context.evaluator
     days = evaluator.store.days
     capital = evaluator.capital.starting_capital_usd
@@ -356,9 +372,9 @@ def report_card(context, elite, bootstrap_paths=BOOTSTRAP_PATHS, seed=0):
             + f", whole period {full_doubled.log_growth:+.3f}",
         ),
         "G5 scale-up": gate(
-            at_cap.is_alive,
+            at_cap.is_alive and (scale_up is None or scale_up["stage_c"]["is_alive"]),
             f"at the MW cap without scaling: {'alive' if at_cap.is_alive else 'out of money'}, "
-            f"final equity ${at_cap.final_equity_usd:,.0f}; all locations (Stage C): see M8",
+            f"final equity ${at_cap.final_equity_usd:,.0f}; " + scale_up_text(scale_up),
         ),
         "G6 walk-forward": gate(
             unseen is not None
@@ -455,6 +471,7 @@ def report_card(context, elite, bootstrap_paths=BOOTSTRAP_PATHS, seed=0):
             "is_hindsight_suspect": uses_hindsight and hindsight.log_growth < full.log_growth - 0.1,
         },
         "mw_by_location": by_location,
+        "scale_up": scale_up,
         "mw_by_location_type": by_type,
         "inference": inference,
         "yearly_log_growth_interval_90": yearly_growth,
@@ -492,6 +509,20 @@ def report_card(context, elite, bootstrap_paths=BOOTSTRAP_PATHS, seed=0):
             "event windows marked as assumptions",
         ],
     }
+
+
+def scale_up_text(scale_up):
+    """G5's Stage C sentence."""
+    if scale_up is None:
+        return "every location (Stage C): store not built here"
+    every, own = scale_up["stage_c"], scale_up["own_stage"]
+    return (
+        f"every location (Stage C, {scale_up['locations']:,}), {scale_up['period'][0]} → "
+        f"{scale_up['period'][1]}: log growth {every['log_growth']:+.3f} on "
+        f"{every['locations_traded']:,} locations traded "
+        f"({'alive' if every['is_alive'] else 'out of money'}), against {own['log_growth']:+.3f} "
+        f"on its own {scale_up['own_stage_locations']:,}"
+    )
 
 
 def gate(passed, detail):

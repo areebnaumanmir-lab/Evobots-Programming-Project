@@ -27,6 +27,8 @@ Short recipes for common changes (`docs/design_spec.md` §14.2). Each says which
   Keyless sources only (§18).
 - **Run offline.** After the first install, everything runs offline: `uv run evobots serve`, `evobots run`, `evobots report`. Instead of `--download`, drop files into `data/inbox/` (paper trading) or `data/raw/…`.
 - **Export a bot.**
-  - `uv run evobots export-bot runs/R12 R12-184213` writes a standalone, standard-library `trader_R12-184213.py`.
-  - Run it with `python trader_R12-184213.py --inputs day.csv`.
-  - The Trader page's "Download code" gives the same file.
+  - `uv run evobots export-bot runs/R12 --trader R12-184213` writes a standalone, standard-library `bot_R12-184213.py` after checking, on 200 random days, that it bids exactly what the engine bids. Without `--trader` it exports the run's deployable bot.
+  - Run it with `python bot_R12-184213.py --inputs day.csv [--scale 0.5]`.
+  - The Trader page's "Download code" gives the same code (without the check).
+- **Paper-trade a bot.** Drop MISO's daily DA and final RT files for 2026-09-22 onward into `data/inbox/miso/`, then `uv run evobots paper runs/R12` (or `--trader <id>`). See the ledger and the next day's bids on the Paper trading page.
+- **Scale up to more locations.** `uv run evobots data build --stage D` builds every location (Stage C) and the yearly groups (Stage D); `uv run evobots run --stage D --first-day 2013-01-01` searches on them. A report card then re-scores its trader on every location (gate G5).

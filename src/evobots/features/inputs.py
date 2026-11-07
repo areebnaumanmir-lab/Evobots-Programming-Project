@@ -215,16 +215,24 @@ def newest_file(directory, pattern):
     return files[-1] if files else None
 
 
-def load_feature_inputs(root=Path(".")):
-    """Read every non-price input from the store and the downloaded series under root."""
+def load_feature_inputs(root=Path("."), is_forward_included=False):
+    """Read every non-price input from the store and the downloaded series under root.
+
+    `is_forward_included` also keeps the series' forward dates (2026-09-22 on) for paper
+    trading; hold-out dates are never read here.
+    """
     root = Path(root)
     gas_path = newest_file(root / GAS_DIRECTORY, "*.xls")
     epu_path = newest_file(root / EPU_DIRECTORY, "*.csv")
     return FeatureInputs(
         forecasts=read_forecasts(root / FORECAST_TABLE_PATH),
         capacity=read_capacity_table(root / CAPACITY_TABLE_PATH),
-        gas=read_eia_daily_spot(gas_path, "RNGWHHD") if gas_path else None,
-        epu=read_epu(epu_path) if epu_path else None,
+        gas=(
+            read_eia_daily_spot(gas_path, "RNGWHHD", is_forward_included=is_forward_included)
+            if gas_path
+            else None
+        ),
+        epu=read_epu(epu_path, is_forward_included=is_forward_included) if epu_path else None,
         description="built store and downloaded series",
     )
 

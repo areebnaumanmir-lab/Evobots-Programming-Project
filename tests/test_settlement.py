@@ -161,3 +161,43 @@ def test_real_benchmarks_reproduce_capital_sizing(monkeypatch):
     )
     assert round(inc.full_size_daily_pnl_usd.mean()) == 474
     assert math.isclose(np.percentile(-inc.full_size_daily_pnl_usd, 99), 27_897, abs_tol=1)
+
+
+@pytest.mark.skipif(numba is None, reason="needs Numba")
+def test_unobserved_days_are_skipped_by_sizing_not_counted_as_zero_loss():
+    """A stretch with no prices (the sealed year during paper trading) is not observed: sizing
+    reads the last 365 observed days instead of seeing a year of zero losses."""
+    import dataclasses
+
+    market = synthetic_hub_market(days=1400, seed=5)
+    gap = slice(700, 1100)
+    day_ahead, real_time = market.day_ahead.copy(), market.real_time.copy()
+    day_ahead[gap] = np.nan
+    real_time[gap] = np.nan
+    with_gap = dataclasses.replace(market, day_ahead=day_ahead, real_time=real_time)
+    decisions = random_decisions(with_gap, 9)
+    rules = AccountRules(starting_capital_usd=400_000)
+    fast = settle(decisions, with_gap, 1100, 1300, rules, history_start=0)
+    reference = settle_reference(decisions, with_gap, 1100, 1300, rules, history_start=0)
+    np.testing.assert_allclose(fast.position_scale, reference.position_scale, rtol=1e-9)
+    np.testing.assert_allclose(fast.equity_usd, reference.equity_usd, rtol=1e-9)
+    # Right after the gap the estimate is the trailing p99 of the observed days before it.
+    from evobots.simulate.settlement import (
+        trailing_estimates_kernel,
+        trailing_loss_estimates_reference,
+    )
+
+    series = np.random.default_rng(1).normal(0, 1000, size=900)
+    series[400:800] = np.nan
+    fast_estimates = trailing_estimates_kernel(series, 800)
+    np.testing.assert_allclose(
+        fast_estimates, trailing_loss_estimates_reference(series, 800), rtol=1e-12
+    )
+    head = series[:395]
+    observed = head[~np.isnan(head)][-365:]
+    expected = max(np.percentile(-observed, 99), np.percentile(observed, 99))
+    assert fast_estimates[0] == pytest.approx(expected)
+    # Without the gap the window is plain calendar days, as before.
+    plain = settle(decisions, market, 1100, 1300, rules)
+    plain_reference = settle_reference(decisions, market, 1100, 1300, rules)
+    np.testing.assert_allclose(plain.position_scale, plain_reference.position_scale, rtol=1e-9)

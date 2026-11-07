@@ -347,3 +347,21 @@ Running record of what we have agreed. It references question numbers in decisio
 | Long jobs from the app | logged `evobots` subprocesses | delegated |
 | Price-impact default | β = 0 (O9 finds no detectable hub-level impact) | delegated |
 | ORFE leaderboard | every strategy in the model confidence set on the unseen year; DPDS ρ = 0.002 has the best deflated Sharpe | – |
+
+## Round 40 (2026-11-07): M8 scale-up; rounds/round40_m8_scale_up.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Stage C storage | float32 DA/RT, float16 DA congestion, one file set per year, memory-mapped | delegated |
+| Stage D clustering threshold (§17.2) | Spearman, average linkage, 1 − ρ ≤ 0.25; groups of one dropped | delegated; Areeb may change |
+| Stage D representatives | hub, else last year's, else medoid; trades only in its years | delegated |
+| G5 at every location | the unseen year, 432 warm-up days | delegated |
+
+## Round 41 (2026-11-07): M9 and the ORFE write-up; rounds/round41_m9_paper_export_writeup.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Paper trading across the sealed year | its days missing, never read; sizing from the last 365 observed days | delegated; Areeb may allow reading the hold-out once a run's final test is spent |
+| Exported bot | `bot_<id>.py`, written only after the 200-day equivalence check | delegated |
+| Single-file engine | `.pyz` via shiv, code and dependencies, no data | built; shipping it is Areeb's choice (§14.6) |
+

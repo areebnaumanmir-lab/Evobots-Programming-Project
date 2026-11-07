@@ -237,6 +237,7 @@ class PreparedDays:
     da_rsg: np.ndarray  # (days,)
     ddc: np.ndarray  # (days, 24)
     priced_count: int
+    is_day_observed: np.ndarray  # (days,): some location-hour has both prices
 
 
 def prepare_days(decisions, market, first, end, rules, cost_table):
@@ -265,6 +266,7 @@ def prepare_days(decisions, market, first, end, rules, cost_table):
         da_rsg=da_rsg,
         ddc=ddc,
         priced_count=int(is_priced.sum()),
+        is_day_observed=is_priced.any(axis=(1, 2)),
     )
 
 
@@ -293,14 +295,19 @@ def full_size_pnl_reference(prepared, is_rounding):
 def trailing_loss_estimates_reference(full_size_pnl, first_window_index):
     """Two-sided 1-in-100-day full-size loss for each window day (NaN = no estimate yet).
 
-    For series index i the window is i−6−364 … i−6 (clipped at 0), needing ≥ 90 days.
+    For series index i the window is the last 365 observed days up to i−6, needing ≥ 90. A
+    NaN is a day with no prices at all (not observed, e.g. the sealed year during paper
+    trading) and is skipped; every day of the evolution period is observed, so there the
+    window is simply i−6−364 … i−6 (clipped at 0).
     """
     estimates = np.full(len(full_size_pnl) - first_window_index, np.nan)
     for position, index in enumerate(range(first_window_index, len(full_size_pnl))):
         newest = index - NEWEST_VISIBLE_LAG_DAYS
         if newest < 0:
             continue
-        window = full_size_pnl[max(0, newest - TRAILING_WINDOW_DAYS + 1) : newest + 1]
+        observed = full_size_pnl[: newest + 1]
+        observed = observed[~np.isnan(observed)]
+        window = observed[-TRAILING_WINDOW_DAYS:]
         if len(window) < WARM_UP_DAYS:
             continue
         estimates[position] = max(
@@ -351,6 +358,7 @@ def settle_reference(decisions, market, start, end, rules, cost_table=None, hist
         history_start = max(decisions.first_day_index, start - SIZING_HISTORY_DAYS)
     prepared = prepare_days(decisions, market, history_start, end, rules, cost_table)
     full_pnl = full_size_pnl_reference(prepared, rules.is_rounding)
+    full_pnl = np.where(prepared.is_day_observed, full_pnl, np.nan)
     offset = start - history_start
     estimates = trailing_loss_estimates_reference(full_pnl, offset)
     day_count = end - start
@@ -459,12 +467,17 @@ if numba is not None:
 
     @numba.njit(cache=True)
     def trailing_estimates_kernel(full_pnl, first_window_index):
-        """Two-sided trailing p99 loss per window day, keeping a sorted window."""
+        """Two-sided trailing p99 loss per window day, keeping a sorted window.
+
+        NaN days (not observed) are skipped: the window is the last 365 observed days.
+        """
         length = full_pnl.shape[0]
         estimates = np.full(length - first_window_index, np.nan)
         window = np.empty(365)
+        observed = np.empty(length)  # observed values in day order
+        observed_count = 0
         count = 0
-        added_until = -1  # series index of the newest value in the window
+        added_until = -1  # series index of the newest day considered
         for index in range(first_window_index, length):
             newest = index - 6
             if newest < 0:
@@ -472,9 +485,13 @@ if numba is not None:
             while added_until < newest:
                 added_until += 1
                 value = full_pnl[added_until]
+                if np.isnan(value):
+                    continue
+                observed[observed_count] = value
+                observed_count += 1
                 if count == 365:
-                    # Remove the value leaving the window (series index added_until − 365).
-                    leaving = full_pnl[added_until - 365]
+                    # Remove the value leaving the window (365 observed days back).
+                    leaving = observed[observed_count - 366]
                     position = np.searchsorted(window[:count], leaving)
                     for shift in range(position, count - 1):
                         window[shift] = window[shift + 1]
@@ -599,6 +616,7 @@ def settle(decisions, market, start, end, rules, cost_table=None, history_start=
         prepared.ddc,
         rules.is_rounding,
     )
+    full_pnl = np.where(prepared.is_day_observed, full_pnl, np.nan)
     offset = start - history_start
     estimates = trailing_estimates_kernel(full_pnl, offset)
     packed, death = settle_kernel(

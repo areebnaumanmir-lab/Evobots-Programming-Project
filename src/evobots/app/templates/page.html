@@ -50,6 +50,7 @@
     <label>{{ field.label }}{% if field.unit %} ({{ field.unit }}){% endif %}
       {% if field.type == "range" %}<input type="range" name="{{ field.name }}" min="{{ field.min }}" max="{{ field.max }}" step="{{ field.step }}" value="{{ field.value }}"><output>{{ field.value }}</output>
       {% elif field.type == "checkbox" %}<input type="checkbox" name="{{ field.name }}" value="1">
+      {% elif field.type == "select" %}<select name="{{ field.name }}">{% for value, text in field.options %}<option value="{{ value }}"{% if value == field.value %} selected{% endif %}>{{ text }}</option>{% endfor %}</select>
       {% else %}<input type="{{ field.type }}" name="{{ field.name }}" value="{{ field.value }}">{% endif %}
       {% if field.badge %}<span class="badge">{{ field.badge }}</span>{% endif %}
     </label>
@@ -61,4 +62,11 @@
   {% endif %}
 </section>
 {% endfor %}
+{% if page.pager %}
+<nav class="pager" aria-label="Pages">
+  {% if page.pager.previous %}<a href="{{ page.pager.previous }}">← Newer</a>{% endif %}
+  <span>{{ page.pager.text }}</span>
+  {% if page.pager.next %}<a href="{{ page.pager.next }}">Older →</a>{% endif %}
+</nav>
+{% endif %}
 {% endblock %}

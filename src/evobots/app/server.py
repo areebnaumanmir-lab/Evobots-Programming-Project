@@ -189,9 +189,9 @@ def doc(request: Request, relative: str):
 
 
 @app.get("/traders", response_class=HTMLResponse)
-def traders(request: Request, run: str | None = None, query: str = ""):
-    """Traders: search a run's lineage."""
-    return render_page(request, builder("traders", run_id=run, query=query))
+def traders(request: Request, run: str | None = None, query: str = "", page: int = 1):
+    """Traders: search a run's lineage, a page at a time."""
+    return render_page(request, builder("traders", run_id=run, query=query, page_number=page))
 
 
 @app.get("/traders/{run_id}/{trader_id}", response_class=HTMLResponse)

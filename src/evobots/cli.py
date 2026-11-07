@@ -7,6 +7,7 @@
 """
 
 import argparse
+import datetime
 import json
 import os
 import sys
@@ -101,6 +102,17 @@ def main(argv=None):
     run.add_argument("--selection-pressure", type=float, default=0.5)
     run.add_argument("--window-years", type=int, default=5)
     run.add_argument("--no-founders", action="store_true", help="the no-founder control run")
+    run.add_argument(
+        "--stage",
+        choices=["A", "D"],
+        default="A",
+        help="A: trading hubs; D: cluster representatives",
+    )
+    run.add_argument(
+        "--first-day",
+        type=datetime.date.fromisoformat,
+        help="first operating day the windows use (YYYY-MM-DD; default: the first in the store)",
+    )
     run.add_argument("--demo", action="store_true", help="synthetic demo data")
     run.add_argument("--runs", type=Path, default=Path("runs"))
     resume = commands.add_parser("resume", help="continue a run from its last checkpoint")
@@ -134,9 +146,31 @@ def main(argv=None):
         "--yes", action="store_true", help="confirm: this spends the run's hold-out"
     )
     sealed.add_argument("--opened-by", default="final-test")
+    export = commands.add_parser(
+        "export-bot", help="a trader as one standard-library .py file (equivalence-checked)"
+    )
+    export.add_argument("directory", type=Path, help="the run folder, e.g. runs/R101")
+    export.add_argument("--trader", help="a trader's id (default: the run's deployable bot)")
+    export.add_argument("--output", type=Path, help="file to write (default: bot_<id>.py)")
+    export.add_argument("--check-days", type=int, default=200)
+    export.add_argument("--demo", action="store_true")
+    paper = commands.add_parser("paper", help="paper trading on forward data (2026-09-22 on)")
+    paper.add_argument(
+        "directory", type=Path, nargs="?", help="the run folder (its deployable bot trades)"
+    )
+    paper.add_argument("--trader", help="paper-trade this trader instead of the deployable bot")
+    paper.add_argument(
+        "--fetch",
+        action="store_true",
+        help="needs internet: save today's EPU, GPR and Henry Hub files as dated vintages first",
+    )
     arguments = parser.parse_args(argv)
     if arguments.command == "report":
         return write_report(arguments)
+    if arguments.command == "export-bot":
+        return run_export_bot(arguments)
+    if arguments.command == "paper":
+        return run_paper(arguments)
     if arguments.command == "final-test":
         return run_final_test(arguments)
     if arguments.command == "run":
@@ -190,15 +224,43 @@ def run_serve(arguments):
     return 0
 
 
-def evaluator_for(is_demo):
-    """The MISO evaluator from the data built here, or the synthetic one (with a notice)."""
+def evaluator_for(is_demo, stage="A", first_day=None):
+    """The MISO evaluator from the data built here, or the synthetic one (with a notice).
+
+    Args:
+        is_demo: use synthetic demo data.
+        stage: "A" (trading hubs) or "D" (yearly cluster representatives; needs
+            `evobots data build --stage D`), or a run folder whose checkpoint names the stage
+            and first day.
+        first_day: Stage D only: load prices from this day (less a warm-up for the features
+            and sizing) instead of 2005, to save memory.
+    """
+    from evobots.assess.scale_up import WARM_UP_DAYS
     from evobots.qd.evaluation import Evaluator
 
-    evaluator = None if is_demo else Evaluator.from_store()
+    if isinstance(stage, Path):
+        stage, first_day = stage_of_run(stage)
+    load_from = None
+    if stage != "A" and first_day is not None:
+        load_from = first_day - datetime.timedelta(days=WARM_UP_DAYS)
+    evaluator = None if is_demo else Evaluator.from_store(stage=stage, first_day=load_from)
+    if evaluator is None and stage != "A" and not is_demo:
+        raise SystemExit(f"Stage {stage} isn't built here: run `evobots data build --stage D`.")
     if evaluator is None:
         print("Using synthetic demo data (no MISO hub table built on this machine).")
         evaluator = Evaluator.synthetic()
     return evaluator
+
+
+def stage_of_run(directory):
+    """(stage, first day) a run was started with (("A", None) for runs before stages)."""
+    import pickle
+
+    path = Path(directory) / "checkpoint.pickle"
+    if not path.exists():
+        return "A", None
+    settings = pickle.loads(path.read_bytes())["settings"]
+    return getattr(settings, "stage", "A"), settings.first_day
 
 
 def next_run_id(runs_directory):
@@ -232,8 +294,11 @@ def run_search(arguments):
         selection_pressure=arguments.selection_pressure,
         window_years=arguments.window_years,
         is_using_founders=not arguments.no_founders,
+        stage=arguments.stage,
+        first_day=arguments.first_day,
     )
-    run = Run(settings, evaluator_for(arguments.demo), arguments.runs / run_id)
+    evaluator = evaluator_for(arguments.demo, arguments.stage, arguments.first_day)
+    run = Run(settings, evaluator, arguments.runs / run_id)
     deadline = None if arguments.hours is None else arguments.hours * 3600
     run.run_until_done(
         deadline_seconds=deadline,
@@ -248,7 +313,7 @@ def resume_search(arguments):
     """`resume`: continue a run from its checkpoint."""
     from evobots.qd.run import Run
 
-    run = Run.resume(arguments.directory, evaluator_for(arguments.demo))
+    run = Run.resume(arguments.directory, evaluator_for(arguments.demo, arguments.directory))
     deadline = None if arguments.hours is None else arguments.hours * 3600
     run.run_until_done(
         deadline_seconds=deadline,
@@ -270,7 +335,7 @@ def run_refine(arguments):
     from evobots.bots.trader import genome_to_json
     from evobots.qd.run import Run, SearchSettings
 
-    evaluator = evaluator_for(arguments.demo)
+    evaluator = evaluator_for(arguments.demo, arguments.directory)
     parent = Run.resume(arguments.directory, evaluator)
     elite = next(
         (item for item in parent.archive.values() if item.trader_id == arguments.trader), None
@@ -288,6 +353,8 @@ def run_refine(arguments):
         parent_trader_ids=(arguments.trader,),
         prior_trials=parent.lineage.distinct_behaviours() + parent.settings.prior_trials,
         is_holdout_used=is_holdout_used,
+        stage=parent.settings.stage,
+        first_day=parent.settings.first_day,
     )
     run = Run(settings, evaluator, arguments.directory.parent / run_id)
     run.lineage.attach(arguments.directory / "lineage.sqlite")
@@ -344,7 +411,7 @@ def write_report(arguments):
     from evobots.assess.report_html import report_html
     from evobots.qd.run import Run
 
-    run = Run.resume(arguments.directory, evaluator_for(arguments.demo))
+    run = Run.resume(arguments.directory, evaluator_for(arguments.demo, arguments.directory))
     elite = None
     if arguments.trader:
         elite = next(
@@ -357,7 +424,18 @@ def write_report(arguments):
         return 1
     final_path = arguments.directory / "final_test.json"
     final = json.loads(final_path.read_text()) if final_path.exists() else None
-    card = report_card(ReportContext.from_run(run, final), elite)
+    context = ReportContext.from_run(run, final)
+    scale_up = None
+    if not arguments.demo:
+        from evobots.assess.scale_up import every_location_rescore
+
+        _, train_end, forward_end = context.window
+        if forward_end > train_end:
+            days = run.evaluator.store.days
+            scale_up = every_location_rescore(
+                elite.genome, run.evaluator, days[train_end], days[forward_end - 1]
+            )
+    card = report_card(context, elite, scale_up=scale_up)
     stem = arguments.directory / f"report_{elite.trader_id}"
     stem.with_suffix(".json").write_text(json.dumps(card, indent=2), encoding="utf-8")
     stem.with_suffix(".html").write_text(report_html(card), encoding="utf-8")
@@ -389,11 +467,121 @@ def run_final_test(arguments):
     return 0
 
 
+def trader_genome_of_run(directory, trader_id, evaluator):
+    """(genome, header record) of a run's trader, or of its deployable bot.
+
+    With trader_id None it is the deployable bot; (None, None) when the run's decision is
+    "do nothing".
+    """
+    from evobots.bots.trader import genome_from_json
+    from evobots.qd.run import Run
+
+    if trader_id is None:
+        path = Path(directory) / "deployable" / "current_bot.json"
+        bot = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        if bot.get("decision") != "trade":
+            return None, None
+        trader_id = bot["trader_id"]
+        genome = genome_from_json(json.dumps(bot["genome"]))
+        run = None
+    else:
+        run = Run.resume(directory, evaluator)
+        elite = next((item for item in run.archive.values() if item.trader_id == trader_id), None)
+        genome = elite.genome if elite is not None else run.regenerate(trader_id)
+    record = {"trader_id": trader_id, "run_id": Path(directory).name}
+    if run is not None:
+        lineage = run.lineage.record(trader_id)
+        if lineage is not None:
+            record.update(
+                parent_ids=lineage.parent_ids, operator=lineage.origin, evaluation=lineage.birth
+            )
+    return genome, record
+
+
+def run_export_bot(arguments):
+    """`export-bot`: write bot_<id>.py after the equivalence test passes."""
+    from evobots.deploy.export import export_bot
+
+    evaluator = evaluator_for(arguments.demo, arguments.directory)
+    genome, record = trader_genome_of_run(arguments.directory, arguments.trader, evaluator)
+    if genome is None:
+        print('The run\'s decision is "do nothing": name a trader with --trader to export it.')
+        return 1
+    output = arguments.output or Path(f"bot_{record['trader_id']}.py")
+    result = export_bot(genome, record, evaluator, output, arguments.check_days)
+    print(
+        f"Wrote {result['path']}: the file bids exactly what the engine bids on "
+        f"{result['days_checked']} random days ({result['rows_checked']:,} location-hours, "
+        f"{result['bids_checked']:,} bids). Run: python {output.name} --inputs day.csv"
+    )
+    return 0
+
+
+def run_paper(arguments):
+    """`paper`: settle the forward days and list the next day's bids."""
+    from evobots.career.model import PRESETS
+    from evobots.config.capital import CapitalSettings
+    from evobots.deploy.paper import (
+        PAPER_DIRECTORY,
+        paper_market,
+        paper_trade,
+        write_paper_result,
+    )
+    from evobots.features.inputs import load_feature_inputs
+    from evobots.features.store import build_feature_store
+    from evobots.qd.evaluation import Evaluator
+
+    if arguments.fetch:
+        from evobots.deploy.vintages import save_vintages
+
+        for line in save_vintages():
+            print(line)
+    if arguments.directory is None:
+        return 0
+    market, newest = paper_market()
+    if market is None:
+        print("Paper trading needs the Stage A store: run `evobots data build`.")
+        return 1
+    store = build_feature_store(market, load_feature_inputs(is_forward_included=True))
+    evaluator = Evaluator(market, store, CapitalSettings(), PRESETS["individual"])
+    genome, record = trader_genome_of_run(arguments.directory, arguments.trader, evaluator)
+    run_id = Path(arguments.directory).name
+    label = (
+        f"{record['trader_id']} ({run_id})" if record else f"{run_id}: do nothing (no bot passes)"
+    )
+    result = paper_trade(genome, evaluator, newest, label)
+    folder = PAPER_DIRECTORY / (record["trader_id"] if record else run_id)
+    write_paper_result(result, folder)
+    summary = result.summary
+    print(
+        f"{label}: {summary['settled_days']} forward days settled, "
+        f"{summary['waiting_days']} waiting for RT; P&L ${summary['pnl_usd']:,.0f}; "
+        f"{summary['next_bids']} bids for {summary['next_day']}. Wrote {folder}/"
+    )
+    return 0
+
+
 def run_data_build(arguments):
     """`data build`: build the store for a stage and print the checks; 1 if any fails."""
-    if arguments.stage != "A":
-        print(f"Stage {arguments.stage} is built at M8; only stage A exists so far.")
-        return 1
+    if arguments.stage in ("C", "D"):
+        from evobots.data.clusters import CLUSTERS_PATH, build_clusters
+        from evobots.data.location_store import LOCATION_STORE_DIRECTORY, build_location_store
+
+        directory = arguments.store / LOCATION_STORE_DIRECTORY.relative_to("data/store")
+        built = build_location_store(arguments.raw, directory, arguments.workers)
+        for year, day_count, location_count in built:
+            print(f"Stage C {year}: {day_count} days × {location_count} locations")
+        if arguments.stage == "D":
+            from evobots.data.location_store import LocationStore
+
+            clusters_path = arguments.store / CLUSTERS_PATH.relative_to("data/store")
+            result = build_clusters(LocationStore(directory), clusters_path)
+            for entry in result["years"]:
+                print(
+                    f"Stage D {entry['year']}: {len(entry['representatives'])} groups "
+                    f"from {entry['candidates']} locations"
+                )
+        return 0
     from evobots.data.build import build_stage_a
 
     lines, is_passing = build_stage_a(arguments.raw, arguments.store, arguments.workers)

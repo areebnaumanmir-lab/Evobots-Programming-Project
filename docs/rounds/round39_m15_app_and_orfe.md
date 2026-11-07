@@ -27,12 +27,12 @@ Date: 2026-11-07. Part of "finish all of this" (round 32).
 - **Portfolio of elites (O3; walk-forward over the 80 elites).**
   - **Results:** mean-variance (γ = 10) +0.57, best single elite +0.59, half Kelly +0.30, equal weight +0.29, risk parity +0.18, mean-CVaR +0.11.
   - **Caveat:** the elites were evolved through these years. The walk-forward is out of sample for the weights only, not for the traders.
-- **Battery (O4; 1 MW, 4 MWh, revenue as a share of the perfect-foresight bound).**
+- **Battery (O4; 5 MW, 20 MWh at ILLINOIS.HUB, 82 % round trip, wear $2/MWh, 3,858 days; revenue as a share of the perfect-foresight bound).**
   - **Shares:** rolling intrinsic 0.75, stochastic DP 0.26, tuned and evolved threshold policies about 0.12.
   - **Losing years:** the threshold policies lose money in 2021 and 2022.
   - **End-of-day energy** is settled at the day's mean price, so no policy can beat the bound.
 - **Risk (O5; always-INC at full size, 99 % one-day VaR and ES).**
-  - **2015 → 2018:** every estimator passes Kupiec.
+  - **2015-06 → 2018:** the empirical and EVT estimators pass Kupiec; GARCH-FHS (p = 0.04) and Cornish–Fisher (p = 0.01) fail it.
   - **2019 → 2021:** the peaks-over-threshold EVT estimator passes every test.
   - **2022 → 2025-09:** every estimator fails, because breaches cluster.
   - **Cornish–Fisher** breaks down at the observed kurtosis.
@@ -40,8 +40,8 @@ Date: 2026-11-07. Part of "finish all of this" (round 32).
   - **Hypervolume:** NSGA-II 0.259, MAP-Elites 0.245. NSGA-II's front is larger: 50 points against 23.
   - **Unseen next year:** MAP-Elites' best scores +0.004, NSGA-II's −0.021.
   - **Successive halving** costs 224 trader-years instead of 320 and keeps the top three of the full ranking.
-  - **OCBA** puts 56 of 60 re-evaluations on the two closest elites.
-- **Price impact (O9; MISO cleared virtual bids, every fifth day 2023-01 → 2025-09, 12,085 hub-hours).** The spread moves by −0.0008 $/MWh per MW² of net virtual position. The clustered standard error is 0.0042 and the 90 % bootstrap interval is −0.008 to +0.006. There is no detectable impact at the hub level. The implied change for a 5 MW position is under one cent. This is an association, not causation: traders bid in the direction they expect the spread to move.
+  - **OCBA** puts 56 of 60 re-evaluations on the best elite and its closest rival.
+- **Price impact (O9; MISO cleared virtual bids, every fifth day 2023-01 → 2025-09, 12,085 hub-hours).** The spread moves by −0.0008 $/MWh per MW of net virtual position. The clustered standard error is 0.0042 and the 90 % bootstrap interval is −0.008 to +0.006. There is no detectable impact at the hub level. The implied change for a 5 MW position is under one cent. This is an association, not causation: traders bid in the direction they expect the spread to move.
 
 ## Decisions taken under delegation
 | Topic | Decision | Reason |

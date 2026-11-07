@@ -85,6 +85,7 @@ class SearchSettings:
         is_holdout_used: the refined lineage's sealed test was already opened (§11.5).
         first_day: first operating day the windows may use (None = the first in the store).
         last_day: last operating day (None = the last; never past 2025-09-21).
+        stage: the location set: "A" trading hubs, "D" yearly cluster representatives (§7.10).
     """
 
     run_id: str = "R1"
@@ -105,6 +106,7 @@ class SearchSettings:
     is_holdout_used: bool = False
     first_day: datetime.date | None = None
     last_day: datetime.date | None = None
+    stage: str = "A"
 
 
 def windows_for(store_days, settings):

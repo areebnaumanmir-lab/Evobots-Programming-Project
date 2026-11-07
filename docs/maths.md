@@ -296,5 +296,69 @@ Split the days into S = 8 blocks. For each of the C(8, 4) = 70 ways to train on 
   ```
 - **Function:** `evobots.assess.inference`.
 
-## 7. Still to write
-- every ORFE module (`docs/design_spec.md` §20).
+## 7. The ORFE track (O1–O5, O8, O9 and the leaderboard)
+
+Results of every section: [orfe_report/report.md](orfe_report/report.md), computed by `tools/build_orfe_results.py` into [data/orfe/](data/orfe/).
+
+### 7.1 Scenarios (O1) and how they are scored
+- **Stationary block bootstrap:** whole visible days (spreads up to D − 6) resampled in blocks of geometric length with the Politis–White mean (§6.3).
+- **Regime model:** a two-state hidden Markov chain on the daily mean spread m_t with Student-t emissions, ν = 4: m_t | (state j) ~ μ_j + σ_j·t_ν. It is fitted by EM, writing t_ν as a normal scale mixture (weights w_t = (ν + 1)/(ν + z_t²)).
+- **Mean-reverting jumps (levels):** P_{t+1} − P_t = κ(θ − P_t) + σε_t + J_t, fitted by least squares on the AR(1) form P_{t+1} = a + b·P_t + residual, so κ = 1 − b (per day) and θ = a/κ; residuals beyond 3 standard deviations are the jumps: J_t ~ Bernoulli(their share) × Normal(their mean, their deviation); σ is the deviation of the rest. Each hour adds its average shape.
+- **Analogue days:** the K visible days nearest tomorrow in standardised (forecast high, gas price, month) space.
+- **CRPS of an ensemble** x₁…x_K against the outcome y: CRPS = (1/K)Σ|x_k − y| − (1/(2K²))Σ_{j,k}|x_j − x_k|. For one member it is the absolute error.
+- **Pinball loss at quantile τ:** max(τ(y − q_τ), (τ − 1)(y − q_τ)), with q_τ the ensemble's τ-quantile, averaged over τ ∈ {0.1, 0.5, 0.9}.
+- **Function:** `evobots.orfe.scenarios`. **Tests:** `tests/test_orfe.py::test_scenarios_see_nothing_after_the_newest_visible_day`, `::test_regime_model_recovers_two_scales`, `::test_crps_of_a_point_ensemble_is_the_absolute_error`.
+
+### 7.2 The mean-CVaR bidder, the perfect-foresight bound and DPDS (O2)
+- **Sample-average LP** over K scenarios of the gain g = RT − DA (Rockafellar & Uryasev 2000):
+
+  max (1/K)Σ_k π_k − λ·[ζ + (1/((1 − α)K))Σ_k u_k]
+  subject to u_k ≥ −π_k − ζ, u_k ≥ 0, π_k = Σ_{h,n}(q⁺ − q⁻)g_{k,h,n} − f·Σ(q⁺ + q⁻), 0 ≤ q± ≤ cap_n, Σ(q⁺ + q⁻) ≤ the daily MWh limit.
+- **Perfect foresight:** the same LP with the realised day as its only scenario; an upper bound.
+- **DPDS** (Baltaoglu, Tong & Zhao 2018): for each option k (hub, hour, side), the translated bid x′ clears when x′ ≥ λ′ and pays π′ − λ′. The empirical payoff r̄_k(x′) = (1/t)Σ_s (π′_s − λ′_s)·1{x′ ≥ λ′_s} is a step function. The budget B is spread by dynamic programming on the grid {0, B/α, …, B}: V_k(b) = max_{x ≤ b} r̄_k(x) + V_{k−1}(b − x). The risk-averse variant maximises r̄_k − ρ·(sample variance).
+- **Function:** `evobots.orfe.optimizer`. **Tests:** `tests/test_orfe.py::test_mean_cvar_lp_matches_brute_force`, `::test_dpds_budget_allocation_matches_brute_force`, `::test_perfect_foresight_is_an_upper_bound`.
+
+### 7.3 Portfolios of elites (O3)
+With R the (T × m) matrix of the elites' daily returns and w ≥ 0, Σw = 1:
+- **mean-CVaR:** max mean(Rw) − λ·CVaR_α(−Rw), the LP of 7.2 with returns for gains;
+- **mean-variance:** max mean(Rw) − (γ/2)·wᵀΣw;
+- **growth-optimal:** max Σ_t ln(1 + R_t·w); **fractional Kelly** puts the share f of it in the elites and 1 − f in cash. For one asset with mean μ and variance σ², w ≈ μ/σ²;
+- **risk parity:** w_i(Σw)_i equal for every i;
+- **why the caps still hold:** |Σ_i w_i q_i| ≤ Σ_i w_i|q_i| ≤ cap.
+- **Function:** `evobots.orfe.portfolio`. **Tests:** `tests/test_orfe.py::test_portfolio_models_agree_on_small_cases`, `::test_growth_optimal_weight_matches_kelly_for_one_asset`.
+
+### 7.4 The battery (O4)
+- **Dynamics:** e_{t+1} = e_t + η_c·c_t − d_t/η_d, 0 ≤ e_t ≤ E, 0 ≤ c_t, d_t ≤ P, with η_c = η_d = √0.82.
+- **Revenue of a day:** Σ_t p_t(d_t − c_t) − κΣ_t(c_t + d_t), plus the end-of-day energy settled at the day's mean price p̄: a surplus Δ = e_24 − e_0 > 0 earns Δ·p̄·η_d, a deficit costs |Δ|·p̄/η_c. Without it a policy that ends the day emptier than it started is paid for energy it never bought, and could beat the perfect-foresight bound.
+- **Stochastic DP:** V_t(e) = E_p[max_{c,d} p(d − c) − κ(c + d) + V_{t+1}(e′)] on a grid of states, with V_24 the end-of-day settlement value.
+- **Bound ratio** of a policy: its revenue ÷ the perfect-foresight revenue over the same days.
+- **Worked example** (`schedule_lp` docstring): prices 10, 50, 30, a 1 MW / 1 MWh lossless battery starting empty: charge at 10, sell at 50, revenue $40.
+- **Function:** `evobots.orfe.battery`. **Tests:** `tests/test_orfe.py::test_battery_lp_matches_a_hand_solved_three_hours`, `::test_exclusive_milp_and_lp_differ_only_when_prices_turn_negative`, `::test_dynamic_program_agrees_with_brute_force_on_a_tiny_grid`.
+
+### 7.5 Value at risk, expected shortfall and their backtests (O5)
+- **EVT peaks over threshold:** above u (the 90th percentile of losses), excesses follow a generalised Pareto(ξ, β). With N_u exceedances of n: VaR_p = u + (β/ξ)[((n/N_u)(1 − p))^{−ξ} − 1] and ES_p = (VaR_p + β − ξu)/(1 − ξ).
+- **GARCH(1,1) filtered historical simulation:** σ²_t = ω + αL²_{t−1} + βσ²_{t−1}; VaR = σ̂_{t+1}·quantile_p(L_s/σ_s).
+- **Cornish–Fisher:** z_CF = z + (z² − 1)S/6 + (z³ − 3z)K/24 − (2z³ − 5z)S²/36, with S the skewness and K the excess kurtosis. It stops being monotone in z at extreme K; the 2022–2025 failure in the results is that breakdown.
+- **Kupiec:** LR = −2 ln[(1 − p)^{T−x}p^x / ((1 − x/T)^{T−x}(x/T)^x)] ~ χ²₁, with x breaches in T days.
+- **Christoffersen independence:** a likelihood ratio of a two-state Markov chain of breaches against independence, χ²₁. Conditional coverage adds Kupiec, χ²₂.
+- **Acerbi–Székely Z₂:** Z₂ = Σ_t L_t·1{L_t > VaR_t}/(T(1 − p)·ES_t) − 1. Its significance is simulated under the estimated tail.
+- **Worked example:** 2 breaches in 100 days at p = 0.01 give Kupiec significance 0.376 (the `risk` module doctest).
+- **Function:** `evobots.orfe.risk`. **Tests:** `tests/test_orfe.py::test_kupiec_and_estimators_on_normal_losses`, `::test_evt_tail_on_pareto_losses`.
+
+### 7.6 The search as an OR problem (O8)
+- **Successive halving:** at each rung keep ⌈η⁻¹·n⌉ candidates; cost = Σ_rungs n_r × fidelity_r (trader-years).
+- **OCBA** (Chen et al. 2000): for non-best i, j, N_i/N_j = (σ_i/δ_i)²/(σ_j/δ_j)², δ the gap to the best b; N_b = σ_b·√(Σ_{i≠b} N_i²/σ_i²).
+- **NSGA-II:** fast non-dominated sorting, then crowding distance d_i = Σ_objectives (f_{i+1} − f_{i−1})/(f_max − f_min) inside a front; (μ + μ) survival by (rank, −distance).
+- **Hypervolume** against a reference point r: the Monte Carlo share of the box [r, max] dominated by the front, times its volume.
+- **CMA-ES** (Hansen 2016): rank-one and rank-μ covariance updates with cumulative step-size adaptation.
+- **Function:** `evobots.orfe.search_or`. **Tests:** `tests/test_orfe.py::test_ocba_picks_the_best_more_often_than_equal_allocation`, `::test_cma_es_minimises_rosenbrock`, `::test_nsga2_returns_a_spread_non_dominated_front`, `::test_successive_halving_counts_cost`.
+
+### 7.7 Price impact (O9)
+- **Regression with hub × hour fixed effects:** s_{h,d,t} = a_{h,t} + β·net_{h,d,t} + ε, estimated on values demeaned within each (hub, hour); net = DEC − INC cleared MW. Standard errors are clustered by day, with a bootstrap over days for the interval.
+- **Implied spread change** of our own position of q MW: β·q. Under linear impact its cost is β·q² per hub-hour, which `AccountRules.price_impact_usd_per_mwh_per_mw` charges in a sensitivity run.
+- **Worked example:** β = −0.00077 $/MWh per MW (obs.) and q = 5 MW give −0.004 $/MWh.
+- **Function:** `evobots.orfe.price_impact`. **Test:** its doctest (a planted β is recovered within 3 clustered standard errors).
+
+### 7.8 Stage D groups (M8)
+Spearman correlation ρ of the daily mean spreads over the 365 visible days before a year; average-linkage clustering on 1 − ρ, cut at 0.25; one representative per group of at least 2 (a trading hub if there is one, else last year's representative, else the medoid argmax_i mean_j ρ_ij).
+- **Function:** `evobots.data.clusters`. **Test:** `tests/test_scale_up.py::test_clusters_find_the_groups_point_in_time_and_prefer_hubs`.

@@ -225,18 +225,18 @@ class LineageStore:
                     queue.append(child)
         return seen
 
-    def search(self, text="", limit=100, is_archive_only=False):
-        """Records whose id, name or origin contains text (newest first)."""
+    def search(self, text="", limit=100, is_archive_only=False, offset=0):
+        """Records whose id, name or origin contains text (newest first), skipping `offset`."""
         query = (
             "SELECT trader_id FROM traders WHERE "
             "(trader_id LIKE ? OR name LIKE ? OR origin LIKE ? OR operator LIKE ?)"
         )
         if is_archive_only:
             query += " AND has_entered_archive = 1"
-        query += " ORDER BY birth DESC LIMIT ?"
+        query += " ORDER BY birth DESC LIMIT ? OFFSET ?"
         pattern = f"%{text}%"
         rows = self.connection.execute(
-            query, (pattern, pattern, pattern, pattern, limit)
+            query, (pattern, pattern, pattern, pattern, limit, offset)
         ).fetchall()
         return [self.record(row[0]) for row in rows]
 
