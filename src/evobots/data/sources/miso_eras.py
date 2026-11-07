@@ -1,6 +1,6 @@
 """Read MISO's day-ahead and real-time LMP files from every era into one normalised form.
 
-MISO has published its price archive in three file eras (CLAUDE.md §7.3, obs. round 20):
+MISO has published its price archive in three file eras (docs/design_spec.md §7.3, obs. round 20):
 
     2005-04 → 2015-02   monthly zips {YYYYMM}_da_lmp_csv.zip, {YYYYMM}_rt_lmp_final_csv.zip
     2015-03 → 2022-12   monthly zips {YYYYMM}_da_expost_lmp_csv.zip, {YYYYMM}_rt_lmp_final_csv.zip
@@ -20,7 +20,7 @@ day's real-time prices and is not used (docs/rounds/round26_m1_start.md).
 
 This module only reads files it is given. It never decides whether a day is in the sealed
 hold-out; `read_day` refuses hold-out days unless its caller passes the hold-out accessor's
-permission (CLAUDE.md §12.4).
+permission (docs/design_spec.md §12.4).
 """
 
 import datetime

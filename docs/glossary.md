@@ -1,6 +1,6 @@
 # Glossary
 
-The project's dictionary: one word per idea (`CLAUDE.md` §14.1). Code, docs and the app use these terms with these meanings. Seeded from `CLAUDE.md` §19; terms from [market_rules.md](market_rules.md) added in round 18.
+The project's dictionary: one word per idea (`docs/design_spec.md` §14.1). Code, docs and the app use these terms with these meanings. Seeded from `docs/design_spec.md` §19; terms from [market_rules.md](market_rules.md) added in round 18.
 
 ## Market
 
@@ -36,7 +36,7 @@ The project's dictionary: one word per idea (`CLAUDE.md` §14.1). Code, docs and
 
 | Term | Meaning |
 |---|---|
-| trader (bot) | one evolved strategy: genome + generated source code + life (`CLAUDE.md` §9.1) |
+| trader (bot) | one evolved strategy: genome + generated source code + life (`docs/design_spec.md` §9.1) |
 | genome | the trader's slot trees and numeric genes; what evolution changes |
 | trader id / genome id / behaviour id | birth identity (`R12-184213`) / hash of the genes / hash of the bids on a reference window (§9.4) |
 | training window | the 5 years of history a trader is scored on; it rolls forward a year at a time (§11) |

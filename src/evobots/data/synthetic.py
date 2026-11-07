@@ -1,7 +1,8 @@
 """Synthetic hub prices for tests: known truth, so search and statistics can be checked.
 
 M4's planted-signal test needs data where the right answer is known: a rule the GP must
-recover, and pure noise where it must find nothing (`CLAUDE.md` §16, M4). This module makes
+recover, and pure noise where it must find nothing (`docs/design_spec.md` §16, M4). This module
+makes
 day × hour × hub arrays of DA and RT prices plus one synthetic weather input, seeded
 (NumPy PCG64), so every call with the same arguments returns identical arrays.
 

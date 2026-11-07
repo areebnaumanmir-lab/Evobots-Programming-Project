@@ -1,6 +1,6 @@
 # Maths
 
-Every formula in evobots, with a worked example, the function that implements it, and the test that checks it (`CLAUDE.md` §14.2). The worked examples use the real numbers of [capital_sizing.md](capital_sizing.md). Each was reproduced from the downloaded MISO archive in round 21 ([data/claude_science_check.csv](data/claude_science_check.csv)).
+Every formula in evobots, with a worked example, the function that implements it, and the test that checks it (`docs/design_spec.md` §14.2). The worked examples use the real numbers of [capital_sizing.md](capital_sizing.md). Each was reproduced from the downloaded MISO archive in round 21 ([data/claude_science_check.csv](data/claude_science_check.csv)).
 
 Notation: W is equity (USD); b the daily risk budget (a fraction); L₉₉ the 1-in-100-day loss at full size (USD); D the operating day; x_t the full-size always-INC P&L on day t (USD; always-DEC is −x_t).
 
@@ -137,7 +137,7 @@ minimise Σ_k c_k g_k over 0 ≤ g_k ≤ Ḡ_k, subject to
 
 ### 3.1 The risk-free rate from the 3-month Treasury bill
 - **Quote:** FRED's DTB3 gives the bill's discount rate in percent (decided round 28); the reader stores it as a fraction d. A 91-day bill quoted at d costs P = 1 − d · 91/360 per dollar of face value.
-- **Daily log return:** holding it to maturity earns r = −ln(P) / 91 per calendar day. In fitness (§10.2 of `CLAUDE.md`), r_f T is the sum of r over the days of the window, each day using the newest quote visible at its decision time.
+- **Daily log return:** holding it to maturity earns r = −ln(P) / 91 per calendar day. In fitness (§10.2 of `docs/design_spec.md`), r_f T is the sum of r over the days of the window, each day using the newest quote visible at its decision time.
 - **Worked example:** d = 0.05 (quoted 5.00 %):
   - P = 1 − 0.05 × 91/360 = 0.987361;
   - −ln P = 0.0127194, so r = 0.000139774 per day;
@@ -173,4 +173,4 @@ minimise Σ_k c_k g_k over 0 ≤ g_k ≤ Ḡ_k, subject to
 - fitness under the career model (M5);
 - MAP-Elites (M6);
 - the report-card statistics (M7);
-- every ORFE module (`CLAUDE.md` §20).
+- every ORFE module (`docs/design_spec.md` §20).

@@ -1,12 +1,13 @@
 """Parser for NWS Point Forecast Matrices (PFM), the weather forecasts bots see.
 
 One downloaded file (`tools/fetch_nws_forecasts.py`) holds the newest PFM issue of one
-forecast office before 10:30 EPT on a decision day (`CLAUDE.md` §7.4). The issue is a series
+forecast office before 10:30 EPT on a decision day (`docs/design_spec.md` §7.4). The issue is a
+series
 of town blocks separated by `$$`. Each block has a zone line (`MNZ041-020301-`), the town
 name, its coordinates (`45.87N  95.38W`, with `Elev. … ft` from about 2010), the issue time,
 then two tables: 3-hourly for about 60 hours and 6-hourly for the following days.
 
-**Parsing rules** (`CLAUDE.md` §7.4 parser traps; obs., round 28, on 2005–2016 files):
+**Parsing rules** (`docs/design_spec.md` §7.4 parser traps; obs., round 28, on 2005–2016 files):
 - Case changes over the years (ALL CAPS before 2016-20, mixed case after), so labels are
   compared in upper case.
 - Column positions are read from each table's UTC hour row, never fixed offsets. A value

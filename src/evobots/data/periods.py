@@ -1,4 +1,6 @@
-"""The project's fixed periods (CLAUDE.md §7.2). Every other module imports them from here.
+"""The project's fixed periods (`docs/design_spec.md` §7.2).
+
+Every other module imports them from here.
 
 Example:
     >>> import datetime

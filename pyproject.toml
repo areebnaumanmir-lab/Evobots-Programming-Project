@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "evobots: evolving MISO virtual-trading bots with quality-diversity search."
 readme = "README.md"
 requires-python = ">=3.13"
-# Runtime dependencies are added milestone by milestone (CLAUDE.md §5.2);
+# Runtime dependencies are added milestone by milestone (docs/design_spec.md §5.2);
 # each new one is recorded with its licence in docs/dependencies.md.
 dependencies = [
     "fastapi>=0.162.0",
@@ -37,7 +37,7 @@ packages = ["src/evobots"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src", "docs"]
-# Networking is blocked for the whole suite; only localhost is allowed (CLAUDE.md §14.4).
+# Networking is blocked for the whole suite; only localhost is allowed (docs/design_spec.md §14.4).
 addopts = "--disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1 --doctest-modules --doctest-glob=*.md"
 
 [tool.ruff]

@@ -1,8 +1,8 @@
 # Data sources
 
-Every external source evobots reads: what it is used for, how it is fetched, what is in the repository, and the terms that decide whether it can be bundled (`CLAUDE.md` §7.9, §7.11). Started in M0 (round 23) with the redistribution check; M1 adds the per-file formats.
+Every external source evobots reads: what it is used for, how it is fetched, what is in the repository, and the terms that decide whether it can be bundled (`docs/design_spec.md` §7.9, §7.11). Started in M0 (round 23) with the redistribution check; M1 adds the per-file formats.
 
-Provenance marks (`CLAUDE.md` §2.2): **(obs.)** = read on the source's own page on the date given, quoted below. **[verify]** = from a secondary source or not yet read in full.
+Provenance marks (`docs/design_spec.md` §2.2): **(obs.)** = read on the source's own page on the date given, quoted below. **[verify]** = from a secondary source or not yet read in full.
 
 ## 1. Sources
 
@@ -76,6 +76,9 @@ All series files are downloaded once by `tools/fetch_series.py` into `data/raw/s
   - The Terms of Use text Areeb pasted in round 25 contains no commercial/non-commercial distinction (obs.: no occurrence of "commercial" in it).
   - The commercial-only reading may come from other fine print, such as conditions posted on the market-reports pages, which the terms say prevail. That source is not yet in the project; round 27's search found no such clause for MISO (see the MISO row above). Areeb may paste or link it.
   - **Scripted downloading stays paused** until that source is recorded, or Areeb explicitly says to resume. Nothing before M9 needs new MISO downloads.
+- **Areeb's note (round 32):** "It states that the use of MISO data for non-commercial purposes is fine as long as credit is given."
+  - Recorded in his words; the text it quotes is still not in the project. It confirms the round-26 position: private, non-commercial use with credit (the README's acknowledgments carry the credit line).
+  - It speaks to **use**, not to **access**. The Terms of Use separately forbid "any automated means … to access, monitor, or copy any part of this Website", so scripted MISO downloads stay off. Paper trading (M9) reads MISO files that Areeb saves into `data/inbox/` by hand.
 
 ## 5. Measured vs assumed
 - **Measured:** MISO's Terms of Use (full text, supplied by Areeb); the EIA, NWS, IEM, EPU and GPR statements above, read on their pages on 2026-10-24; the World Bank catalog licence for the Global Economic Monitor; the repository's visibility.

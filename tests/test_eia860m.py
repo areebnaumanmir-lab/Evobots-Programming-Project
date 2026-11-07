@@ -1,7 +1,7 @@
 """Tests for the EIA-860M reader (`evobots.data.sources.eia860m`).
 
 Hand-made rows check the selection and month rules. When the downloaded workbook exists in
-data/raw/series/eia_860m/ (git-ignored), MISO's fleet is checked against `CLAUDE.md` §7.8.
+data/raw/series/eia_860m/ (git-ignored), MISO's fleet is checked against `docs/design_spec.md` §7.8.
 """
 
 from pathlib import Path
@@ -58,7 +58,7 @@ def test_holdout_months_refused():
 
 
 def test_real_fleet_matches_briefing():
-    # CLAUDE.md §7.8 (Claude Science, from an earlier monthly file). Coal, wind and solar
+    # docs/design_spec.md §7.8 (Claude Science, from an earlier monthly file). Coal, wind and solar
     # agree to 0.1 GW; gas is 0.7 GW lower in every month (`round28_answers.md` §4).
     paths = sorted(WORKBOOK_DIRECTORY.glob("*.xlsx"))
     if not paths:

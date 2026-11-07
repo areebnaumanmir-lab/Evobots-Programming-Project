@@ -1,7 +1,7 @@
 """Settle a trader on history: bids, clearing, P&L, sizing, equity and death.
 
 For each operating day, hour and hub the genome gives a side, a limit price and a size
-(`evobots.bots.genome`). The rules (`CLAUDE.md` §6.1, §10, §13):
+(`evobots.bots.genome`). The rules (`docs/design_spec.md` §6.1, §10, §13):
 - **Clearing:** a DEC clears when DA ≤ its limit, an INC when DA ≥ its limit.
 - **P&L per cleared MW:** DEC earns RT − DA, INC earns DA − RT, minus costs.
 - **Costs** ($/MWh cleared): admin fee $0.09 (Schedules 17 + 24, search-quoted, estimate)

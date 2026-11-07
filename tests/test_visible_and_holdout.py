@@ -1,6 +1,7 @@
 """Tests for point-in-time access (`evobots.data.visible`) and the hold-out accessor.
 
-The look-ahead test (`CLAUDE.md` §6.4): change every observation that became public after a
+The look-ahead test (`docs/design_spec.md` §6.4): change every observation that became public after
+a
 decision time, add new ones, and check that nothing visible at that time changes.
 """
 
@@ -104,7 +105,7 @@ def test_holdout_permission_only_from_open_holdout(tmp_path):
 
 
 def test_committed_access_log_says_sealed():
-    # The hold-out has never been opened (CLAUDE.md §2.2). This fails, on purpose, the day
+    # The hold-out has never been opened (docs/design_spec.md §2.2). This fails, on purpose, the day
     # it is: update it then with the run and trader that were tested.
     repository_log = Path(__file__).resolve().parents[1] / holdout.ACCESS_LOG_PATH
     assert holdout.holdout_status(repository_log) == "Sealed: never opened"

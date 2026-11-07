@@ -68,7 +68,7 @@ uv run pytest                    # the test suite (offline)
 
 ## Acknowledgments
 
-Price data: MISO (built locally, not redistributed). Weather forecasts are derived from National Weather Service forecasts archived by the Iowa Environmental Mesonet, Iowa State University. Other sources:
+Price data: Midcontinent Independent System Operator (MISO), used for non-commercial research and built locally on each user's machine; MISO data is not redistributed. Weather forecasts are derived from National Weather Service forecasts archived by the Iowa Environmental Mesonet, Iowa State University. Other sources:
 - U.S. Energy Information Administration (gas, oil, generator inventory);
 - Baker, Bloom & Davis, Economic Policy Uncertainty (CC BY 4.0);
 - Caldara & Iacoviello (2022), *American Economic Review* 112(4), Geopolitical Risk (CC BY);

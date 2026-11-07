@@ -17,7 +17,7 @@ Status values: "verified" (title, surname and year match), "partial" (title matc
 surname or year doesn't; read the note), "manual" (no Crossref or arXiv record, but the
 `manual_record` column of references.csv names the primary record that was read, e.g. a
 conference bibliography entry or the paper's PDF; added in round 27), "not found". Only
-"verified" and "manual" entries may be cited without a [verify] marker (CLAUDE.md §2.2).
+"verified" and "manual" entries may be cited without a [verify] marker (docs/design_spec.md §2.2).
 
 Abstracts already saved in references_checked.json are reused when the DOI is unchanged, so a
 rerun asks Semantic Scholar only for new entries.

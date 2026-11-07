@@ -1,6 +1,6 @@
 # Where locational prices come from (O0)
 
-An explanation for readers new to electricity markets (`CLAUDE.md` §20.3). The formulas, with the worked example, are in [maths.md](../maths.md) §2. The code is `src/evobots/orfe/dc_opf.py`, and the tests in `tests/test_dc_opf.py` check every number below.
+An explanation for readers new to electricity markets (`docs/design_spec.md` §20.3). The formulas, with the worked example, are in [maths.md](../maths.md) §2. The code is `src/evobots/orfe/dc_opf.py`, and the tests in `tests/test_dc_opf.py` check every number below.
 
 ## 1. The operator's problem
 Every hour, MISO chooses how much each generator runs so that supply meets demand at the lowest total offer cost. The grid limits that choice: each transmission line can carry only so many MW. Power cannot be steered down a chosen path; it spreads over all parallel paths in proportion to how easily each conducts. The **power transfer distribution factors** (PTDFs) describe that spread: the share of 1 MW, injected at one bus and taken out at a reference bus, that crosses each line.
@@ -43,8 +43,8 @@ The split into energy and congestion depends on the reference bus; the LMPs do n
 
 ## 4. Why this matters for virtual bids
 A virtual bid earns RT − DA at its node. Congestion is where the two markets disagree most: a line forecast in the day-ahead market to have room may bind in real time, or the reverse. Then the congestion component, and with it the spread, jumps at the nodes on either side. That is why:
-- the feature `congestion_share_28d` (`CLAUDE.md` §8) measures how much of a location's recent price came from congestion;
-- the virtual-bidding literature finds the largest spreads at congested nodes (CLAUDE.md §12.3).
+- the feature `congestion_share_28d` (`docs/design_spec.md` §8) measures how much of a location's recent price came from congestion;
+- the virtual-bidding literature finds the largest spreads at congested nodes (docs/design_spec.md §12.3).
 
 Hubs average many nodes, so their congestion components partly cancel. That is one reason Stage A, the hubs only, is the calm place to start.
 

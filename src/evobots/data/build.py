@@ -1,6 +1,7 @@
 """`evobots data build --stage A`: the hub price store, checked against the recorded numbers.
 
-Stage A is the trading hubs that exist each day (`CLAUDE.md` §7.10). The build reads the raw
+Stage A is the trading hubs that exist each day (`docs/design_spec.md` §7.10). The build reads the
+raw
 MISO files already on disk (offline; MISO data is built locally and never redistributed,
 round 25), one operating day at a time through the era reader, for the evolution period
 2005-04-01 → 2025-09-21 only. It writes `hub_prices.csv.gz` (write-then-rename) and then

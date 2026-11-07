@@ -1,4 +1,4 @@
-# Words and abbreviations allowed in identifiers (CLAUDE.md §14.1). One per line, lower case.
+# Words and abbreviations allowed in identifiers (docs/design_spec.md §14.1). One per line, lower case.
 # tests/test_naming.py splits every identifier into words; a word of one or two letters, or one
 # on the test's list of common abbreviations, must appear here. Add a line to allow a word.
 
@@ -30,7 +30,7 @@ pbo
 cscv
 id
 config
-# Power-flow terms of the ORFE track (O0, CLAUDE.md §20.3; glossary: DC-OPF).
+# Power-flow terms of the ORFE track (O0, docs/design_spec.md §20.3; glossary: DC-OPF).
 dc
 opf
 ptdf

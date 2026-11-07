@@ -19,7 +19,7 @@ if not MISO_BENCHMARK_PATH.exists():
         "test_capital_explorer_browser.py",
     ]
 
-# Where to look for a Chromium when Playwright's own download is absent (CLAUDE.md §14.4:
+# Where to look for a Chromium when Playwright's own download is absent (docs/design_spec.md §14.4:
 # browser tests run offline). EVOBOTS_CHROMIUM_PATH wins; then the cloud container's
 # pre-installed browser; then Playwright's default (after `playwright install chromium`).
 CHROMIUM_CANDIDATE_PATTERNS = ("/opt/pw-browsers/chromium-*/chrome-linux*/chrome",)

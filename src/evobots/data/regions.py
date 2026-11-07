@@ -8,8 +8,11 @@ Decided in round 28 (`docs/rounds/round28_answers.md` §7):
   forecast town is nearest by great-circle distance.
 
 Towns are identified by NWS zone code and the start of their printed name, because the
-printed coordinates were re-surveyed by 0.01–0.03° over the years (obs., round 28). The
-coordinates below are those printed in the forecasts (obs.).
+printed coordinates were re-surveyed by 0.01–0.03° over the years (obs., round 28). NWS
+renumbered two zones, so those towns list both codes (obs., round 31, same name and
+coordinates before and after): New Orleans LAZ061 → LAZ077 from 2022-04-06, Beaumont
+TXZ215 → TXZ515 from 2023-03-09. The coordinates below are those printed in the forecasts
+(obs.).
 
 Example:
     >>> nearest_hub(46.9, -96.8)  # Fargo, North Dakota
@@ -31,33 +34,33 @@ class ForecastTown:
 
     Attributes:
         office: the NWS office that forecasts for it, e.g. "MPX".
-        zone_code: its NWS zone, e.g. "MNZ060".
+        zone_codes: its NWS zone codes, e.g. ("MNZ060",); more than one when NWS renumbered it.
         name_prefix: the start of its printed name, upper case, e.g. "MINNEAPOLIS".
         latitude_degrees: printed latitude, north.
         longitude_degrees: printed longitude, negative west.
     """
 
     office: str
-    zone_code: str
+    zone_codes: tuple
     name_prefix: str
     latitude_degrees: float
     longitude_degrees: float
 
     def is_town(self, zone_code, name):
         """True when a parsed town block is this town."""
-        return zone_code == self.zone_code and name.upper().startswith(self.name_prefix)
+        return zone_code in self.zone_codes and name.upper().startswith(self.name_prefix)
 
 
 # Each hub's forecast town (round 28). Zone codes and coordinates as printed (obs.).
 FORECAST_TOWN_BY_HUB = {
-    "MINN.HUB": ForecastTown("MPX", "MNZ060", "MINNEAPOLIS", 44.88, -93.22),
-    "MICHIGAN.HUB": ForecastTown("DTX", "MIZ076", "DETROIT", 42.43, -83.02),
-    "INDIANA.HUB": ForecastTown("IND", "INZ047", "INDIANAPOLIS", 39.73, -86.28),
-    "ILLINOIS.HUB": ForecastTown("ILX", "ILZ029", "CITY OF PEORIA", 40.67, -89.68),
-    "ARKANSAS.HUB": ForecastTown("LZK", "ARZ044", "LITTLE ROCK", 34.73, -92.24),
-    "MS.HUB": ForecastTown("JAN", "MSZ049", "JACKSON", 32.32, -90.08),
-    "LOUISIANA.HUB": ForecastTown("LIX", "LAZ061", "NEW ORLEANS", 29.98, -90.25),
-    "TEXAS.HUB": ForecastTown("LCH", "TXZ215", "BEAUMONT", 29.95, -94.03),
+    "MINN.HUB": ForecastTown("MPX", ("MNZ060",), "MINNEAPOLIS", 44.88, -93.22),
+    "MICHIGAN.HUB": ForecastTown("DTX", ("MIZ076",), "DETROIT", 42.43, -83.02),
+    "INDIANA.HUB": ForecastTown("IND", ("INZ047",), "INDIANAPOLIS", 39.73, -86.28),
+    "ILLINOIS.HUB": ForecastTown("ILX", ("ILZ029",), "CITY OF PEORIA", 40.67, -89.68),
+    "ARKANSAS.HUB": ForecastTown("LZK", ("ARZ044",), "LITTLE ROCK", 34.73, -92.24),
+    "MS.HUB": ForecastTown("JAN", ("MSZ049",), "JACKSON", 32.32, -90.08),
+    "LOUISIANA.HUB": ForecastTown("LIX", ("LAZ061", "LAZ077"), "NEW ORLEANS", 29.98, -90.25),
+    "TEXAS.HUB": ForecastTown("LCH", ("TXZ215", "TXZ515"), "BEAUMONT", 29.95, -94.03),
 }
 
 

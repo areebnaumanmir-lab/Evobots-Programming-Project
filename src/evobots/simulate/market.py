@@ -10,7 +10,7 @@ only) or, when MISO data hasn't been built on this machine, from the synthetic m
   D−1;
 - final RT prices up to day D−6, so every spread statistic uses days D−6 and earlier.
 
-Features (a subset of the 25 in `CLAUDE.md` §8; weather, gas and capacity features arrive
+Features (a subset of the 25 in `docs/design_spec.md` §8; weather, gas and capacity features arrive
 with the feature layer, M2):
 
 | Name | Unit | Meaning |

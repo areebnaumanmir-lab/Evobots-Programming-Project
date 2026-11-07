@@ -2,7 +2,7 @@
 
 Small hand-made files check the parsing rules and the hold-out cut. When the real
 downloads exist in data/raw/series/ (they are git-ignored), the facts recorded in
-`CLAUDE.md` §7.5–7.7 and `docs/rounds/round27_verification.md` are checked against them.
+`docs/design_spec.md` §7.5–7.7 and `docs/rounds/round27_verification.md` are checked against them.
 """
 
 import datetime
@@ -103,7 +103,7 @@ def test_real_dtb3_trading_days():
 
 
 def test_real_henry_hub_coverage():
-    # CLAUDE.md §7.5: daily from January 1997.
+    # docs/design_spec.md §7.5: daily from January 1997.
     result = series.read_eia_daily_spot(newest_download("eia_henry_hub", "*.xls"), "RNGWHHD")
     assert result.days[0] == datetime.date(1997, 1, 7)
     assert result.days[-1] <= datetime.date(2025, 9, 21)
@@ -111,7 +111,7 @@ def test_real_henry_hub_coverage():
 
 
 def test_real_epu_covid_period():
-    # CLAUDE.md §7.6 (corrected round 28): mean 513 over 2020-03-09 → 04-30, above every
+    # docs/design_spec.md §7.6 (corrected round 28): mean 513 over 2020-03-09 → 04-30, above every
     # 2015–19 day except 2016-06-25 (586.6, the day after the Brexit vote).
     result = series.read_epu(newest_download("epu", "*.csv")).value_by_day()
     covid = [
@@ -131,7 +131,7 @@ def test_real_epu_covid_period():
 
 
 def test_real_gpr_russia_ukraine_period():
-    # CLAUDE.md §7.7: mean GPR 318 over 2022-02-24 → 03-31.
+    # docs/design_spec.md §7.7: mean GPR 318 over 2022-02-24 → 03-31.
     result = series.read_gpr(newest_download("gpr", "*.xls"))["gpr_index"].value_by_day()
     values = [
         value

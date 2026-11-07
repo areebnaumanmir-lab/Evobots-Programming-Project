@@ -283,3 +283,12 @@ Running record of what we have agreed. It references question numbers in decisio
 | Topic | User's input | Result |
 |---|---|---|
 | Website | **Decided:** "make it a website people can open directly from github" | static site running evobots' Python in the browser (Pyodide), demo data only, own hub table loadable locally; published by a Pages workflow from `main`. Visibility and enabling Pages are Areeb's steps |
+
+## Round 32 (2026-11-07): housekeeping and build everything; rounds/round32_build_everything.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| CLAUDE.md | deleted by Areeb on `main`; "fix this on your own" | deletion kept; content now `docs/design_spec.md`, same section numbers |
+| MISO terms | "non-commercial purposes is fine as long as credit is given" | recorded; credit line in README; the separate no-automated-access clause keeps scripted MISO downloads off |
+| Rates Factors file | "give me the link and I'll do it" | navigation path given; exact URL unconfirmed |
+| Remaining milestones | "finish all of this please" | M2–M9 and the ORFE track built in order; check-in items reported together |

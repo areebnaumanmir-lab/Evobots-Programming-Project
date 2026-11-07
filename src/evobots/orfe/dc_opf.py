@@ -8,7 +8,8 @@ of power balance plus the duals of the binding line limits weighted by the bus's
 no line binds, every bus has the same price; when one binds, prices separate, and the
 difference is the congestion component (MISO's MCC). Losses (MISO's MLC) are left out.
 
-Maths: docs/maths.md §2; walk-through: docs/explanations/lmp_from_opf.md (CLAUDE.md §20.3).
+Maths: docs/maths.md §2; walk-through: docs/explanations/lmp_from_opf.md (docs/design_spec.md
+§20.3).
 """
 
 from dataclasses import dataclass
@@ -131,7 +132,7 @@ def solve_dc_opf(network):
 
     Maths: docs/maths.md §2.2.
 
-    Decision: CLAUDE.md §20.3 (O0); losses are left out, so there is no loss component.
+    Decision: docs/design_spec.md §20.3 (O0); losses are left out, so there is no loss component.
 
     Example:
         >>> result = solve_dc_opf(THREE_BUS_EXAMPLE)

@@ -6,7 +6,7 @@ Usage:
 The site needs no server. It has the page, rendered once from the app's own template; a Web
 Worker running Pyodide (Python compiled to WebAssembly) with numpy and Jinja2; and evobots'
 Python source as a zip. All of it is served from the site itself, with no CDN at run time
-(CLAUDE.md §14.4).
+(docs/design_spec.md §14.4).
 
 Pyodide 0.27.7 (MPL-2.0) and its three wheels are downloaded once into data/cache/
 (git-ignored), checked against the SHA-256 values below, and copied into the site. That

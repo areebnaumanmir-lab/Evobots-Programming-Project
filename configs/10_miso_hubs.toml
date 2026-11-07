@@ -6,7 +6,7 @@ daily_risk_budget_fraction = 0.02     # a 1-in-100 day may cost 2 % of equity (�
 credit_share_fraction = 0.25          # share of capital pledged as MISO collateral (§7)
 max_mw_per_hub_hour = 5.0             # absolute cap per hub-hour, MW (§3)
 liquidity_share_fraction = 0.05       # cap ≤ 5 % of the hub's median cleared virtual MW (§3)
-# Capital floors are off by default; the default death is "out of money" (CLAUDE.md §10.1).
+# Capital floors are off by default; the default death is "out of money" (docs/design_spec.md §10.1).
 # ruin_floor_fraction = 0.6667        # relative floor preset (round 16)
 # ruin_floor_usd = 1_000_000          # absolute floor inspired by MISO's $1M net-worth route
 

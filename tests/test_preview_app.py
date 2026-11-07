@@ -1,7 +1,7 @@
 """Tests for the preview: genome, generated code, search, service and app routes.
 
 Everything runs on synthetic data, offline. The equivalence test is the referee between a
-trader's generated source file and the engine (`CLAUDE.md` §9.1).
+trader's generated source file and the engine (`docs/design_spec.md` §9.1).
 """
 
 import io

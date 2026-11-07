@@ -1,12 +1,13 @@
 """Reader for EIA-860M, the monthly US generator inventory: MISO's fleet by month.
 
 One workbook (`tools/fetch_series.py`, newest month) lists every generator in three sheets:
-`Operating`, `Retired` and `Planned` (`CLAUDE.md` §7.8). Each sheet has a title row, a blank
+`Operating`, `Retired` and `Planned` (`docs/design_spec.md` §7.8). Each sheet has a title row, a
+blank
 row, then a header row. The capacity history is rebuilt from the operating and retirement
 months of the units in `Operating` and `Retired`: a unit counts from its operating month
 up to the month before its retirement month.
 
-**What this can and can't say** (`CLAUDE.md` §7.8):
+**What this can and can't say** (`docs/design_spec.md` §7.8):
 - Units are selected by today's `Balancing Authority Code` ("MISO"). A unit that joined
   MISO later (MISO South in December 2013, among others) is counted from its operating
   date, so early totals include units that were outside MISO then. Regional features only
@@ -46,9 +47,9 @@ MISO_BALANCING_AUTHORITY = "MISO"
 # Rows before the header row in every EIA-860M sheet (title row, blank row).
 ROWS_BEFORE_HEADER = 2
 # The last month whose capacity the evolution period may read: the month of its last
-# decision day. Later months fall in the sealed hold-out (`CLAUDE.md` §7.2).
+# decision day. Later months fall in the sealed hold-out (`docs/design_spec.md` §7.2).
 LAST_EVOLUTION_MONTH = (EVOLUTION_LAST_DAY.year, EVOLUTION_LAST_DAY.month)
-# The technology groups the capacity features and reports use (`CLAUDE.md` §7.8).
+# The technology groups the capacity features and reports use (`docs/design_spec.md` §7.8).
 TECHNOLOGY_GROUPS = ("Wind", "Solar", "Battery", "Coal", "Natural Gas", "Nuclear", "Other")
 
 

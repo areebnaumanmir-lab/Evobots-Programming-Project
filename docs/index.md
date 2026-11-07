@@ -1,6 +1,6 @@
 # evobots documentation
 
-The documentation follows the four Diátaxis kinds (`CLAUDE.md` §14.2). Planned documents are listed without links until they exist.
+The documentation follows the four Diátaxis kinds (`docs/design_spec.md` §14.2). Planned documents are listed without links until they exist.
 
 ## Tutorial (learning by doing)
 - `tutorial.md`: install, build the data, run a short evolution, read a report card, export a trader. Stub at M1.5; finished and tested on a clean machine at M9.

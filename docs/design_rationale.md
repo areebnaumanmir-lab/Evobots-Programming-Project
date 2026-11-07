@@ -3,7 +3,7 @@
 A living write-up. Every design decision in evobots has an entry here: what was decided, why, what the literature says, what was rejected, and its status. **Update this file whenever a decision is made or changed.** The change ledger (`change_ledger.md`) records *when*; this file records *why*.
 
 - Started in round 20 (2026-10-24). It covers:
-  - the decisions of rounds 1–16 as recorded in the briefing (`CLAUDE.md`);
+  - the decisions of rounds 1–16 as recorded in the briefing (`docs/design_spec.md`);
   - rounds 17–19;
   - Areeb's 20 review questions (`rounds/round19_prompt_review.md`).
 - The decision log for rounds 1–16 (`decisions_log.md`) arrived in round 21. Part C was rewritten from it (round 20 had reconstructed it from the briefing); the corrections are listed at the end of Part C.
@@ -70,7 +70,7 @@ Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold 
 
 **Decision (changed r20):**
 - **Random trees by PTC2** with sizes spread evenly up to the slot limit, replacing ramped half-and-half;
-- **plus about 10 % named founders**, each with a stated reason (`CLAUDE.md` §9.5), plus `founder:human` traders if you write any;
+- **plus about 10 % named founders**, each with a stated reason (`docs/design_spec.md` §9.5), plus `founder:human` traders if you write any;
 - **plus a required control:** every reported result includes a run **without founders** (O8). That shows whether the founders helped, rather than assuming it.
 
 ### A3. Identity, names, parents and descendants (Q3)
@@ -137,7 +137,7 @@ Why seeding is safer here than in plain GP: in MAP-Elites, a seed can only hold 
 | Q7 data | MISO DA and RT for every location downloaded (round 20); coverage in [data_coverage.md](data_coverage.md) | done r20 | Areeb's instruction |
 | Q8 what bots see | past DA (to D−1) and final RT (to D−6) prices; gas, EPU, weather, capacity, calendar; **no futures** | delegated r20 (was R19-5) | no keyless 2005–2026 futures source exists; EIA's free series stop 2024-04-05 |
 | Q8 decision time | **10:30 EPT on D−1 for every year** | delegated r20 (was round-18 D1) | never later than the true deadline (11:00 EST before 2016-11-05; 10:30 EPT since), so no look-ahead; one rule, one test. MISO's price files use hour-ending EST all year (obs. r20), so features align on EST hours |
-| Q9 outside factors | gas, EPU as inputs; GPR, oil, World Bank as reporting only | kept | round 10–11 reasons (`CLAUDE.md` §7.6–7.7) |
+| Q9 outside factors | gas, EPU as inputs; GPR, oil, World Bank as reporting only | kept | round 10–11 reasons (`docs/design_spec.md` §7.6–7.7) |
 | Q10 costs | cost table by month/hour and era, labelled measured or estimate; placeholder rates until MISO's Rates Factors file arrives | delegated r20 (was round-18 D3) | building waits on nothing; labels keep it honest |
 | Q11 settings | badges: Your choice / From market data / From the trader's account | kept (r19) | MPD and fees were wrongly shown as inputs |
 | Q12 death | **out of money** = can't post collateral for the smallest bid; other layers optional | Areeb (r19); definition delegated r20 (was R19-4 (a)) | (a) is the realistic "can't trade any more" point; (b) equity ≤ 0 ignores collateral; (c) is offered as a "MISO-eligible" preset |
@@ -171,11 +171,11 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | ID | Decision | Round | Logic (from the log) | Round-21 review |
 |---|---|---|---|---|
 | D-01 | Portfolio project in OR/FE; realistic natural selection; bots die when they lose too much; score deployability; deploy | 1 | Areeb's goal (Q1) | kept; death rule refined in round 19 (D-66) |
-| D-02 | Multi-instrument trading (futures, options, swaps) | 1 | first scope | **superseded** in round 4 by electricity virtual bidding; "not planned unless reopened" (`CLAUDE.md` §16) |
+| D-02 | Multi-instrument trading (futures, options, swaps) | 1 | first scope | **superseded** in round 4 by electricity virtual bidding; "not planned unless reopened" (`docs/design_spec.md` §16) |
 | D-03 | Repo + `uv` lockfile; internet only for first install, never for market data | 1 (Q15) | reproducible, offline | kept (D-61) |
 | D-04 | Own engine; Python + NumPy, GPU optional (Q10, Q14) | 1 | readability, speed | kept |
 | D-05 | Deployment levels: L0 forward test, L1 paper-live on public data, L2 optional testnet, L3 real account out of scope | 2 | no broker needed for L0–L1 | kept. For MISO, L1 = the daily public report files (M9). MISO's sandbox ("CCE", `market_rules.md`) needs a registered participant, so L2 is out of scope, like L3 |
-| D-06 | Interruptible sessions, checkpoints every ~10 min, budgets in evaluations, deflated Sharpe on the true count | 2 | laptop not on 24/7 | kept (`CLAUDE.md` §11.1); the bandit and neutral-skip are seeded so resume stays byte-identical (A4) |
+| D-06 | Interruptible sessions, checkpoints every ~10 min, budgets in evaluations, deflated Sharpe on the true count | 2 | laptop not on 24/7 | kept (`docs/design_spec.md` §11.1); the bandit and neutral-skip are seeded so resume stays byte-identical (A4) |
 | D-07 | Exchange simulator with two fidelities (bar level + tick replay) | 2 | crypto realism | **superseded** in round 4: MISO's DA clearing is an auction, so one simulator with the price rule (D-24) suffices |
 | D-08 | MAP-Elites as the showcase; CVT for >2 descriptors; re-evaluation for noisy fitness; CMA-MAE later | 2 | Areeb's choice | kept; re-evaluation made precise in round 20 (C2) |
 | D-09 | Crypto (Binance perpetuals), then US energy futures | 2–3 | free derivatives data | **superseded** in round 4 |
@@ -211,7 +211,7 @@ Round numbers are where a decision was **made** (a proposal in an earlier round 
 | D-39 | Sizing rule: position_scale = min(1, 2 % × equity / p99 full-size loss) | 14 | a 1-in-100 day costs ≤ 2 % | kept |
 | D-40 | Point-in-time p99: trailing 365 days, newest D−6, 90-day warm-up; the full-sample constant renamed CALIBRATION_ONLY | 15 | removes look-ahead | kept; the estimator's outputs are **reproduced exactly** in round 21 (eight table rows, range, median, 2.16 % breach rate by year) |
 | D-41 | Liquidity cap min(5 MW, 5 % of median cleared MW); 936 MWh/day full size | 14; 936 confirmed 16 | stay a price-taker | kept; O9 tests it |
-| D-42 | `daily_risk_budget` is the leverage knob; `credit_share` = share of capital pledged as collateral (default 25 %), which sets the Virtual MWh Limit; kept for stages D and C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 question on `credit_share`'s meaning (`CLAUDE.md` §13.1) |
+| D-42 | `daily_risk_budget` is the leverage knob; `credit_share` = share of capital pledged as collateral (default 25 %), which sets the Virtual MWh Limit; kept for stages D and C | 14 | collateral ($22k) is small against tail losses, so mark equity daily | kept. Resolves the round-19 question on `credit_share`'s meaning (`docs/design_spec.md` §13.1) |
 | D-43 | Clearing: all-or-nothing by price, measured 99.5 % / 100 % agreement | 15 | realistic for small bids | kept |
 | D-44 | Fixed costs $50k/year (assumed); cleared-share scenarios 1.0 / 0.721 / 0.25 | 15 | round-15 correction of $0.59/MWh | kept as assumption; no fixed MISO fee found (round 18) |
 | D-45 | Relative ruin floor 2/3 by default; optional absolute floor; < 10 % headroom rejected | 16 | comparable careers at every capital | **superseded as default** in round 19: out-of-money death is the default, the floor is optional |
@@ -296,7 +296,7 @@ A static preview of these rules, built by Python from the real downloaded data, 
 
 ---
 
-## Part F. Changes to make in `CLAUDE.md` (done in round 20)
+## Part F. Changes to make in `docs/design_spec.md` (done in round 20)
 1. §9.4: ids, behaviour id, names (A3).
 2. §9.5: PTC2 and the no-founder control (A2); `founder:human` (A1).
 3. §9.6: size-fair crossover, iso+line-DD, bandit operator selection, neutral skip (A4).

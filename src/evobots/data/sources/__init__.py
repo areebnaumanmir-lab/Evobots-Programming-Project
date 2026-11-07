@@ -1,1 +1,1 @@
-"""Readers for each external data source (CLAUDE.md §7, M1)."""
+"""Readers for each external data source (docs/design_spec.md §7, M1)."""
