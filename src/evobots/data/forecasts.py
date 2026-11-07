@@ -14,7 +14,7 @@ temperature and wind speed, plus the cloud codes, over that day's 3-hourly colum
 cloud codes into fractions and highs and lows into degree-days is the feature layer's job
 (M2). Missing stays missing: a missing file, town or value gives an empty cell and a status.
 
-Target days after 2025-09-21 are never stored (the hold-out, `CLAUDE.md` §7.2).
+Target days after 2025-09-21 are never stored (the hold-out, `docs/design_spec.md` §7.2).
 
 Example:
     >>> from evobots.data.sources.nws_pfm import parse_product, EXAMPLE_PRODUCT

@@ -1,4 +1,4 @@
-/* evobots theme: every colour, font, size and spacing value lives here (CLAUDE.md §14.5).
+/* evobots theme: every colour, font, size and spacing value lives here (docs/design_spec.md §14.5).
    Moves to src/evobots/app/static/theme.css at M1.5. Change a value here and every page follows.
    Rules: white surfaces only, no fills, no shadows, no rounded boxes; links are words. */
 
@@ -10,7 +10,7 @@
   --colour-background: #ffffff;       /* the only surface colour */
   --colour-signal: #a3271f;           /* reserved for losses and deaths */
 
-  /* Type: system fonts only, so the app works offline (CLAUDE.md §14.4). */
+  /* Type: system fonts only, so the app works offline (docs/design_spec.md §14.4). */
   --font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-size-small: 12px;
   --font-size-body: 14px;

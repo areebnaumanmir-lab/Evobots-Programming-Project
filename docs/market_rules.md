@@ -1,8 +1,8 @@
 # MISO market rules for virtual trading
 
-Explanation doc (Diátaxis). It answers the M0 [verify] list in `CLAUDE.md` §16 from MISO's own documents, says what each rule means for the simulator, and lists what is still open.
+Explanation doc (Diátaxis). It answers the M0 [verify] list in `docs/design_spec.md` §16 from MISO's own documents, says what each rule means for the simulator, and lists what is still open.
 
-Provenance markers (`CLAUDE.md` §2.2):
+Provenance markers (`docs/design_spec.md` §2.2):
 - **(obs. Dn)**: read in document Dn, downloaded on 2026-10-23 and listed with its URL and SHA-256 in §8. `tools/fetch_rule_documents.py` downloads them again and checks the hashes.
 - **(obs. probe)**: measured against MISO's server with the named script in `tools/`.
 - **[verify]**: not yet read in a primary source. Each one says what would settle it.
@@ -14,9 +14,9 @@ Status: draft for the end-of-M0 check-in (round 18). Times are Eastern Prevailin
 ## 1. What a virtual bid is and how it settles
 
 - A **virtual demand bid (DEC)** buys MW in the day-ahead (DA) market at a commercial pricing node (CP node); the same MW are automatically sold back in real time (RT) at that node's RT price. A **virtual supply offer (INC)** is the mirror image. No energy flows. (obs. D1, FAQ 1, 15, 16)
-- Settlement uses the **DA ex-post LMP** and the RT LMP at the node: a cleared DEC of q MW earns q × (RT − DA). (obs. D1, "Settlements" and FAQ 1) This is the price series the brief already uses (`{date}_da_expost_lmp.csv`). The cleared-bids report carries the DA **ex-ante** LMP, which is the price used to *clear* the bid; the two differ slightly (`CLAUDE.md` §6.2).
+- Settlement uses the **DA ex-post LMP** and the RT LMP at the node: a cleared DEC of q MW earns q × (RT − DA). (obs. D1, "Settlements" and FAQ 1) This is the price series the brief already uses (`{date}_da_expost_lmp.csv`). The cleared-bids report carries the DA **ex-ante** LMP, which is the price used to *clear* the bid; the two differ slightly (`docs/design_spec.md` §6.2).
 - **Clearing:** a block clears when its limit price is met (DEC: price ≥ DA LMP; INC: price ≤ DA LMP). Blocks are steps, never slopes; a block **clears partially only when the LMP equals its price** (it is marginal). (obs. D1, FAQ 12, 13) This matches the 0.16 % partial fills measured in Claude Science.
-- **Dead nodes:** a node islanded by an outage still gets a price, but no virtual can clear there. (obs. D1, "Dead Nodes") This is a likely cause of part of the 0.5 % of bid-hours the price rule mispredicts (`CLAUDE.md` §6.2); not checked.
+- **Dead nodes:** a node islanded by an outage still gets a price, but no virtual can clear there. (obs. D1, "Dead Nodes") This is a likely cause of part of the 0.5 % of bid-hours the price rule mispredicts (`docs/design_spec.md` §6.2); not checked.
 - **There is no counterparty.** MISO is revenue neutral: virtual losses fund other participants' credits. (obs. D1, FAQ 5, 18)
 
 ### Bid format
@@ -62,10 +62,10 @@ Measured on 2026-10-23 with `tools/probe_rt_archive.py` (obs. probe):
 
 | File | Newest operating day on the server | Oldest |
 |---|---|---|
-| `{date}_rt_lmp_final.csv` | 2026-10-19, so a **4-day** lag at the time of the probe (about 19:00 UTC) | 2005 (monthly zips; `CLAUDE.md` §7.3) |
+| `{date}_rt_lmp_final.csv` | 2026-10-19, so a **4-day** lag at the time of the probe (about 19:00 UTC) | 2005 (monthly zips; `docs/design_spec.md` §7.3) |
 | `{date}_rt_lmp_prelim.csv` | 2026-10-22 | **2026-10-20**: preliminary files exist only for the few days whose final file isn't out yet |
 
-- Preliminary RT prices are **not archived**. No preliminary file exists for 2005-04-01, 2010-06-01, 2015-03-01, 2020-01-01, 2023-01-01 or any day from 2025-01-01 to 2026-10-19 (binary search). So the [verify] in `CLAUDE.md` §6.4 is settled: **history can't use preliminary RT**, and the lag stays.
+- Preliminary RT prices are **not archived**. No preliminary file exists for 2005-04-01, 2010-06-01, 2015-03-01, 2020-01-01, 2023-01-01 or any day from 2025-01-01 to 2026-10-19 (binary search). So the [verify] in `docs/design_spec.md` §6.4 is settled: **history can't use preliminary RT**, and the lag stays.
 - Claude Science saw a 5-day lag on 2026-09-26; today's probe saw 4 days. The design's rule (on decision day D−1 the newest day with known P&L is **D−6**) stays safe against both.
 - Paper-live mode (M9) could use preliminary RT for yesterday, but only going forward and only in reporting, since the bots were trained without it.
 - **Cleared bids are published about 90 days late** (obs., round 23: on 2026-10-24 the newest `{date}_bids_cb.zip` was 2026-07-25; 2026-07-31 was a 404; the first file is 2023-01-01). Anything computed from them, such as hub liquidity medians or the O9 price-impact estimate, may use only days at least ~90 days before the decision, if it is ever made point-in-time.
@@ -122,8 +122,8 @@ fees_usd(h)         = admin_usd + da_rsg_usd + rt_rsg_usd                   # do
 ```
 
 - Era switch for RSG: zero before 2008-11, the 2008-11 → 2011-03 regime, and post-2011-04 rates; values from the Rates Factors file once available, else D8's $1.8/MWh for the middle era and a documented assumption after.
-- Netting is **per node** for Schedule 17/24 and DA RSG, but **across nodes** for DDC. That rewards a portfolio that balances INC and DEC. O3 (CVaR portfolio) should model it; it settles the `CLAUDE.md` §20.6 [verify] "how MISO charges per bid vs per net position": **net, per asset owner**.
-- This replaces the brief's `fees(q, cleared)` with a function of the whole day's position matrix. The M3 interface already takes a decision matrix (`CLAUDE.md` §20.10), so it fits.
+- Netting is **per node** for Schedule 17/24 and DA RSG, but **across nodes** for DDC. That rewards a portfolio that balances INC and DEC. O3 (CVaR portfolio) should model it; it settles the `docs/design_spec.md` §20.6 [verify] "how MISO charges per bid vs per net position": **net, per asset owner**.
+- This replaces the brief's `fees(q, cleared)` with a function of the whole day's position matrix. The M3 interface already takes a decision matrix (`docs/design_spec.md` §20.10), so it fits.
 
 ---
 
@@ -149,14 +149,14 @@ virtual potential exposure = Σ invoiced-unpaid virtual charges (VIE)
   - **The medians of our yearly values** ($8.15 since 2006, $5.50 over 2012–2021, $5.19 over 2017–2021) are also well below MISO's ($12.05, $10.23, $8.00).
   - **The floor's start** is taken as Attachment L v56.0.0 (effective 2024-06-03).
   - **Effect:** none at Stage A, where collateral is far below equity. At stages D and C the Virtual MWh Limit can bind.
-- Full Stage A size: 936 MWh × $12 × 2 = **$22,464**, as in `CLAUDE.md` §6.3. Confirmed.
+- Full Stage A size: 936 MWh × $12 × 2 = **$22,464**, as in `docs/design_spec.md` §6.3. Confirmed.
 
 ### 4.2 The Virtual MWh Limit counts submitted, not cleared, MWh
 
 - "The sum of the absolute value of Virtual Bid MWhs and the absolute value of Virtual Supply Offer MWhs **submitted** … for a given Operating Day may not exceed its Virtual MWh Limit. If both a Virtual Bid and a Virtual Supply Offer are submitted for a given Node, then the … greater of [the two] at that Node will be counted." (obs. D2 §IV.A.4)
 - A new or raised limit takes effect within two calendar days after processing; a lowered limit reduces the credit requirement within at most nine days. (obs. D2 §IV.A.1–2; D1 says an allocation made on Monday is usable on Tuesday)
 
-**For the simulator:** check the limit against **submitted** MWh (every bid block, cleared or not), with per-node max(DEC, INC). A bot with low limit prices that rarely clears still uses its whole limit. The brief's "virtual MW limit scales with collateral" (`CLAUDE.md` §10.1, L1) should be read this way.
+**For the simulator:** check the limit against **submitted** MWh (every bid block, cleared or not), with per-node max(DEC, INC). A bot with low limit prices that rarely clears still uses its whole limit. The brief's "virtual MW limit scales with collateral" (`docs/design_spec.md` §10.1, L1) should be read this way.
 
 ---
 
@@ -189,7 +189,7 @@ MISO's 2023 task team called the previous $50k alternative the lowest in the ind
 
 ### 5.4 What this means for the career model
 
-- With the $1.5M default, the individual meets §III.B (net worth > $1M) and §III.C (tangible net worth ≥ $500k). The optional absolute `ruin_floor_usd` of $1M "inspired by MISO's eligibility rule" (`CLAUDE.md` §10.1) is consistent with §III.B's financial-statement route. The **§III.C floor is $500k** of tangible net worth (non-FTR); a ruin floor below that would leave a career trading while ineligible under the audited-statements route.
+- With the $1.5M default, the individual meets §III.B (net worth > $1M) and §III.C (tangible net worth ≥ $500k). The optional absolute `ruin_floor_usd` of $1M "inspired by MISO's eligibility rule" (`docs/design_spec.md` §10.1) is consistent with §III.B's financial-statement route. The **§III.C floor is $500k** of tangible net worth (non-FTR); a ruin floor below that would leave a career trading while ineligible under the audited-statements route.
 - **Fixed costs:** §III.C route 1 needs an **annual audit** of the trading company's financial statements. MISO itself charges no fixed annual participation fee that was found in these documents, nor by search in round 27 (which found only other ISOs' fees). The $50k/year fixed cost stays a labelled assumption. Admin charges are per MWh (§3).
 
 ---
@@ -208,7 +208,7 @@ Saturday holidays stay on Saturday in both sources.
 
 ## 7. Status of the M0 [verify] list
 
-| Item (`CLAUDE.md` §16) | Result | Status |
+| Item (`docs/design_spec.md` §16) | Result | Status |
 |---|---|---|
 | Bid deadline | 10:30 EPT since 2016-11-05; 11:00 EST (noon EPT in summer) before | **resolved** for today and 2015; the exact 2016 change date and 2005–2007 rest on second-hand sources (§2.1). **Decided round 20 (D1):** the bot decides at 10:30 EPT on D−1 in every year, never later than the real deadline, so the remaining uncertainty no longer affects results |
 | Admin fee | Schedule 17 + 24 ≈ $0.090/MWh (Oct 2026), on \|net\| per node-hour | **mechanics resolved**; rates [verify] (search-index source), history missing |

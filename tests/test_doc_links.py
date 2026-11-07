@@ -1,4 +1,4 @@
-"""Internal-link checker for the Markdown docs (CLAUDE.md §14.2: "docs are tested").
+"""Internal-link checker for the Markdown docs (docs/design_spec.md §14.2: "docs are tested").
 
 Every relative link in a tracked Markdown file must point at a file that exists, and a
 `#fragment` must match a heading in the target. External http(s) and mailto links are

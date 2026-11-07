@@ -1,11 +1,11 @@
-"""Probe every data domain in CLAUDE.md §7.9 with one polite HEAD request.
+"""Probe every data domain in docs/design_spec.md §7.9 with one polite HEAD request.
 
 Usage:
     python tools/probe_domains.py [--config config/local.toml]
 
 Prints a Markdown table (domain, result, HTTP status or error) for the round docs.
 One request per domain, no retries: a blocked domain is reported, never worked
-around (CLAUDE.md §5.4 rule 2). The contact email for the User-Agent comes from
+around (docs/design_spec.md §5.4 rule 2). The contact email for the User-Agent comes from
 the git-ignored config/local.toml, never from code.
 """
 

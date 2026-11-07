@@ -1,4 +1,4 @@
-"""Generate a trader's standalone source code from its genome (`CLAUDE.md` §9.1, §14.6).
+"""Generate a trader's standalone source code from its genome (`docs/design_spec.md` §9.1, §14.6).
 
 The file uses the Python standard library only. Run it on a CSV with one row per hub and
 hour and the feature columns it needs:

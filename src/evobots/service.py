@@ -1,4 +1,4 @@
-"""The single bridge between the app and the core (`CLAUDE.md` §14.5, §15).
+"""The single bridge between the app and the core (`docs/design_spec.md` §14.5, §15).
 
 The app (`evobots.app`) calls only this module. It validates input, runs searches in a
 background thread (one at a time), and returns plain data or finished HTML/SVG fragments

@@ -1,7 +1,7 @@
 """Readers for the daily series: risk-free rate, Henry Hub gas, WTI oil, EPU and GPR.
 
 Each source is one file downloaded by `tools/fetch_series.py` into data/raw/series/
-(`CLAUDE.md` §7.5–7.7; FRED DTB3 decided in round 28). Each reader returns `DailySeries`
+(`docs/design_spec.md` §7.5–7.7; FRED DTB3 decided in round 28). Each reader returns `DailySeries`
 objects: one value per observation date, in the source's own unit, with no gaps filled. A
 day the source leaves blank (a holiday in DTB3, a non-trading day for Henry Hub) is simply
 absent.
@@ -9,7 +9,7 @@ absent.
 **Hold-out.** The files run into the sealed hold-out (2025-09-22 → 2026-09-21) and beyond.
 Every reader keeps only observations dated on or before the last day of the evolution
 period (2025-09-21) unless it is given the hold-out accessor's permission object
-(`CLAUDE.md` §7.2, §12.4). An observation dated 2025-09-21 can only inform decisions for
+(`docs/design_spec.md` §7.2, §12.4). An observation dated 2025-09-21 can only inform decisions for
 operating days after it, so this cut can never hide data the evolution period needs.
 
 **Publication lags** (when an observation becomes visible) belong to `visible()`, not to
@@ -45,7 +45,7 @@ from evobots.data.periods import EVOLUTION_LAST_DAY
 # - DTB3: H.15 posts the previous business day's rates in the afternoon, so day t's rate
 #   is usable on the second business day after t.
 # - Henry Hub and WTI: spot prices for trade day t are public by the evening of t (market
-#   reports), so usable the next business day (`CLAUDE.md` §7.5).
+#   reports), so usable the next business day (`docs/design_spec.md` §7.5).
 # - EPU and GPR: posted the day after t at an unrecorded time, so usable two days after t.
 PUBLICATION_LAG_DAYS_BY_SERIES = {
     "treasury_bill_3_month_discount_fraction": 2,
@@ -163,7 +163,7 @@ def read_fred_dtb3(path, holdout_permission=None):
     """Read FRED's DTB3 CSV: the 3-month Treasury bill rate, discount basis.
 
     FRED quotes percent; the series is stored as a fraction (5 % → 0.05), the project's
-    unit for rates (`CLAUDE.md` §14.1).
+    unit for rates (`docs/design_spec.md` §14.1).
 
     Args:
         path: the downloaded `DTB3.csv`.
@@ -445,7 +445,7 @@ def pink_sheet_rows_to_series(rows, holdout_permission=None):
 
 
 def read_pink_sheet(path, holdout_permission=None):
-    """Read the World Bank Pink Sheet's monthly prices (reporting only, `CLAUDE.md` §7.9)."""
+    """Read the World Bank Pink Sheet's monthly prices (reporting only, `docs/design_spec.md` §7.9)."""
     workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
     rows = [list(row) for row in workbook[PINK_SHEET_NAME].iter_rows(values_only=True)]
     workbook.close()

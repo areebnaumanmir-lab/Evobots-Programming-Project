@@ -6,23 +6,23 @@ Usage:
                                       [--report prices|cleared_bids]
 
 Needs internet (prices about 5.5 GB; cleared bids about 4 GB). Resumable: files already on
-disk with a recorded SHA-256 are skipped. Polite (CLAUDE.md §5.4): at most --workers parallel
+disk with a recorded SHA-256 are skipped. Polite (docs/design_spec.md §5.4): at most --workers parallel
 requests (≤ 4), 0.5 s between requests per worker, 3 retries with backoff, 404 recorded as
 "file doesn't exist", write-then-rename, and every file's URL, SHA-256, size and download
 time recorded.
 
-Sealed hold-out (CLAUDE.md §7.2): files whose operating day falls in 2025-09-22 → 2026-09-21
+Sealed hold-out (docs/design_spec.md §7.2): files whose operating day falls in 2025-09-22 → 2026-09-21
 are written to data/holdout/raw/miso/ and are never opened here except to hash them.
 Everything else goes to data/raw/miso/. The download log is data/raw/miso/downloads.jsonl;
 tools/write_data_manifest.py turns it into data/manifest.toml.
 
-File eras (CLAUDE.md §7.3):
+File eras (docs/design_spec.md §7.3):
     2005-04 → 2015-01   {YYYYMM}_da_lmp_csv.zip            {YYYYMM}_rt_lmp_final_csv.zip
     2015-02             both {YYYYMM}_da_lmp_csv.zip and {YYYYMM}_da_expost_lmp_csv.zip
     2015-03 → 2022-12   {YYYYMM}_da_expost_lmp_csv.zip     {YYYYMM}_rt_lmp_final_csv.zip
     2023-01 → today     {YYYYMMDD}_da_expost_lmp.csv       {YYYYMMDD}_rt_lmp_final.csv
 
---report cleared_bids (CLAUDE.md §6.2, §20.12): for every day from 2023-01-01, the cleared
+--report cleared_bids (docs/design_spec.md §6.2, §20.12): for every day from 2023-01-01, the cleared
 virtual bids {YYYYMMDD}_bids_cb.zip and the DA ex-ante prices {YYYYMMDD}_da_exante_lmp.csv
 used to attribute them to hubs. Cleared bids appear about 90 days late (obs., 2026-10-24:
 newest 2026-07-25), so a recent 404 is retried for CLEARED_BIDS_RETRY_MISSING_DAYS.
@@ -47,7 +47,7 @@ MARKET_REPORTS_URL = "https://docs.misoenergy.org/marketreports/"
 RAW_DIRECTORY = Path("data/raw/miso")
 HOLDOUT_RAW_DIRECTORY = Path("data/holdout/raw/miso")
 DOWNLOAD_LOG_PATH = RAW_DIRECTORY / "downloads.jsonl"
-# Sealed hold-out, CLAUDE.md §7.2.
+# Sealed hold-out, docs/design_spec.md §7.2.
 HOLDOUT_FIRST_DAY = datetime.date(2025, 9, 22)
 HOLDOUT_LAST_DAY = datetime.date(2026, 9, 21)
 # MISO's energy market opened on 2005-04-01; nothing older is on the server (obs., 2026-10-24).
@@ -218,7 +218,7 @@ def main():
     parser.add_argument("--report", choices=("prices", "cleared_bids"), default="prices")
     arguments = parser.parse_args()
     if not 1 <= arguments.workers <= MAX_WORKERS_PER_HOST:
-        sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (CLAUDE.md §5.4).")
+        sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (docs/design_spec.md §5.4).")
     user_agent = user_agent_from_config(arguments.config)
     RAW_DIRECTORY.mkdir(parents=True, exist_ok=True)
     HOLDOUT_RAW_DIRECTORY.mkdir(parents=True, exist_ok=True)

@@ -5,20 +5,20 @@ Usage:
     python tools/fetch_series.py --eia-860m-vintages 2016-01,2017-01
 
 The second form downloads archived EIA-860M monthly workbooks (source "eia_860m_archive"),
-used to measure how much EIA corrects past months between vintages (CLAUDE.md §7.8).
+used to measure how much EIA corrects past months between vintages (docs/design_spec.md §7.8).
 
-Each source is one file (CLAUDE.md §7.5–7.8, round 28 for FRED). Files go to
+Each source is one file (docs/design_spec.md §7.5–7.8, round 28 for FRED). Files go to
 data/raw/series/<source>/ with write-then-rename, and every attempt is appended to
 data/raw/series/downloads.jsonl (URL, SHA-256, size, UTC time) for data/manifest.toml.
 A file already logged as downloaded is skipped unless --force is given; a later --force
 download keeps the earlier copy under its own date, so revisions can be compared
-(EIA-860M corrections, EPU's 30-day revisions; CLAUDE.md §7.7–7.8).
+(EIA-860M corrections, EPU's 30-day revisions; docs/design_spec.md §7.7–7.8).
 
 The files hold whole time series that run into the sealed hold-out (2025-09-22 →
 2026-09-21). They are stored whole; the readers in src/evobots/data/sources/ cut every
 series at the end of the evolution period unless the hold-out accessor gives permission.
 
-Politeness (CLAUDE.md §5.4): one request at a time, 0.5 s apart, 3 retries with backoff,
+Politeness (docs/design_spec.md §5.4): one request at a time, 0.5 s apart, 3 retries with backoff,
 a User-Agent with the contact email from the git-ignored config/local.toml. The Pink Sheet
 URL changes with each monthly release; it is read from the World Bank's commodity-markets
 page. EIA-860M's newest monthly file is found by stepping back month by month: a

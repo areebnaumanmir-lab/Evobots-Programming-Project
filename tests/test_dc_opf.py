@@ -1,4 +1,4 @@
-"""O0: the DC OPF's duals against hand-derived answers and brute force (CLAUDE.md §20.3)."""
+"""O0: the DC OPF's duals against hand-derived answers and brute force (docs/design_spec.md §20.3)."""
 
 import dataclasses
 

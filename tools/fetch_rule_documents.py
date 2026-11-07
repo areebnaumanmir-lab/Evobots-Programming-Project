@@ -3,7 +3,7 @@
 Usage:
     python tools/fetch_rule_documents.py [--config config/local.toml] [--output data/raw/rules]
 
-Needs internet. Polite by design (CLAUDE.md §5.4): one request at a time, 1 s apart,
+Needs internet. Polite by design (docs/design_spec.md §5.4): one request at a time, 1 s apart,
 3 retries with backoff, 404 means "not there", write-then-rename. The contact email
 for the User-Agent comes from the git-ignored config/local.toml.
 

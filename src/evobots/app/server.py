@@ -1,4 +1,4 @@
-"""The local web app: routes only (`CLAUDE.md` §15). Every result comes from evobots.service.
+"""The local web app: routes only (`docs/design_spec.md` §15). Every result comes from evobots.service.
 
 Run with `evobots serve` (opens the browser) or `uvicorn evobots.app.server:app`.
 Localhost only; no CDN, fonts or telemetry; FastAPI's own docs pages are switched off (§14.4).

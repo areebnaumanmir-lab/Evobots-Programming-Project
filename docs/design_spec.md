@@ -1,24 +1,10 @@
-# evobots: handoff prompt for Claude Code
+# evobots design specification
 
-> **How to use this file.** Paste everything below the line into Claude Code as your first message, or save it as `CLAUDE.md` at the root of the project folder so every session reads it. Before that, put the files from the "Genetic Trading Bots" project into the folder layout in §4. Fill in the one placeholder, `<CONTACT_EMAIL>` in §5.4, or leave it and Claude Code will ask you for it.
+This is the project's design specification: every decision, data source, rule and milestone, with the round in which it was decided. It began as the handoff briefing `CLAUDE.md` (rounds 1–31); Areeb retired that file on `main` on 2026-10-29, and its content moved here in round 32 with the section numbers unchanged, so references such as "§8" still point to the right place. Where the text speaks to "you" it addresses whoever builds the project, and "I" or "me" is Areeb.
 
----
+When this file and `docs/decisions_log.md` disagree, the decisions log is newer; ask Areeb which is right.
 
-## 0. Your role and the first thing to do
-
-You are taking over **evobots**, a project I (Areeb) have been designing over 16 discussion rounds in another Claude product (Claude Science) and a planning session in Claude. The design is essentially finished. One thin vertical slice of code exists (capital and position sizing, 40 passing tests). Everything else still has to be built.
-
-This prompt is your full briefing. It contains:
-- every decision made so far, and why;
-- every data source used, with URLs, formats, quirks and the observed numbers;
-- the code that exists;
-- the engineering rules;
-- the milestone plan;
-- the open questions.
-
-Treat it as the source of truth until the repository's own `docs/decisions_log.md` and `docs/design_spec.md` supersede it. When they disagree, ask me which is right.
-
-**Revision history of this briefing** (details in `docs/change_ledger.md`):
+**Revision history** (details in `docs/change_ledger.md`):
 - Round 17 (2026-10-23): the four §17.1 decisions answered (§17.1).
 - Round 18 (2026-10-23): MISO rules researched; see `docs/market_rules.md`.
 - **Round 19 (2026-10-23): reviewed against 20 questions** (`docs/rounds/round19_prompt_review.md`). Changed or added:
@@ -48,13 +34,6 @@ Treat it as the source of truth until the repository's own `docs/decisions_log.m
 - **Round 29 (2026-10-28): deployable preview app** (`docs/rounds/round29_preview_app.md`): one-click launchers, a slider page, run / refine / download best bot / download app. It uses a simplified genome and quick gates; the full M2–M7 work still replaces those parts.
 - **Round 21 (2026-10-24): decisions log and capital files received.** `docs/decisions_log.md` (rounds 1–16, now extended to 21), `docs/capital_sizing.md`, `docs/data/capital_sweep.csv`, `headroom_trailing.csv`, `hub_price_stats.csv`. Claude Science's calibration numbers are **reproduced exactly** from the downloaded archive (§7.0). `docs/design_rationale.md` Part C was rewritten from the log; no conflicts with this briefing.
 
-**First session, in order:**
-1. Read this whole prompt.
-2. Take stock of the folder (§4). List what's present, missing or unexpected. Don't move or rename anything yet.
-3. Check the environment (§5): Python, uv, git, cores, RAM, GPU, OS, and which of the data domains in §7.9 you can reach.
-4. Ask me the four open decisions in §17.1 in one go (multiple choice, recommendation first).
-5. Then propose the M0 plan (§16) as a short task list and start on it. M0's research, tooling and naming pass don't depend on my answers.
-6. Read §20 (the ORFE track) before designing any interface in M1–M3. Several ORFE modules reuse the simulator, the scenario generator and the report card, so those interfaces must leave room for them from the start.
 
 ---
 

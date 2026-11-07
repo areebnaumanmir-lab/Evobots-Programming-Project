@@ -1,7 +1,7 @@
 """The trader's genome (preview form): readable rules that evolution changes.
 
 A trader decides, for every hub and hour of operating day D, whether to bid, on which side,
-at what limit price and how big (`CLAUDE.md` §9.2). The preview genome keeps that skeleton
+at what limit price and how big (`docs/design_spec.md` §9.2). The preview genome keeps that skeleton
 with simple slots; the full typed-GP trees replace `conditions` and `score_terms` at M4:
 
 ```

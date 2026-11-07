@@ -1,6 +1,6 @@
 # Dependencies
 
-Every library evobots uses: purpose, licence and version (`CLAUDE.md` §14.2, §20.2). Versions are pinned in `uv.lock`. Licences are read from each installed package's metadata (obs., round 23: `importlib.metadata`, the `License-Expression` field). Add a row whenever `pyproject.toml` gains a dependency.
+Every library evobots uses: purpose, licence and version (`docs/design_spec.md` §14.2, §20.2). Versions are pinned in `uv.lock`. Licences are read from each installed package's metadata (obs., round 23: `importlib.metadata`, the `License-Expression` field). Add a row whenever `pyproject.toml` gains a dependency.
 
 ## Runtime
 

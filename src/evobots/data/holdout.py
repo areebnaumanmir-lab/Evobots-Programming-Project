@@ -1,4 +1,4 @@
-"""The sealed hold-out's single, logged way in (`CLAUDE.md` §7.2, §12.4).
+"""The sealed hold-out's single, logged way in (`docs/design_spec.md` §7.2, §12.4).
 
 The hold-out (2025-09-22 → 2026-09-21) is stored apart, under data/holdout/, and every reader
 refuses hold-out days unless it is handed a `HoldoutPermission`. This module is the only

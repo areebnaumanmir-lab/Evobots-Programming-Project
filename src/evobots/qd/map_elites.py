@@ -1,6 +1,6 @@
 """MAP-Elites over traders, with a walk-forward test year and quick gates (preview).
 
-The search keeps the best surviving trader in each cell of a 2-D map (`CLAUDE.md` §11):
+The search keeps the best surviving trader in each cell of a 2-D map (`docs/design_spec.md` §11):
 - **net direction**, (DEC MWh − INC MWh) / cleared MWh, −1 … +1, in 10 columns;
 - **selectivity**, the share of hub-hours bid, on a log scale 0.1 % … 100 %, in 8 rows.
 

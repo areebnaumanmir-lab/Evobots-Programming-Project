@@ -4,7 +4,7 @@ Usage:
     python tools/build_miso_hub_prices.py [--workers 4]
 
 Reads only data/raw/miso/ (written by tools/fetch_miso_prices.py). It never opens the sealed
-hold-out in data/holdout/ (CLAUDE.md §7.2); hold-out files are only counted by name.
+hold-out in data/holdout/ (docs/design_spec.md §7.2); hold-out files are only counted by name.
 
 Writes (all git-ignored except the coverage doc):
   data/store/hub_prices.csv.gz   one row per operating day × hour × trading hub:
@@ -368,7 +368,7 @@ def write_coverage_doc(chosen, seen, rows_by_key, holdout_file_count, download_c
         "",
         "## Hub spread statistics, 2019-01-01 → 2025-09-21 (check against Claude Science)",
         "",
-        "s = DA − RT in $/MWh, over hours where both prices exist. `CLAUDE.md` §13 quotes "
+        "s = DA − RT in $/MWh, over hours where both prices exist. `docs/design_spec.md` §13 quotes "
         "(obs. in Claude Science): mean $0.04–0.96, median |s| $2.6–4.7, std $30–62, excess "
         "kurtosis 560–3,300, and 58,944 hours per hub.",
         "",

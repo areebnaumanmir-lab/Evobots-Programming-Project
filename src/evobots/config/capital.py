@@ -5,11 +5,11 @@ archive by tools/check_against_claude_science.py (round 21).
 
 Rebuilt in round 21 from capital_sizing.md (the original Claude Science file never arrived),
 with two deliberate changes, both decided earlier:
-  * names follow the naming standard (CLAUDE.md §14.1): `daily_risk_budget_fraction`,
+  * names follow the naming standard (docs/design_spec.md §14.1): `daily_risk_budget_fraction`,
     `credit_share_fraction`, `liquidity_share_fraction`;
   * capital floors are optional and off by default; the default death is "out of money"
-    (round 19, CLAUDE.md §10.1). The round-16 relative floor (2/3) is a preset.
-The MPD is not a setting any more: it comes from market data (CLAUDE.md §13.1), so the
+    (round 19, docs/design_spec.md §10.1). The round-16 relative floor (2/3) is a preset.
+The MPD is not a setting any more: it comes from market data (docs/design_spec.md §13.1), so the
 collateral functions take it as an argument.
 """
 
@@ -112,7 +112,7 @@ def worst_20_day_loss_fraction(starting_capital_usd):
 
 @dataclass(frozen=True)
 class CapitalSettings:
-    """The money a trader starts with and the risk rules around it (CLAUDE.md §13).
+    """The money a trader starts with and the risk rules around it (docs/design_spec.md §13).
 
     Attributes:
         starting_capital_usd: starting equity, USD. Your choice; Stage A range $250k–$5M.
@@ -137,7 +137,7 @@ class CapitalSettings:
         default_factory=lambda: dict(HUB_MEDIAN_CLEARED_VIRTUAL_MW)
     )
 
-    # (low, high) bounds per setting; capital_sizing.md §6 and CLAUDE.md §13.
+    # (low, high) bounds per setting; capital_sizing.md §6 and docs/design_spec.md §13.
     BOUNDS = {
         "starting_capital_usd": (250_000.0, 5_000_000.0),
         "daily_risk_budget_fraction": (0.005, 0.05),

@@ -2,8 +2,8 @@
 
 One function, `capital_summary`, computes every number the `capital` command, the capital
 explorer and (from M1.5) the Capital page show, so none of them carries its own formulas
-(CLAUDE.md §14.5). The loss figures it takes as arguments are calibration numbers; callers
-pass them in, and this module holds no calibration constant (CLAUDE.md §13, §18).
+(docs/design_spec.md §14.5). The loss figures it takes as arguments are calibration numbers; callers
+pass them in, and this module holds no calibration constant (docs/design_spec.md §13, §18).
 """
 
 from evobots.calibration import fixed_cost_usd_per_cleared_mwh

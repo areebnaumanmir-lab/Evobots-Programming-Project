@@ -2,13 +2,13 @@
 
 Every data column carries, for each observation, the moment it became public
 (`available_at`). `visible` returns only the observations public at or before a decision
-time, and it is the only way features read data (`CLAUDE.md` §6.4, §18). The publication
+time, and it is the only way features read data (`docs/design_spec.md` §6.4, §18). The publication
 rules below are the single place each source's timing is written down.
 
 **Decision time** (decided round 20, D1): 10:30 Eastern prevailing time on D−1, for every
 year, for operating day D.
 
-**Publication rules** (sources: `CLAUDE.md` §6.4, §7.4–7.8; `docs/market_rules.md` §1):
+**Publication rules** (sources: `docs/design_spec.md` §6.4, §7.4–7.8; `docs/market_rules.md` §1):
 
 - **DA prices of day t:** 16:30 Eastern on t−1. Ex-post DA LMPs post then (BPM-002-r19);
   earlier eras posted DA results by 15:00 EST, so 16:30 is never early.
@@ -21,7 +21,7 @@ year, for operating day D.
 - **NWS forecasts:** the issue time printed on the product. The fetch keeps the newest
   issue in the 24 hours before the decision time.
 - **EIA-860M capacity in month m:** the start of month m ("capacity operating on D−1",
-  `CLAUDE.md` §8, features 17–18).
+  `docs/design_spec.md` §8, features 17–18).
 
 Example:
     >>> import datetime

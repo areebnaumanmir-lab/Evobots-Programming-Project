@@ -1,6 +1,6 @@
 # Configuration reference
 
-Every TOML key: meaning, unit, default, bounds, who sets it (`CLAUDE.md` §13.1) and its source. Loading order: code defaults < the TOML file < command-line flags (`evobots.config.load_capital`).
+Every TOML key: meaning, unit, default, bounds, who sets it (`docs/design_spec.md` §13.1) and its source. Loading order: code defaults < the TOML file < command-line flags (`evobots.config.load_capital`).
 
 ## `[capital]` (`configs/10_miso_hubs.toml`)
 

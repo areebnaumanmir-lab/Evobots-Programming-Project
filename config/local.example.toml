@@ -1,4 +1,4 @@
-# Template for config/local.toml, which is git-ignored (CLAUDE.md §5.4).
+# Template for config/local.toml, which is git-ignored (docs/design_spec.md §5.4).
 # Copy this file to config/local.toml and fill in your own values.
 
 [network]

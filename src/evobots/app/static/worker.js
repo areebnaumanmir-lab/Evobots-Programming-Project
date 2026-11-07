@@ -1,6 +1,6 @@
 // Web Worker for the website: loads Python (Pyodide, served from this site) and evobots, then
 // relays the page's requests to evobots.web.WebSession. No formulas here: Python computes
-// every result, and this file only passes messages (CLAUDE.md §14.5).
+// every result, and this file only passes messages (docs/design_spec.md §14.5).
 importScripts("../vendor/pyodide/pyodide.js");
 
 let session = null;
