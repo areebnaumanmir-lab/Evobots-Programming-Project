@@ -315,3 +315,11 @@ Running record of what we have agreed. It references question numbers in decisio
 |---|---|---|
 | Missing values in logic | delegated | strict: missing operands make and/or/not missing |
 | Size and risk slots | delegated | size = cap × fraction × min(1, \|score\| ÷ scale); daily cap as a fraction of the footprint |
+
+## Round 36 (2026-11-07): M5 career and O6; rounds/round36_m5_career.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Parsimony | delegated | 0.002 per node |
+| L3 identification | delegated | β₂, β₃, β₄ fixed; β₀, β₁ fitted by simulated moments |
+| L4 and presets | delegated | k = 0.5, h = 5; prop trader 10 % limit; hedge fund 14.4 %/yr withdrawals |

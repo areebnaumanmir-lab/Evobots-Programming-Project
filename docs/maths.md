@@ -206,8 +206,52 @@ s' = s · min(1, cap_k / (s · Σ m), c · W / (MPD · 2) / (s · Σ m)).
 Dead from the day equity ≤ 0.1 MW × MPD × 2 days = **$2.40** (at the $12 floor): it can no longer post the smallest bid's collateral. Equity then stays frozen.
 - **Function:** `AccountRules.out_of_money_equity_usd`. **Test:** `tests/test_settlement.py::test_out_of_money_death_freezes_the_account`.
 
-## 5. Still to write
-- fitness under the career model (M5);
+## 5. Career model and fitness (M5, O6)
+
+### 5.1 Fitness
+F = E[ln(W_τ/W₀) − r_f·τ] − μ·size, with τ the end of the career (window end, a hard stop, or an L3 quit), r_f the FRED DTB3 log return per day summed over the days traded, and μ = 0.002 per tree node. With L3 on: E = Σ_m S_{m−1} h_m g_m + S_M g_M, where g_m is the excess log growth to month m and S_m = Π_{j≤m}(1 − h_j).
+- **Worked example:** a trader with 3 nodes ending at W_T = $1.65M from $1.5M, r_f = 0, no L3: F = ln(1.1) − 0.006 = **0.0893**.
+- **Function:** `evobots.career.model.apply_career`. **Tests:** `tests/test_career.py::test_default_career_is_out_of_money_only`, `::test_fitness_is_deterministic_with_the_quit_hazard`.
+
+### 5.2 L3 quit hazard, fitted by simulated moments
+h_m = logistic(β₀ + β₁·cum + β₂·r6 + β₃·dd + β₄·age). β₂ = −1, β₃ = 1 and β₄ = −0.3 per year are assumptions (three moments cannot identify five coefficients). β₀ and β₁ minimise Σ_k (S̄(12k) − target_k)² for targets 44 %, 24 % and 15 % (Barber et al. 2020), with bootstrap standard errors.
+- **Function:** `evobots.career.hazard.fit_quit_hazard`. **Test:** `tests/test_career.py::test_quit_hazard_reproduces_44_24_15_percent_survival` (within 2.5 points on a simulated losing population).
+
+### 5.3 L4: Page's CUSUM and its average run length
+S_m = max(0, S_{m−1} + k − z_m), signal when S_m > h, with z the standardised monthly excess return over (r_f + fixed costs ÷ capital). Siegmund: ARL ≈ (e^{−2Δb} + 2Δb − 1)/(2Δ²), Δ = k − μ, b = h + 1.166 (b² when Δ = 0).
+- **Worked example:** k = 0.5, h = 4: ARL 338 months while the edge is a full standard deviation (μ = 1), and 8.3 months once it is gone (μ = 0). 3,000 simulated careers per case agree within 6 %.
+
+  ```python
+  >>> from evobots.career.sequential import siegmund_average_run_length
+  >>> round(siegmund_average_run_length(1.0, 0.5, 4.0)), round(siegmund_average_run_length(0.0, 0.5, 4.0), 1)
+  (338, 8.3)
+
+  ```
+- **Threshold chosen for one false retirement per 10 years (ARL 120 months) when the edge is intact,** and the detection delay once it is gone:
+
+  | Edge (σ per month) | k | h | Delay (months) |
+  |---|---|---|---|
+  | 0.25 | 0.25 | 9.79 | 35.9 |
+  | 0.25 | 0.50 | 30.83 | 62.0 |
+  | 0.50 | 0.25 | 4.72 | 16.0 |
+  | 0.50 | 0.50 | 9.79 | 19.9 |
+  | 1.00 | 0.25 | 2.13 | 6.7 |
+  | 1.00 | 0.50 | 3.01 | 6.4 |
+
+  A small edge takes years to tell apart from none: the honest consequence of monthly data. The L4 default (k = 0.5, h = 5) is a documented choice, off unless switched on.
+- **Function:** `evobots.career.sequential` (CUSUM, Siegmund, simulation, Shiryaev–Roberts, Bayesian online change-point detection). **Tests:** `tests/test_career.py::test_siegmund_approximation_matches_simulation`, `::test_cusum_and_shiryaev_roberts_detect_a_lost_edge`, `::test_bocpd_puts_the_change_where_it_happened`.
+
+### 5.4 Quitting as optimal stopping
+V_n(m) = max(0, m + E[V_{n+1}(m′)]), m′ ~ N(m, s_n² − s_{n+1}²), s_n² = 1/(1/s₀² + n/σ²). The trader stops when its posterior mean edge falls below the threshold b_n.
+- **Worked example:** with two months left, b₀ solves m + mΦ(m/√v) + √v φ(m/√v) = 0. With one month left, b = 0.
+- **Function:** `evobots.career.stopping.stopping_thresholds`. **Test:** `tests/test_career.py::test_stopping_threshold_against_a_two_month_hand_solution`.
+
+### 5.5 Survival of careers
+Kaplan–Meier S(t) = Π(1 − d_i/n_i), Greenwood variance; Cox h(t|x) = h₀(t)e^{βx} (Breslow partial likelihood, Newton–Raphson); Schoenfeld-residual check of proportional hazards.
+- **Worked example:** durations 2, 3, 3⁺, 5, 6⁺, 6 give S = 0.833, 0.667, 0.444, 0.222.
+- **Function:** `evobots.career.survival`. **Tests:** `tests/test_career.py::test_kaplan_meier_and_greenwood_by_hand`, `::test_cox_recovers_a_known_coefficient`.
+
+## 6. Still to write
 - MAP-Elites (M6);
 - the report-card statistics (M7);
 - every ORFE module (`docs/design_spec.md` §20).
