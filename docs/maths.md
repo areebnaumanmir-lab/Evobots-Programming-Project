@@ -215,7 +215,7 @@ F = E[ln(W_τ/W₀) − r_f·τ] − μ·size, with τ the end of the career (wi
 
 ### 5.2 L3 quit hazard, fitted by simulated moments
 h_m = logistic(β₀ + β₁·cum + β₂·r6 + β₃·dd + β₄·age). β₂ = −1, β₃ = 1 and β₄ = −0.3 per year are assumptions (three moments cannot identify five coefficients). β₀ and β₁ minimise Σ_k (S̄(12k) − target_k)² for targets 44 %, 24 % and 15 % (Barber et al. 2020), with bootstrap standard errors.
-- **Function:** `evobots.career.hazard.fit_quit_hazard`. **Test:** `tests/test_career.py::test_quit_hazard_reproduces_44_24_15_percent_survival` (within 2.5 points on a simulated losing population).
+- **Function:** `evobots.career.hazard.fit_quit_hazard`. **Test:** `tests/test_career.py::test_quit_hazard_reproduces_the_survival_targets` (within 2.5 points on a simulated losing population).
 
 ### 5.3 L4: Page's CUSUM and its average run length
 S_m = max(0, S_{m−1} + k − z_m), signal when S_m > h, with z the standardised monthly excess return over (r_f + fixed costs ÷ capital). Siegmund: ARL ≈ (e^{−2Δb} + 2Δb − 1)/(2Δ²), Δ = k − μ, b = h + 1.166 (b² when Δ = 0).

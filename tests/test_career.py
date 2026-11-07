@@ -79,7 +79,7 @@ def losing_population(count, seed):
     return paths
 
 
-def test_quit_hazard_reproduces_44_24_15_percent_survival():
+def test_quit_hazard_reproduces_the_survival_targets():
     fit = fit_quit_hazard(losing_population(200, seed=4), bootstrap_draws=20)
     for months, target in TARGET_SURVIVAL.items():
         assert fit.fitted_survival[months] == pytest.approx(target, abs=0.025)
@@ -137,8 +137,8 @@ def test_stopping_threshold_against_a_two_month_hand_solution():
     step = math.sqrt(variances[0] - variances[1])
 
     def continuing_value(mean):
-        z = mean / step
-        return mean + mean * stats.norm.cdf(z) + step * stats.norm.pdf(z)
+        standardised = mean / step
+        return mean + mean * stats.norm.cdf(standardised) + step * stats.norm.pdf(standardised)
 
     exact = optimize.brentq(continuing_value, -1.0, 0.0)
     grid_step = 12 * prior / 800
@@ -167,5 +167,5 @@ def test_cox_recovers_a_known_coefficient():
     observed = np.minimum(durations, censor)
     beta, standard_errors, _ = cox_proportional_hazards(observed, events, covariate)
     assert abs(beta[0] - true_beta) < 3 * standard_errors[0]
-    ((_, p_value),) = schoenfeld_test(observed, events, covariate, beta)
-    assert p_value > 0.01
+    ((_, significance),) = schoenfeld_test(observed, events, covariate, beta)
+    assert significance > 0.01

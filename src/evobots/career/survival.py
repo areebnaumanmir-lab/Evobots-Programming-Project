@@ -102,6 +102,6 @@ def schoenfeld_test(durations, events, covariates, beta):
     for column in range(residuals.shape[1]):
         correlation = float(np.corrcoef(residuals[:, column], ranks)[0, 1])
         count = len(ranks)
-        t_value = correlation * math.sqrt((count - 2) / max(1 - correlation**2, 1e-12))
-        results.append((correlation, float(2 * stats.t.sf(abs(t_value), count - 2))))
+        student_statistic = correlation * math.sqrt((count - 2) / max(1 - correlation**2, 1e-12))
+        results.append((correlation, float(2 * stats.t.sf(abs(student_statistic), count - 2))))
     return results
