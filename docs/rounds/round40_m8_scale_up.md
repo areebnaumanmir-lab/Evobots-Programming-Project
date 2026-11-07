@@ -49,9 +49,23 @@ Date: 2026-11-07. Part of "finish all of this" (round 32).
 | Run | Stage | Time | Decision | Nearest candidate and failed gate |
 |---|---|---|---|---|
 | R105 | A | 1½ min (1 worker) | do nothing | R105-1770: G2, deflated Sharpe 0.01 against 204 effective trials |
-| R104 | D | see below | see below | see below |
+| R104 | D | 35 min (2 workers) | do nothing | R104-1929: G2, deflated Sharpe 0.11 against 205 effective trials |
 
-R104's result is added when it finishes (it runs at about 9 traders a minute with 2 workers).
+- **Same decision, for the same reason.** Neither run finds skill beyond what its number of trials would give by luck.
+- **The Stage D search finds higher fitness on its training windows:** the best elite in the last window has F +0.389, against +0.110 on the hubs. It also gets slightly closer to G2. With 288 locations a trader has more places to apply its rule, so a fair comparison needs more budget and seeds than this benchmark.
+- **Cost:** about 50 traders a minute with 2 workers at Stage D, against about 1,300 a minute with 1 worker on the hubs.
+
+### The first G5 at every location (obs., `evobots report runs/R104`)
+R104's nearest candidate, R104-1929 ("silent-marmot"):
+- **Its rule:** on weekdays, DEC where the 7-day average spread is above $15.2, INC where it is below −$10.3, with the limit $66.6 from yesterday's DA.
+- **Its own stage (263 locations that year):** +0.206 log growth on the unseen year 2023-12-31 → 2024-12-29, 4 % drawdown.
+- **Every location (2,642):** +0.191 on the same year, alive, 2 % drawdown, trading at 2,531 of them. The same capital, risk budget and credit limit spread over more places, so it cleared 41,072 MWh instead of 130,691.
+- **G5 passes.** It still fails G2 (deflated Sharpe 0.05; annual Sharpe 0.31 would need 80 years of data) and G3 (PBO 0.74), so the decision stays "do nothing".
+
+**Memory, measured:**
+- Scoring every location for one year peaks at 9.4 GB, prices held as float32 (Stage C markets are float32 from the store).
+- The report scores it from the checkpoint before it loads the run's own evaluator, then frees it, so the two never share the machine's 15 GB.
+- The first attempt, holding both at once in float64, ran out of memory.
 
 ## Decisions taken under delegation
 | Topic | Decision | Reason |
@@ -61,7 +75,7 @@ R104's result is added when it finishes (it runs at about 9 traders a minute wit
 | Singletons | dropped | a group of one is an outlier, not a pattern |
 | Representative choice | hub, else last year's, else medoid | hubs are the liquid points; carrying over keeps a multi-year market at 287 columns, not 457 |
 | Trading outside a representative's years | blocked (prices blanked for settlement only) | §7.10 recomputes the groups every year; features keep the full history |
-| G5 at every location | the unseen year only, 432 warm-up days | the whole period doesn't fit in memory |
+| G5 at every location | the unseen year only, 432 warm-up days, float32 prices, scored before the run is loaded | the whole period doesn't fit in memory; one year peaks at 9.4 GB |
 | Paper and final test at Stage D | the sealed test and paper trading stay at the hubs | the hold-out store is hub-level; extending it is Areeb's call |
 
 ## Measured vs assumed

@@ -217,7 +217,7 @@ class LocationStore:
             daily = np.nanmean(spread, axis=1)
         return market.days, market.hubs, daily
 
-    def market(self, first_day, last_day, locations=None, mask=None):
+    def market(self, first_day, last_day, locations=None, mask=None, dtype=np.float64):
         """A HubMarket for operating days first_day … last_day.
 
         Args:
@@ -226,6 +226,8 @@ class LocationStore:
             locations: names of the columns (None = every location seen in the period).
             mask: optional callable(year) → set of names that may trade that year; the other
                 columns are NaN that year (Stage D uses it for yearly representatives).
+            dtype: float64 (the default, as Stage A) or float32 (Stage C over every location,
+                half the memory; the store itself is float32).
 
         Returns:
             A HubMarket (float64 prices) with location types.
@@ -239,9 +241,9 @@ class LocationStore:
         locations = tuple(locations)
         day_count = (last_day - first_day).days + 1
         shape = (day_count, HOURS_PER_DAY, len(locations))
-        day_ahead = np.full(shape, np.nan)
-        real_time = np.full(shape, np.nan)
-        congestion = np.full(shape, np.nan)
+        day_ahead = np.full(shape, np.nan, dtype)
+        real_time = np.full(shape, np.nan, dtype)
+        congestion = np.full(shape, np.nan, dtype)
         types = dict.fromkeys(locations, "Gennode")
         for year in years:
             index = self.index(year)
@@ -272,7 +274,7 @@ class LocationStore:
                 ("rt_lmp", real_time),
                 ("da_mcc", congestion),
             ):
-                values = np.asarray(self.array(year, field)[start:stop][:, :, sources], float)
+                values = np.asarray(self.array(year, field)[start:stop][:, :, sources], dtype)
                 output[offset : offset + stop - start][:, :, targets] = values
         days = tuple(first_day + datetime.timedelta(days=offset) for offset in range(day_count))
         return HubMarket(

@@ -88,7 +88,7 @@ The sealed year 2025-09-22 → 2026-09-21 goes to `data/holdout/`, and nothing b
 uv run evobots run --evaluations 20000 --workers 3
 uv run evobots run --stage D --first-day 2013-01-01 --evaluations 2000 --workers 2
 ```
-Stage D trades the yearly cluster representatives (about 290 locations over the whole period). It needs about 11 GB of memory from 2005; from 2013 the main process used about 4 GB here, with workers sharing most of it. Each trader costs about 40 times more than at Stage A.
+Stage D trades the yearly cluster representatives (about 290 locations over the whole period). It needs about 11 GB of memory from 2005; from 2013 the main process used about 4 GB here, with workers sharing most of it. Each trader costs about 45 times more than at Stage A.
 
 ## 9. The sealed test (once per run)
 ```

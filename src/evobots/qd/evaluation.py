@@ -265,7 +265,7 @@ def location_market(root, stage, first_day=None, last_day=None):
     first_day = first_day or MARKET_FIRST_DAY
     last_day = min(last_day or EVOLUTION_LAST_DAY, EVOLUTION_LAST_DAY)
     if stage == "C":
-        return store.market(first_day, last_day), None
+        return store.market(first_day, last_day, dtype=np.float32), None
     if stage != "D":
         raise ValueError(f"stage must be A, D or C, not {stage!r}")
     clusters = read_clusters(Path(root) / CLUSTERS_PATH)

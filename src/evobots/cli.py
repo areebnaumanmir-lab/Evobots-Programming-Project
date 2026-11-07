@@ -404,13 +404,20 @@ def run_life_mode(arguments):
 
 
 def write_report(arguments):
-    """`report`: the report card of a run's best bot (or a named elite) as JSON and HTML."""
-    import json
+    """`report`: the report card of a run's best bot (or a named elite) as JSON and HTML.
+
+    On real data, G5 first re-scores the trader on every location over its unseen year
+    (when the Stage C store is built). That happens before the run is loaded, so the two
+    never share memory.
+    """
+    import gc
 
     from evobots.assess.report_card import ReportContext, report_card
     from evobots.assess.report_html import report_html
     from evobots.qd.run import Run
 
+    every_location = None if arguments.demo else every_location_first(arguments)
+    gc.collect()
     run = Run.resume(arguments.directory, evaluator_for(arguments.demo, arguments.directory))
     elite = None
     if arguments.trader:
@@ -426,15 +433,10 @@ def write_report(arguments):
     final = json.loads(final_path.read_text()) if final_path.exists() else None
     context = ReportContext.from_run(run, final)
     scale_up = None
-    if not arguments.demo:
-        from evobots.assess.scale_up import every_location_rescore
+    if every_location is not None and every_location["trader_id"] == elite.trader_id:
+        from evobots.assess.scale_up import with_own_stage
 
-        _, train_end, forward_end = context.window
-        if forward_end > train_end:
-            days = run.evaluator.store.days
-            scale_up = every_location_rescore(
-                elite.genome, run.evaluator, days[train_end], days[forward_end - 1]
-            )
+        scale_up = with_own_stage(every_location, elite.genome, run.evaluator)
     card = report_card(context, elite, scale_up=scale_up)
     stem = arguments.directory / f"report_{elite.trader_id}"
     stem.with_suffix(".json").write_text(json.dumps(card, indent=2), encoding="utf-8")
@@ -442,6 +444,36 @@ def write_report(arguments):
     print(card["what_happened"])
     print(f"Wrote {stem}.json and {stem}.html")
     return 0
+
+
+def every_location_first(arguments):
+    """G5's Stage C score of the trader the report will be about, from the checkpoint alone.
+
+    Returns:
+        The score with "trader_id", or None (no Stage C store, no unseen year, or a trader
+        that isn't an elite in the checkpoint).
+    """
+    import pickle
+
+    from evobots.assess.scale_up import every_location_score
+    from evobots.config.capital import CapitalSettings
+
+    directory = Path(arguments.directory)
+    bot_path = directory / "deployable" / "current_bot.json"
+    checkpoint_path = directory / "checkpoint.pickle"
+    if not bot_path.exists() or not checkpoint_path.exists():
+        return None
+    bot = json.loads(bot_path.read_text(encoding="utf-8"))
+    trader_id = arguments.trader or bot.get("trader_id") or bot.get("nearest_candidate")
+    unseen = bot.get("walk_forward_year")
+    archive = pickle.loads(checkpoint_path.read_bytes())["archive"]
+    elite = next((item for item in archive.values() if item.trader_id == trader_id), None)
+    if elite is None or not unseen:
+        return None
+    first_day, last_day = (datetime.date.fromisoformat(day) for day in unseen)
+    print(f"G5: scoring {trader_id} on every location, {first_day} → {last_day} …", flush=True)
+    score = every_location_score(elite.genome, first_day, last_day, CapitalSettings())
+    return None if score is None else {**score, "trader_id": trader_id}
 
 
 def run_final_test(arguments):

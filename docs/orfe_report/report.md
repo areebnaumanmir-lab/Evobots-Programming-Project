@@ -196,7 +196,10 @@ The series is always-INC at full size, 99 % one-day VaR. Each cell gives the bre
 
 ### 6.9 Scale-up (M8; round 40)
 - **G5 at every location:** the trader re-scored over its unseen year with ≈ 2,500 locations (`evobots.assess.scale_up`).
-- **Stage D against Stage A:** a run on yearly cluster representatives (288 columns over the whole period, 7–85 groups a year) against the same run on the hubs. The results are in [round 40](../rounds/round40_m8_scale_up.md).
+- **Stage D against Stage A** (same seed, 2,000 traders, windows from 2013; [round 40](../rounds/round40_m8_scale_up.md)):
+  - both runs decide "do nothing" for the same reason, G2: deflated Sharpe 0.11 against 205 effective trials at Stage D, 0.01 against 204 on the hubs;
+  - the Stage D search finds higher training fitness (+0.389 against +0.110 in the last window) at about 45 times the cost per trader (1.3 s against 0.03 s per trader-window).
+- **G5 at every location** (R104's nearest candidate, unseen year 2023-12-31 → 2024-12-29): +0.191 log growth on 2,642 locations (it traded at 2,531), against +0.206 on its own 263. The edge survives scaling up, but the trader still fails G2 and G3.
 
 ## 7. Limitations
 - **Fees and uplift are estimates** until MISO's Rates Factors file is supplied.

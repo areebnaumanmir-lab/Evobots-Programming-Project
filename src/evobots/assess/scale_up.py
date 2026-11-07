@@ -46,6 +46,57 @@ def locations_traded(evaluator, genome, start, end):
     return int(np.any((decisions.side[offset:] != 0) & is_priced, axis=(0, 1)).sum())
 
 
+def every_location_score(genome, first_day, last_day, capital=None, career=None, evaluator=None):
+    """The trader on every location for first_day … last_day.
+
+    Args:
+        genome: the trader.
+        first_day: first day of the period (datetime.date), normally the unseen year.
+        last_day: its last day.
+        capital: capital settings (default when None).
+        career: career preset (default when None).
+        evaluator: an evaluator over every location covering the period and WARM_UP_DAYS
+            before it (None: built from the store here, then freed; it peaks near 9.4 GB for a
+            year of ≈ 2,600 locations, so the report scores it before loading the run).
+
+    Returns:
+        {"period", "locations", "stage_c"}, or None when the Stage C store isn't built here.
+    """
+    if evaluator is None:
+        from evobots.qd.evaluation import Evaluator
+
+        evaluator = Evaluator.from_store(
+            capital=capital,
+            career=career,
+            stage="C",
+            first_day=first_day - datetime.timedelta(days=WARM_UP_DAYS),
+            last_day=last_day,
+        )
+        if evaluator is None:
+            return None
+    start = evaluator.index_of(first_day)
+    end = evaluator.index_of(last_day + datetime.timedelta(days=1))
+    result = evaluator.evaluate(genome, start, end)
+    return {
+        "period": [first_day.isoformat(), last_day.isoformat()],
+        "locations": len(evaluator.store.locations),
+        "stage_c": evaluation_row(result, locations_traded(evaluator, genome, start, end)),
+    }
+
+
+def with_own_stage(every_location, genome, evaluator):
+    """Add the same period's result on the run's own stage (A or D) to a Stage C score."""
+    first_day, last_day = (datetime.date.fromisoformat(day) for day in every_location["period"])
+    start = evaluator.index_of(first_day)
+    end = evaluator.index_of(last_day + datetime.timedelta(days=1))
+    own = evaluator.evaluate(genome, start, end)
+    return {
+        **every_location,
+        "own_stage_locations": len(evaluator.store.locations),
+        "own_stage": evaluation_row(own, locations_traded(evaluator, genome, start, end)),
+    }
+
+
 def every_location_rescore(genome, evaluator, first_day, last_day, every_location_evaluator=None):
     """Score a genome on every location for first_day … last_day, beside its own stage.
 
@@ -54,37 +105,14 @@ def every_location_rescore(genome, evaluator, first_day, last_day, every_locatio
         evaluator: the run's evaluator (Stage A or D).
         first_day: first day of the period (datetime.date), normally the unseen year.
         last_day: its last day.
-        every_location_evaluator: an evaluator over every location covering the period and
-            WARM_UP_DAYS before it (None: built from the store on this machine).
+        every_location_evaluator: see `every_location_score`.
 
     Returns:
         A dict, or None when the Stage C store isn't built here.
     """
-    if every_location_evaluator is None:
-        from evobots.qd.evaluation import Evaluator
-
-        every_location_evaluator = Evaluator.from_store(
-            capital=evaluator.capital,
-            career=evaluator.career,
-            stage="C",
-            first_day=first_day - datetime.timedelta(days=WARM_UP_DAYS),
-            last_day=last_day,
-        )
-        if every_location_evaluator is None:
-            return None
-    start_every = every_location_evaluator.index_of(first_day)
-    end_every = every_location_evaluator.index_of(last_day + datetime.timedelta(days=1))
-    start_own = evaluator.index_of(first_day)
-    end_own = evaluator.index_of(last_day + datetime.timedelta(days=1))
-    every_location = every_location_evaluator.evaluate(genome, start_every, end_every)
-    own = evaluator.evaluate(genome, start_own, end_own)
-    return {
-        "period": [first_day.isoformat(), last_day.isoformat()],
-        "locations": len(every_location_evaluator.store.locations),
-        "own_stage_locations": len(evaluator.store.locations),
-        "stage_c": evaluation_row(
-            every_location,
-            locations_traded(every_location_evaluator, genome, start_every, end_every),
-        ),
-        "own_stage": evaluation_row(own, locations_traded(evaluator, genome, start_own, end_own)),
-    }
+    every_location = every_location_score(
+        genome, first_day, last_day, evaluator.capital, evaluator.career, every_location_evaluator
+    )
+    if every_location is None:
+        return None
+    return with_own_stage(every_location, genome, evaluator)
