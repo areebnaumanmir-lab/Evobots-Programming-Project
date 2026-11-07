@@ -131,6 +131,7 @@ MISO_DERIVED_FILES = (
     "docs/data/benchmark_full_size_daily_pnl.csv",
     "docs/data/capital_sweep.csv",
     "docs/data/claude_science_check.csv",
+    "docs/data/feature_distributions_by_year.csv",
     "docs/data/fixed_cost_capital_floor.csv",
     "docs/data/headroom_trailing.csv",
     "docs/data/hub_price_stats.csv",

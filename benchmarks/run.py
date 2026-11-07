@@ -87,6 +87,25 @@ def machine_description():
     return f"{platform.system()} {os.cpu_count()} cores Python {platform.python_version()}"
 
 
+def milestone_cases():
+    """Benchmarks added from M2 on, on synthetic data (offline): (name, items, unit, call)."""
+    from evobots.features.inputs import synthetic_feature_inputs
+    from evobots.features.store import build_feature_store
+    from evobots.simulate.market import synthetic_hub_market
+
+    market = synthetic_hub_market(days=3653, seed=1)
+    inputs = synthetic_feature_inputs(market.days, market.hubs, seed=2)
+    location_days = len(market.days) * len(market.hubs)
+    return [
+        (
+            "build_feature_store",
+            location_days,
+            "hub-days",
+            lambda: build_feature_store(market, inputs),
+        ),
+    ]
+
+
 def benchmark_rows(milestone, repeats):
     """Run every benchmark; return one result row each."""
     _, daily_pnl_usd = read_benchmark_fixture(FIXTURE_PATH)
@@ -103,6 +122,7 @@ def benchmark_rows(milestone, repeats):
         ),
         ("capital_summary", 1, "summaries", lambda: calibration_capital_summary(settings)),
     ]
+    cases += milestone_cases()
     common = {
         "date": datetime.date.today().isoformat(),
         "milestone": milestone,

@@ -292,3 +292,11 @@ Running record of what we have agreed. It references question numbers in decisio
 | MISO terms | "non-commercial purposes is fine as long as credit is given" | recorded; credit line in README; the separate no-automated-access clause keeps scripted MISO downloads off |
 | Rates Factors file | "give me the link and I'll do it" | navigation path given; exact URL unconfirmed |
 | Remaining milestones | "finish all of this please" | M2–M9 and the ORFE track built in order; check-in items reported together |
+
+## Round 33 (2026-11-07): M2 features; rounds/round33_m2_features.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Congestion share definition | delegated ("finish all of this") | ratio of 28-day means; missing near zero mean price |
+| Hub areas at Stage A | delegated | a hub is its own area on every day |
+| Gas volatility unit | delegated | fraction per day (code never stores percent) |
