@@ -308,3 +308,10 @@ Running record of what we have agreed. It references question numbers in decisio
 | Fee estimates until the rate file | delegated (D3) | admin $0.0902; DA RSG $0.05 placeholder; DDC $0 / $1.80 / $0.11 by era; all labelled |
 | Sizing input | delegated | the trader's own full-size P&L after fees, two-sided trailing p99 |
 | Limits | delegated | cut to the trader's cap and the Virtual MWh Limit on submitted MWh |
+
+## Round 35 (2026-11-07): M4 traders; rounds/round35_m4_traders.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Missing values in logic | delegated | strict: missing operands make and/or/not missing |
+| Size and risk slots | delegated | size = cap × fraction × min(1, \|score\| ÷ scale); daily cap as a fraction of the footprint |
