@@ -1,10 +1,10 @@
-"""A personal data pack: the built data and runs of one machine, unpacked by another.
+"""A data pack: the built data and runs of one machine, unpacked by another.
 
-MISO's prices may not be published with the app (round 25), so a public download starts on
-demo data. The person who downloaded MISO's files and built the store can carry their own
-copy to their own computer as `evobots-data-pack.zip`. `evobots serve` (so the one-click
-start scripts too) looks for that file in the evobots folder and in the user's Downloads
-folder, and unpacks it once. Nothing is downloaded and nothing leaves the computer.
+Since round 42 the app ships with the hub data (`evobots.data.bundled`), so a pack mainly
+carries runs: searches, report cards and paper-trading ledgers. `evobots serve` (so the
+one-click start scripts too) looks for `evobots-data-pack*.zip` in the evobots folder and in
+the user's Downloads folder, and unpacks it once. Nothing is downloaded and nothing leaves
+the computer.
 
 **What a pack holds** (`PACK_PATHS`):
 - the hub price and forecast tables;

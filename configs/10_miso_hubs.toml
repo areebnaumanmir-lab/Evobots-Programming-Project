@@ -11,6 +11,8 @@ liquidity_share_fraction = 0.05       # cap ≤ 5 % of the hub's median cleared 
 # ruin_floor_usd = 1_000_000          # absolute floor inspired by MISO's $1M net-worth route
 
 [data]
-# MISO's terms forbid redistribution: leave false unless MISO grants written permission
-# (docs/data_sources.md §3). When false, shareable bundles contain no MISO-derived file.
-is_miso_redistribution_allowed = false
+# MISO granted written permission (email to Areeb, 2026-11-06) to use MISO public trading
+# data in this project, on condition that the source is acknowledged and the conditions of
+# reproduction are explained to others (data/bundled/NOTICE.md; docs/data_sources.md).
+# Set false in a copy used for anything else: shareable bundles then hold no MISO file.
+is_miso_redistribution_allowed = true

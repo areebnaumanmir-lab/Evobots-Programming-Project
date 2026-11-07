@@ -145,17 +145,34 @@ def test_page_run_download_and_refine(client):
     assert wait_until_done(client)["state"] == "done"
 
 
-def test_app_zip_has_no_data_or_secrets(client):
+def test_app_zip_has_no_local_data_or_secrets(client):
     archive = zipfile.ZipFile(io.BytesIO(client.get("/download/evobots.zip").content))
     names = archive.namelist()
     assert "evobots/src/evobots/app/server.py" in names
-    assert "evobots/MISO_DATA_NOT_INCLUDED.txt" in names
     assert not any(
         name.startswith(("evobots/data/raw/", "evobots/data/store/", "evobots/data/holdout/"))
         for name in names
     )
     assert "evobots/config/local.toml" not in names
-    assert not any(f"evobots/{path}" in names for path in MISO_DERIVED_FILES)
+    # MISO redistribution is on for this project (permission of 2026-11-06), so the bundled
+    # data and its notice ship; with the switch off, neither would.
+    assert "evobots/data/bundled/NOTICE.md" in names
+    assert "evobots/MISO_DATA_NOT_INCLUDED.txt" not in names
+
+
+def test_app_zip_leaves_miso_out_when_the_switch_is_off(tmp_path):
+    from evobots.service import app_files
+
+    (tmp_path / "configs").mkdir()
+    (tmp_path / "configs/10_miso_hubs.toml").write_text(
+        "[data]\nis_miso_redistribution_allowed = false\n", encoding="utf-8"
+    )
+    for relative in ("data/bundled/store/hub_prices.csv.gz", "README.md"):
+        (tmp_path / relative).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / relative).write_text("x", encoding="utf-8")
+    files = app_files(tmp_path)
+    assert "README.md" in files
+    assert not any(path in MISO_DERIVED_FILES for path in files)
 
 
 def test_templates_and_scripts_load_nothing_from_the_internet():

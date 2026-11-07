@@ -151,6 +151,7 @@ MISO_DERIVED_FILES = (
     "docs/data/figures/point_in_time_full_size_threshold.svg",
     "docs/design/preview_data_page.html",
     "tools/capital_explorer.html",
+    "data/bundled/store/hub_prices.csv.gz",
 )
 
 
@@ -501,17 +502,25 @@ def app_files(root=REPOSITORY_ROOT):
 
 
 def app_zip_bytes(root=REPOSITORY_ROOT):
-    """The whole app as a zip, without data, secrets or (by default) MISO-derived tables."""
+    """The whole app as a zip, without secrets or local data.
+
+    It includes the bundled data, and the MISO-derived tables only when MISO
+    redistribution is switched on (data/bundled/NOTICE.md gives the conditions).
+    """
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
         for relative in app_files(root):
             archive.write(root / relative, f"evobots/{relative}")
-        archive.writestr(
-            "evobots/MISO_DATA_NOT_INCLUDED.txt",
-            "MISO's terms forbid redistributing its data, so this copy has no MISO prices or "
-            "MISO-derived tables. The app starts in demo mode with synthetic prices. To use "
-            "real data, follow 'Use real MISO data' in README.md on your own machine.\n",
-        )
+        if not load_data_settings(
+            root / "configs/10_miso_hubs.toml"
+        ).is_miso_redistribution_allowed:
+            archive.writestr(
+                "evobots/MISO_DATA_NOT_INCLUDED.txt",
+                "This copy has no MISO prices or MISO-derived tables (MISO redistribution is "
+                "switched off in configs/10_miso_hubs.toml). The app starts in demo mode with "
+                "synthetic prices. To use real data, follow 'Use real MISO data' in README.md "
+                "on your own machine.\n",
+            )
     return buffer.getvalue()
 
 

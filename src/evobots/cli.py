@@ -170,6 +170,11 @@ def main(argv=None):
         help="needs internet: save today's EPU, GPR and Henry Hub files as dated vintages first",
     )
     arguments = parser.parse_args(argv)
+    if arguments.command not in ("capital", "data") and not getattr(arguments, "demo", False):
+        from evobots.data.bundled import install_bundled_data
+
+        for message in install_bundled_data(Path(".")):
+            print(message)
     if arguments.command == "report":
         return write_report(arguments)
     if arguments.command == "export-bot":
