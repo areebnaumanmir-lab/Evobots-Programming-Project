@@ -1,0 +1,55 @@
+{
+  "test_days": 189,
+  "first_test_day": "2022-02-09",
+  "last_test_day": "2025-09-17",
+  "table": {
+    "bootstrap": {
+      "crps": 4.7772930993028,
+      "pinball": 2.204962589101999,
+      "mean": 0.09694223985890643,
+      "standard_deviation": 30.526847103553695,
+      "p1": -95.4,
+      "p99": 40.48259999999995,
+      "excess_kurtosis": 226.31800943143182,
+      "daily_mean_autocorrelation": 0.006174186739635072,
+      "cross_hub_correlation": 0.5385991652200204,
+      "spike_day_share": 0.5502645502645502
+    },
+    "regime": {
+      "crps": 4.671835794382723,
+      "pinball": 2.1888538983578356,
+      "mean": 0.8356293140781571,
+      "standard_deviation": 55.93999553004794,
+      "p1": -79.04431735460288,
+      "p99": 47.79181339805357,
+      "excess_kurtosis": 2121.7201254164534,
+      "daily_mean_autocorrelation": -0.08893631242504392,
+      "cross_hub_correlation": 0.022396691914320605,
+      "spike_day_share": 0.5291005291005291
+    },
+    "analogue": {
+      "crps": 4.378062888902667,
+      "pinball": 2.0261744194591413,
+      "mean": 1.878851135361552,
+      "standard_deviation": 23.817546160998166,
+      "p1": -70.7826,
+      "p99": 43.88259999999995,
+      "excess_kurtosis": 296.8883696265641,
+      "daily_mean_autocorrelation": -0.001612373114222399,
+      "cross_hub_correlation": 0.6499800273465891,
+      "spike_day_share": 0.5291005291005291
+    },
+    "real": {
+      "mean": 1.115694168871252,
+      "standard_deviation": 33.15843215686899,
+      "p1": -85.29520000000001,
+      "p99": 51.766499999999866,
+      "excess_kurtosis": 296.4637193206429,
+      "daily_mean_autocorrelation": -0.051843712251883306,
+      "cross_hub_correlation": 0.6278172237420205,
+      "spike_day_share": 0.6402116402116402
+    }
+  },
+  "computed_on": "2026-11-07",
+  "seconds": 97.20734095573425
+}

@@ -29,7 +29,7 @@ import datetime
 import gzip
 from pathlib import Path
 
-from evobots.data.periods import EVOLUTION_LAST_DAY, MARKET_FIRST_DAY
+from evobots.data.periods import EVOLUTION_LAST_DAY, HOLDOUT_LAST_DAY, MARKET_FIRST_DAY
 from evobots.data.regions import FORECAST_TOWN_BY_HUB
 from evobots.data.sources.nws_pfm import ForecastFormatError, parse_product
 from evobots.data.visible import decision_time
@@ -95,12 +95,14 @@ def target_day_summary(town, target_day):
     }
 
 
-def forecast_rows_for_decision_day(raw_directory, decision_day):
+def forecast_rows_for_decision_day(raw_directory, decision_day, holdout_permission=None):
     """Rows of the forecast table for one decision day: each hub × each target day.
 
     Args:
         raw_directory: data/raw/nws (offices as subfolders, files named YYYYMMDD.txt).
         decision_day: the day the bids are decided.
+        holdout_permission: the hold-out accessor's permission; without it, target days after
+            2025-09-21 are never produced.
 
     Returns:
         A list of dicts keyed by FORECAST_COLUMNS. status is "ok", "missing file",
@@ -112,7 +114,8 @@ def forecast_rows_for_decision_day(raw_directory, decision_day):
         targets = [
             decision_day + datetime.timedelta(days=offset)
             for offset in TARGET_OFFSETS_DAYS
-            if decision_day + datetime.timedelta(days=offset) <= EVOLUTION_LAST_DAY
+            if decision_day + datetime.timedelta(days=offset)
+            <= (EVOLUTION_LAST_DAY if holdout_permission is None else HOLDOUT_LAST_DAY)
         ]
         if town_spec.office not in towns_by_office:
             path = Path(raw_directory) / town_spec.office / f"{decision_day:%Y%m%d}.txt"

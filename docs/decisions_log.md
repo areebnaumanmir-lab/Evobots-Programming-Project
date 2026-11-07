@@ -331,3 +331,10 @@ Running record of what we have agreed. It references question numbers in decisio
 | G2 benchmark | delegated | null variance 1/(T − 1); effective trials by participation ratio |
 | Quick gates | delegated | G1 95 % within 50 % loss; G2 DSR ≥ 0.95; G4 doubled costs; G6 next year |
 | First real run | – | R100: do nothing (G2 fails at 442 effective trials) |
+
+## Round 38 (2026-11-07): M7 report card and O7; rounds/round38_m7_report_card.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Report-card conventions | delegated | G1/G2 over the whole period, G6 the unseen year, rolling years flagged as seen |
+| First real report | – | R101: do nothing; nearest candidate fails G3 (PBO 0.76), hindsight-suspect (EPU) |

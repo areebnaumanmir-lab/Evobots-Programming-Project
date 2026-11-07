@@ -7,6 +7,7 @@
 """
 
 import argparse
+import json
 import os
 import sys
 from pathlib import Path
@@ -110,7 +111,26 @@ def main(argv=None):
     life.add_argument("--seed", type=int, default=1)
     life.add_argument("--initial-random", type=int, default=60)
     life.add_argument("--demo", action="store_true")
+    report = commands.add_parser("report", help="write a run's report card (JSON and HTML)")
+    report.add_argument("directory", type=Path)
+    report.add_argument(
+        "--trader", help="an elite's id (default: the best bot, else the nearest candidate)"
+    )
+    report.add_argument("--demo", action="store_true")
+    sealed = commands.add_parser(
+        "final-test", help="the sealed 12-month test, once per run (logged)"
+    )
+    sealed.add_argument("directory", type=Path)
+    sealed.add_argument("--trader", help="an elite's id (default: the best bot)")
+    sealed.add_argument(
+        "--yes", action="store_true", help="confirm: this spends the run's hold-out"
+    )
+    sealed.add_argument("--opened-by", default="final-test")
     arguments = parser.parse_args(argv)
+    if arguments.command == "report":
+        return write_report(arguments)
+    if arguments.command == "final-test":
+        return run_final_test(arguments)
     if arguments.command == "run":
         return run_search(arguments)
     if arguments.command == "resume":
@@ -232,6 +252,59 @@ def run_life_mode(arguments):
         f"{len(result.traders)} traders lived; deepest lineage {result.deepest_generation()} "
         f"generations; {int(result.population_by_day[-1])} alive on {result.days[-1]}"
     )
+    return 0
+
+
+def write_report(arguments):
+    """`report`: the report card of a run's best bot (or a named elite) as JSON and HTML."""
+    import json
+
+    from evobots.assess.report_card import ReportContext, report_card
+    from evobots.assess.report_html import report_html
+    from evobots.qd.run import Run
+
+    run = Run.resume(arguments.directory, evaluator_for(arguments.demo))
+    elite = None
+    if arguments.trader:
+        elite = next(
+            (item for item in run.archive.values() if item.trader_id == arguments.trader), None
+        )
+    else:
+        elite = run.choose_best() or run.nearest_candidate()
+    if elite is None:
+        print("No elite to report on.")
+        return 1
+    final_path = arguments.directory / "final_test.json"
+    final = json.loads(final_path.read_text()) if final_path.exists() else None
+    card = report_card(ReportContext.from_run(run, final), elite)
+    stem = arguments.directory / f"report_{elite.trader_id}"
+    stem.with_suffix(".json").write_text(json.dumps(card, indent=2), encoding="utf-8")
+    stem.with_suffix(".html").write_text(report_html(card), encoding="utf-8")
+    print(card["what_happened"])
+    print(f"Wrote {stem}.json and {stem}.html")
+    return 0
+
+
+def run_final_test(arguments):
+    """`final-test`: open the sealed year once for the run's chosen trader."""
+    if not arguments.yes:
+        print(
+            "The sealed test can be used once per run and every opening is logged. "
+            "Run again with --yes to spend it."
+        )
+        return 1
+    from evobots.assess.final_test import final_test
+    from evobots.features.inputs import load_feature_inputs
+    from evobots.qd.evaluation import Evaluator
+
+    evaluator = Evaluator.from_store()
+    if evaluator is None:
+        print("The sealed test needs the MISO data built on this machine.")
+        return 1
+    result = final_test(
+        arguments.directory, evaluator, load_feature_inputs(), arguments.trader, arguments.opened_by
+    )
+    print(json.dumps(result, indent=2))
     return 0
 
 

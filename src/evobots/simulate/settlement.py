@@ -85,6 +85,9 @@ class AccountRules:
         is_rounding: round each bid down to 0.1 MW (False only to reproduce unrounded
             calibration benchmarks).
         cost_multiple: 1 for estimated costs, 2 for the G4 stress test, 0 for none.
+        price_impact_usd_per_mwh_per_mw: β of O9's sensitivity run: a cleared bid of q MW
+            moves its own DA price by β·q against itself, costing β·q² (0 = price-taker, the
+            default).
     """
 
     starting_capital_usd: float = 1_500_000.0
@@ -98,6 +101,7 @@ class AccountRules:
     is_scaled: bool = True
     is_rounding: bool = True
     cost_multiple: float = 1.0
+    price_impact_usd_per_mwh_per_mw: float = 0.0
 
     def out_of_money_equity_usd(self):
         """Equity at or below which the trader can't post the smallest bid's collateral."""
@@ -264,11 +268,11 @@ def prepare_days(decisions, market, first, end, rules, cost_table):
     )
 
 
-def day_outcome(prepared, day, power_mw):
+def day_outcome(prepared, day, power_mw, impact=0.0):
     """(P&L before fees, fees, DEC MWh, INC MWh) of one day at given MW (reference form)."""
     net = prepared.net_sign[day] * power_mw  # (24, L): + DEC, − INC, 0 where not cleared
     gross = float((prepared.signed_gain[day] * power_mw).sum())
-    admin = prepared.admin[day] * np.abs(net).sum()
+    admin = prepared.admin[day] * np.abs(net).sum() + impact * (net**2).sum()
     da_rsg = prepared.da_rsg[day] * np.maximum(net, 0.0).sum()
     rt_rsg = float((prepared.ddc[day] * np.maximum(-net.sum(axis=1), 0.0)).sum())
     dec = float(np.maximum(net, 0.0).sum())
@@ -368,7 +372,9 @@ def settle_reference(decisions, market, start, end, rules, cost_table=None, hist
         power = scale * prepared.full_size_mw[day]
         if rules.is_rounding:
             power = round_down_to_step(power)
-        gross, fees, dec, inc = day_outcome(prepared, day, power)
+        gross, fees, dec, inc = day_outcome(
+            prepared, day, power, rules.price_impact_usd_per_mwh_per_mw
+        )
         pnl = gross - fees
         starting_equity = equity
         equity += pnl
@@ -506,6 +512,7 @@ if numba is not None:
         is_scaled,
         is_rounding,
         out_of_money,
+        impact,
     ):
         """The day loop of `settle_reference`, element by element."""
         day_count = estimates.shape[0]
@@ -554,7 +561,7 @@ if numba is not None:
                     gross += signed_gain[day, hour, location] * power
                     net = net_sign[day, hour, location] * power
                     net_hour += net
-                    fees += admin[day] * abs(net) + da_rsg[day] * max(net, 0.0)
+                    fees += admin[day] * abs(net) + impact * net * net + da_rsg[day] * max(net, 0.0)
                     dec += max(net, 0.0)
                     inc += max(-net, 0.0)
                 fees += ddc[day, hour] * max(-net_hour, 0.0)
@@ -614,6 +621,7 @@ def settle(decisions, market, start, end, rules, cost_table=None, history_start=
         bool(rules.is_scaled),
         bool(rules.is_rounding),
         float(rules.out_of_money_equity_usd()),
+        float(rules.price_impact_usd_per_mwh_per_mw),
     )
     names = ("pnl", "equity", "fees", "scale", "dec", "inc", "submitted")
     outputs = {name: packed[index].copy() for index, name in enumerate(names)}

@@ -251,7 +251,50 @@ Kaplan–Meier S(t) = Π(1 − d_i/n_i), Greenwood variance; Cox h(t|x) = h₀(t
 - **Worked example:** durations 2, 3, 3⁺, 5, 6⁺, 6 give S = 0.833, 0.667, 0.444, 0.222.
 - **Function:** `evobots.career.survival`. **Tests:** `tests/test_career.py::test_kaplan_meier_and_greenwood_by_hand`, `::test_cox_recovers_a_known_coefficient`.
 
-## 6. Still to write
-- MAP-Elites (M6);
-- the report-card statistics (M7);
+## 6. The deployment gates and inference (M7, O7)
+
+### 6.1 Expected maximum Sharpe ratio, deflated Sharpe ratio and MinBTL
+- E[max of N unskilled trials] = σ((1 − γ)Φ⁻¹(1 − 1/N) + γΦ⁻¹(1 − 1/(Ne))), γ = 0.5772.
+- DSR = Φ((ŜR − SR₀)√(T − 1) / √(1 − γ₃ŜR + (γ₄ − 1)ŜR²/4)), with SR₀ the expected maximum for the effective trials and per-day σ = √(1/(T − 1)) (the null; round 37).
+- MinBTL = (E[max of N] / SR)² years for annual SR.
+- **Worked example:** N = 100 gives E[max] = 2.531σ. At annual SR = 1, 45 trials need **5.0 years**, the figure of §12.3.
+
+  ```python
+  >>> from evobots.assess.statistics import expected_maximum_sharpe, minimum_backtest_length_years
+  >>> round(float(expected_maximum_sharpe(1.0, 100)), 3), round(float(minimum_backtest_length_years(1.0, 45)), 1)
+  (2.531, 5.0)
+
+  ```
+- **Function:** `evobots.assess.statistics`. **Test:** doctests there; `tests/test_report_card.py`.
+
+### 6.2 Effective number of trials
+N_eff = (Σλ)²/Σλ² × distinct behaviours ÷ reservoir size, with λ the eigenvalues of the correlation matrix of a reservoir of the run's daily P&L streams. Identical streams give a ratio of 1; independent ones give the number of streams.
+- **Function:** `evobots.qd.gates.effective_trials`.
+
+### 6.3 Stationary bootstrap and its block length
+Blocks start at random positions; their lengths are geometric with mean b. b comes from the automatic rule of Politis & White (2004, corrected 2009): b = (2Ĝ²/D̂)^{1/3} n^{1/3}, with flat-top lag-window estimates of Ĝ = Σ|k|γ(k) and the spectral sum.
+- **Worked example:** for an AR(1) series with φ = 0.7 and n = 3,000, b ≈ 34 days; for white noise, b = 1.
+- **Function:** `evobots.assess.statistics.politis_white_block_length`, `stationary_bootstrap_indices`.
+
+### 6.4 Probability of backtest overfitting (CSCV)
+Split the days into S = 8 blocks. For each of the C(8, 4) = 70 ways to train on half of them, take the in-sample best by Sharpe and find its out-of-sample relative rank ω. The logit is λ = ln(ω/(1 − ω)), and PBO = P(λ ≤ 0).
+- **Function:** `evobots.assess.statistics.probability_of_backtest_overfitting`.
+
+### 6.5 Reality Check, SPA, Romano–Wolf, model confidence set, power
+- **Reality Check:** V = max_k √T·d̄_k against the bootstrap of max_k √T(d̄*_k − d̄_k).
+- **SPA:** studentised; strategies far below the benchmark are recentred to 0 rather than d̄_k.
+- **Romano–Wolf step-down:** adjusted p-values by sequentially removing the strongest rejections.
+- **Model confidence set:** eliminate the worst model by T_max until the equal-performance hypothesis is not rejected at α = 0.10.
+- **Smallest detectable annual Sharpe:** (z₀.₉₅ + z₀.₈₀)/√years, plus E[max of N]/√years for N trials.
+- **Worked example:** with one trial and 20.5 years, **0.549**. The project's whole history can only reliably detect a strategy with an annual Sharpe above about 0.55, before any search.
+
+  ```python
+  >>> from evobots.assess.inference import minimum_detectable_sharpe
+  >>> round(minimum_detectable_sharpe(years=20.5), 3)
+  0.549
+
+  ```
+- **Function:** `evobots.assess.inference`.
+
+## 7. Still to write
 - every ORFE module (`docs/design_spec.md` §20).

@@ -30,6 +30,16 @@ pbo
 cscv
 id
 config
+# Risk, optimization and search terms of the ORFE track (§20; glossary: VaR, CVaR, ES, LP).
+var
+es
+cvar
+lp
+milp
+dp
+em
+garch
+cma
 # Power-flow terms of the ORFE track (O0, docs/design_spec.md §20.3; glossary: DC-OPF).
 dc
 opf
