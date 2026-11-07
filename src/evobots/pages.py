@@ -354,6 +354,23 @@ def home_page(is_demo=False):
             "trading career, and hands over the best one, or says “do nothing”."
         ),
         "sections": [
+            *(
+                []
+                if evaluation.store.source == "MISO"
+                else [
+                    section(
+                        "Running on demo prices",
+                        "No MISO data on this computer yet, so every page shows synthetic prices.",
+                        "list",
+                        items=[
+                            "Have a data pack? Put evobots-data-pack.zip in this folder or "
+                            "in your Downloads folder, close this app's window and start it "
+                            "again: it is imported automatically.",
+                            "Or build your own from MISO's files: docs/tutorial.md, step 7.",
+                        ],
+                    )
+                ]
+            ),
             section(
                 "Status", "What this copy of evobots has and has done.", "metrics", items=metrics
             ),

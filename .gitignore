@@ -34,3 +34,7 @@ site_build/
 
 # Local app settings (saved from the Capital page)
 config/*.local.toml
+
+# Personal data packs hold MISO-derived data: never commit them.
+evobots-data-pack*.zip
+data/imported_packs.txt
