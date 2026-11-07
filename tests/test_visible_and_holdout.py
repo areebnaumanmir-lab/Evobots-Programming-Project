@@ -1,6 +1,7 @@
 """Tests for point-in-time access (`evobots.data.visible`) and the hold-out accessor.
 
-The look-ahead test (`docs/design_spec.md` §6.4): change every observation that became public after a
+The look-ahead test (`docs/design_spec.md` §6.4): change every observation that became public after
+a
 decision time, add new ones, and check that nothing visible at that time changes.
 """
 

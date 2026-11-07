@@ -1,7 +1,8 @@
 """Calibration helpers: the full-size benchmark P&L behind the capital defaults.
 
 Calibration only: these functions use whole-sample data and are never called by simulation or
-evolution code (docs/design_spec.md §18). They rebuild the numbers of docs/capital_sizing.md from the hub
+evolution code (docs/design_spec.md §18). They rebuild the numbers of docs/capital_sizing.md from
+the hub
 table written by tools/build_miso_hub_prices.py.
 """
 
@@ -36,7 +37,7 @@ def full_size_benchmark_daily_pnl(
     Maths: docs/maths.md §1.2 (P&L of INC = q × (DA − RT)).
     """
     if not (last_day < HOLDOUT_FIRST_DAY.isoformat() or first_day > HOLDOUT_LAST_DAY.isoformat()):
-        raise ValueError("calibration ranges may not touch the sealed hold-out (docs/design_spec.md §7.2)")
+        raise ValueError("calibration ranges may not touch the sealed hold-out (design spec §7.2)")
     caps = (settings or CapitalSettings()).hub_caps_mw()
     pnl_by_day = defaultdict(float)
     with gzip.open(hub_prices_path, "rt", encoding="utf-8") as hub_file:

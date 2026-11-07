@@ -8,7 +8,8 @@ of power balance plus the duals of the binding line limits weighted by the bus's
 no line binds, every bus has the same price; when one binds, prices separate, and the
 difference is the congestion component (MISO's MCC). Losses (MISO's MLC) are left out.
 
-Maths: docs/maths.md §2; walk-through: docs/explanations/lmp_from_opf.md (docs/design_spec.md §20.3).
+Maths: docs/maths.md §2; walk-through: docs/explanations/lmp_from_opf.md (docs/design_spec.md
+§20.3).
 """
 
 from dataclasses import dataclass

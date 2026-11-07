@@ -1,4 +1,5 @@
-"""Names are full words (docs/design_spec.md §14.1), checked on every identifier in src/, tools/, tests/,
+"""Names are full words (docs/design_spec.md §14.1), checked on every identifier in src/, tools/,
+tests/,
 benchmarks/.
 
 Every identifier a module defines (functions, classes, arguments, variables, attributes) is

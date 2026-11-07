@@ -1,1 +1,1 @@
-"""The ORFE track (docs/design_spec.md §20): optimization, stochastic models, risk and inference modules."""
+"""The ORFE track: optimization, stochastic models, risk and inference (design spec §20)."""

@@ -1,4 +1,6 @@
-"""Time the hot code paths and append the results to benchmarks/results.csv (docs/design_spec.md §14.3).
+"""Time the hot code paths and append the results to benchmarks/results.csv.
+
+See `docs/design_spec.md` §14.3.
 
 Usage:
     python benchmarks/run.py [--milestone M0] [--repeats 5]

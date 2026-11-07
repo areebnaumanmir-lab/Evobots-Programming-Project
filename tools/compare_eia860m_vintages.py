@@ -4,7 +4,7 @@ Usage:
     python tools/fetch_series.py --eia-860m-vintages 2017-01,2018-01,...   (once)
     python tools/compare_eia860m_vintages.py
 
-EIA says 860M "estimates will be corrected without specific acknowledgment" (docs/design_spec.md §7.8),
+EIA says 860M "estimates will be corrected without specific acknowledgment" (design spec §7.8),
 and the capacity features are built from the newest workbook, so a trader in, say, 2019
 would have seen slightly different numbers. For each archived January workbook this
 computes MISO nameplate capacity by technology in three months (2010-01, 2015-01 and the

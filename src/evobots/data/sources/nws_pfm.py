@@ -1,7 +1,8 @@
 """Parser for NWS Point Forecast Matrices (PFM), the weather forecasts bots see.
 
 One downloaded file (`tools/fetch_nws_forecasts.py`) holds the newest PFM issue of one
-forecast office before 10:30 EPT on a decision day (`docs/design_spec.md` §7.4). The issue is a series
+forecast office before 10:30 EPT on a decision day (`docs/design_spec.md` §7.4). The issue is a
+series
 of town blocks separated by `$$`. Each block has a zone line (`MNZ041-020301-`), the town
 name, its coordinates (`45.87N  95.38W`, with `Elev. … ft` from about 2010), the issue time,
 then two tables: 3-hourly for about 60 hours and 6-hourly for the following days.

@@ -6,12 +6,14 @@ Usage:
                                       [--report prices|cleared_bids]
 
 Needs internet (prices about 5.5 GB; cleared bids about 4 GB). Resumable: files already on
-disk with a recorded SHA-256 are skipped. Polite (docs/design_spec.md §5.4): at most --workers parallel
+disk with a recorded SHA-256 are skipped. Polite (docs/design_spec.md §5.4): at most --workers
+parallel
 requests (≤ 4), 0.5 s between requests per worker, 3 retries with backoff, 404 recorded as
 "file doesn't exist", write-then-rename, and every file's URL, SHA-256, size and download
 time recorded.
 
-Sealed hold-out (docs/design_spec.md §7.2): files whose operating day falls in 2025-09-22 → 2026-09-21
+Sealed hold-out (docs/design_spec.md §7.2): files whose operating day falls in 2025-09-22 →
+2026-09-21
 are written to data/holdout/raw/miso/ and are never opened here except to hash them.
 Everything else goes to data/raw/miso/. The download log is data/raw/miso/downloads.jsonl;
 tools/write_data_manifest.py turns it into data/manifest.toml.
@@ -218,7 +220,7 @@ def main():
     parser.add_argument("--report", choices=("prices", "cleared_bids"), default="prices")
     arguments = parser.parse_args()
     if not 1 <= arguments.workers <= MAX_WORKERS_PER_HOST:
-        sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (docs/design_spec.md §5.4).")
+        sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (design spec §5.4).")
     user_agent = user_agent_from_config(arguments.config)
     RAW_DIRECTORY.mkdir(parents=True, exist_ok=True)
     HOLDOUT_RAW_DIRECTORY.mkdir(parents=True, exist_ok=True)

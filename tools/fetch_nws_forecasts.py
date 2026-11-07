@@ -7,10 +7,11 @@ Usage:
 Needs internet: one request per office per decision day to the Iowa Environmental Mesonet
 (about 71,000 requests, ~1.4 GB). For decision day d it asks for the newest PFM issue entered
 in the 24 hours before 10:30 Eastern Prevailing Time on d, the decision time for operating day
-d+1 (docs/design_spec.md §6.4, decided round 20). The same issue also serves as "yesterday's forecast"
+d+1 (design spec §6.4, decided round 20). The same issue also serves as "yesterday's forecast"
 for operating day d+2 (feature `temp_fcst_change`).
 
-Polite (docs/design_spec.md §5.4): at most --workers parallel requests (≤ 4), 0.5 s between requests per
+Polite (docs/design_spec.md §5.4): at most --workers parallel requests (≤ 4), 0.5 s between requests
+per
 worker, 3 retries with backoff, an empty answer recorded as "missing", write-then-rename, the
 contact email in the User-Agent. Resumable from data/raw/nws/downloads.jsonl.
 
@@ -166,7 +167,7 @@ def main():
     parser.add_argument("--workers", type=int, default=2)
     arguments = parser.parse_args()
     if not 1 <= arguments.workers <= MAX_WORKERS_PER_HOST:
-        sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (docs/design_spec.md §5.4).")
+        sys.exit(f"--workers must be between 1 and {MAX_WORKERS_PER_HOST} (design spec §5.4).")
     user_agent = user_agent_from_config(arguments.config)
     RAW_DIRECTORY.mkdir(parents=True, exist_ok=True)
     done = recorded_keys()

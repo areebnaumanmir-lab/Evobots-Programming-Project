@@ -445,7 +445,7 @@ def pink_sheet_rows_to_series(rows, holdout_permission=None):
 
 
 def read_pink_sheet(path, holdout_permission=None):
-    """Read the World Bank Pink Sheet's monthly prices (reporting only, `docs/design_spec.md` §7.9)."""
+    """Read the World Bank Pink Sheet's monthly prices (reporting only, design spec §7.9)."""
     workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
     rows = [list(row) for row in workbook[PINK_SHEET_NAME].iter_rows(values_only=True)]
     workbook.close()

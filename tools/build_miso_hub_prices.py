@@ -368,7 +368,7 @@ def write_coverage_doc(chosen, seen, rows_by_key, holdout_file_count, download_c
         "",
         "## Hub spread statistics, 2019-01-01 → 2025-09-21 (check against Claude Science)",
         "",
-        "s = DA − RT in $/MWh, over hours where both prices exist. `docs/design_spec.md` §13 quotes "
+        "s = DA − RT in $/MWh, over hours where both prices exist. the design spec §13 quotes "
         "(obs. in Claude Science): mean $0.04–0.96, median |s| $2.6–4.7, std $30–62, excess "
         "kurtosis 560–3,300, and 58,944 hours per hub.",
         "",

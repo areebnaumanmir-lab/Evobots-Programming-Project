@@ -1,7 +1,8 @@
 """Reader for EIA-860M, the monthly US generator inventory: MISO's fleet by month.
 
 One workbook (`tools/fetch_series.py`, newest month) lists every generator in three sheets:
-`Operating`, `Retired` and `Planned` (`docs/design_spec.md` §7.8). Each sheet has a title row, a blank
+`Operating`, `Retired` and `Planned` (`docs/design_spec.md` §7.8). Each sheet has a title row, a
+blank
 row, then a header row. The capacity history is rebuilt from the operating and retirement
 months of the units in `Operating` and `Retired`: a unit counts from its operating month
 up to the month before its retirement month.
