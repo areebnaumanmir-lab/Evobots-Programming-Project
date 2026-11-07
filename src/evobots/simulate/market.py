@@ -46,6 +46,8 @@ from evobots.data.synthetic import synthetic_market
 HUB_PRICES_PATH = Path("data/store/hub_prices.csv.gz")
 # A cached copy of the arrays, rebuilt when the CSV changes (git-ignored, under data/store).
 ARRAY_CACHE_PATH = Path("data/store/hub_arrays.npz")
+# Bumped when the cached arrays change, so an old cache is rebuilt.
+ARRAY_CACHE_VERSION = 2
 HOURS_PER_DAY = 24
 # Demo data: a planted DA premium (DA above RT on average) in hours ending 7–22, like the
 # real MISO premium at every hub (capital_sizing.md §1), so the search has something it can
@@ -90,6 +92,9 @@ class HubMarket:
         day_ahead: DA prices, $/MWh, shape (days, 24, hubs); NaN where not published.
         real_time: final RT prices, $/MWh, same shape.
         source: "MISO" or "synthetic demo data".
+        day_ahead_congestion: DA congestion components (MCC), $/MWh, same shape; NaN where
+            not published (before 2005-06-16) or None when the source has none.
+        location_types: MISO location type of each column ("Hub" at Stage A); None = hubs.
     """
 
     days: tuple
@@ -97,6 +102,17 @@ class HubMarket:
     day_ahead: np.ndarray
     real_time: np.ndarray
     source: str
+    day_ahead_congestion: np.ndarray | None = None
+    location_types: tuple | None = None
+
+    @property
+    def locations(self):
+        """Column names (hubs at Stage A, every location at Stage C)."""
+        return self.hubs
+
+    def types(self):
+        """Location type of every column."""
+        return self.location_types or ("Hub",) * len(self.hubs)
 
     def day_index(self, day):
         """Index of a date in `days` (the first day on or after it)."""
@@ -114,12 +130,18 @@ def read_miso_hub_market(path=HUB_PRICES_PATH, cache_path=ARRAY_CACHE_PATH):
         return None
     if cache_path.exists() and cache_path.stat().st_mtime >= path.stat().st_mtime:
         cached = np.load(cache_path, allow_pickle=False)
-        days = tuple(
-            datetime.date.fromisoformat(text) for text in cached["days"].astype(str).tolist()
-        )
-        return HubMarket(
-            days, tuple(cached["hubs"].astype(str).tolist()), cached["da"], cached["rt"], "MISO"
-        )
+        if "version" in cached and int(cached["version"]) == ARRAY_CACHE_VERSION:
+            days = tuple(
+                datetime.date.fromisoformat(text) for text in cached["days"].astype(str).tolist()
+            )
+            return HubMarket(
+                days,
+                tuple(cached["hubs"].astype(str).tolist()),
+                cached["da"],
+                cached["rt"],
+                "MISO",
+                day_ahead_congestion=cached["da_mcc"],
+            )
     first_day, last_day = None, EVOLUTION_LAST_DAY
     rows = []
     with gzip.open(path, "rt", encoding="utf-8") as table:
@@ -137,6 +159,7 @@ def read_miso_hub_market(path=HUB_PRICES_PATH, cache_path=ARRAY_CACHE_PATH):
     hub_index = {hub: index for index, hub in enumerate(hubs)}
     day_ahead = np.full((len(days), HOURS_PER_DAY, len(hubs)), np.nan)
     real_time = np.full_like(day_ahead, np.nan)
+    day_ahead_congestion = np.full_like(day_ahead, np.nan)
     for row in rows:
         day = (datetime.date.fromisoformat(row["date"]) - first_day).days
         hour = int(row["hour_ending_est"]) - 1
@@ -145,6 +168,8 @@ def read_miso_hub_market(path=HUB_PRICES_PATH, cache_path=ARRAY_CACHE_PATH):
             day_ahead[day, hour, hub] = float(row["da_lmp"])
         if row["rt_lmp"]:
             real_time[day, hour, hub] = float(row["rt_lmp"])
+        if row["da_mcc"]:
+            day_ahead_congestion[day, hour, hub] = float(row["da_mcc"])
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     partial_path = cache_path.with_name(cache_path.stem + ".part.npz")
     np.savez(
@@ -153,9 +178,13 @@ def read_miso_hub_market(path=HUB_PRICES_PATH, cache_path=ARRAY_CACHE_PATH):
         hubs=np.array(hubs),
         da=day_ahead,
         rt=real_time,
+        da_mcc=day_ahead_congestion,
+        version=np.array(ARRAY_CACHE_VERSION),
     )
     partial_path.replace(cache_path)
-    return HubMarket(days, hubs, day_ahead, real_time, "MISO")
+    return HubMarket(
+        days, hubs, day_ahead, real_time, "MISO", day_ahead_congestion=day_ahead_congestion
+    )
 
 
 def synthetic_hub_market(days=3653, seed=0, last_day=EVOLUTION_LAST_DAY):
@@ -174,12 +203,16 @@ def synthetic_hub_market(days=3653, seed=0, last_day=EVOLUTION_LAST_DAY):
     real_time = generated.real_time - DEMO_PREMIUM_USD_PER_MWH * is_premium_hour[None, :, None]
     first_day = last_day - datetime.timedelta(days=days - 1)
     day_list = tuple(first_day + datetime.timedelta(days=offset) for offset in range(days))
+    # Demo congestion: each hub's DA difference from the all-hub mean, so the share feature
+    # has something location-specific in it (illustrative, not a model of congestion).
+    congestion = generated.day_ahead - generated.day_ahead.mean(axis=2, keepdims=True)
     return HubMarket(
         day_list,
         tuple(STAGE_A_HUBS),
         generated.day_ahead,
         real_time,
         "synthetic demo data",
+        day_ahead_congestion=congestion,
     )
 
 
@@ -253,3 +286,33 @@ def point_in_time_features(market):
         "hour": np.array(hour),
         "weekday": np.broadcast_to(weekday[:, None, None], shape).copy(),
     }
+
+
+def planted_hub_market(
+    days, seed=0, planted_premium_usd_per_mwh=6.0, model="noise", last_day=EVOLUTION_LAST_DAY
+):
+    """A test market from `evobots.data.synthetic.synthetic_market` without the demo premium.
+
+    Returns (HubMarket, forecast high per day and hub): on hub-hours where the synthetic
+    forecast high exceeds 85 °F and the hour ending is 14–19, RT is raised by the planted
+    premium (0 = pure noise), so a DEC bid there earns it on average (M4's planted-signal test).
+    """
+    generated = synthetic_market(
+        days=days,
+        hubs=len(STAGE_A_HUBS),
+        model=model,
+        seed=seed,
+        planted_premium_usd_per_mwh=planted_premium_usd_per_mwh,
+    )
+    first_day = last_day - datetime.timedelta(days=days - 1)
+    day_list = tuple(first_day + datetime.timedelta(days=offset) for offset in range(days))
+    congestion = generated.day_ahead - generated.day_ahead.mean(axis=2, keepdims=True)
+    market = HubMarket(
+        day_list,
+        tuple(STAGE_A_HUBS),
+        generated.day_ahead,
+        generated.real_time,
+        "synthetic test data",
+        day_ahead_congestion=congestion,
+    )
+    return market, generated.forecast_high_degf, generated.is_planted

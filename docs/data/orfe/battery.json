@@ -1,0 +1,153 @@
+{
+  "revenue_by_year_usd": {
+    "2015": {
+      "perfect_foresight": 41706.78988102966,
+      "rolling_intrinsic": 32705.636663849837,
+      "stochastic_dp": 15791.723846798757,
+      "threshold_tuned": 10834.252476490252,
+      "threshold_evolved": 10914.296408099104
+    },
+    "2016": {
+      "perfect_foresight": 52487.480752413896,
+      "rolling_intrinsic": 44252.95012505515,
+      "stochastic_dp": 13917.566750101618,
+      "threshold_tuned": 15712.793573083518,
+      "threshold_evolved": 16718.488342928504
+    },
+    "2017": {
+      "perfect_foresight": 50321.15988754667,
+      "rolling_intrinsic": 41471.96083084022,
+      "stochastic_dp": 19837.72194009145,
+      "threshold_tuned": 17601.993418386173,
+      "threshold_evolved": 18019.619115670466
+    },
+    "2018": {
+      "perfect_foresight": 69082.62359683469,
+      "rolling_intrinsic": 57022.9701185111,
+      "stochastic_dp": 24316.850013312975,
+      "threshold_tuned": 29809.288074069005,
+      "threshold_evolved": 29812.25624286934
+    },
+    "2019": {
+      "perfect_foresight": 38961.95465381611,
+      "rolling_intrinsic": 27082.92254277439,
+      "stochastic_dp": 13889.502994156483,
+      "threshold_tuned": 4145.330111891575,
+      "threshold_evolved": 5276.040192857823
+    },
+    "2020": {
+      "perfect_foresight": 41930.13493569284,
+      "rolling_intrinsic": 27495.79598979845,
+      "stochastic_dp": 13153.618211585353,
+      "threshold_tuned": 14905.834672447254,
+      "threshold_evolved": 14923.110422013318
+    },
+    "2021": {
+      "perfect_foresight": 94022.43496185643,
+      "rolling_intrinsic": 63972.81634922336,
+      "stochastic_dp": 8556.192602337367,
+      "threshold_tuned": -41079.692084640636,
+      "threshold_evolved": -38688.62271209763
+    },
+    "2022": {
+      "perfect_foresight": 179981.34044687633,
+      "rolling_intrinsic": 133327.31457749434,
+      "stochastic_dp": 30502.024459247892,
+      "threshold_tuned": -4718.892169698316,
+      "threshold_evolved": -4834.072271186138
+    },
+    "2023": {
+      "perfect_foresight": 78019.46674747215,
+      "rolling_intrinsic": 57573.98947928823,
+      "stochastic_dp": 20323.168697865833,
+      "threshold_tuned": 10028.293882350536,
+      "threshold_evolved": 10151.870757350534
+    },
+    "2024": {
+      "perfect_foresight": 95874.15418818528,
+      "rolling_intrinsic": 67912.56853198147,
+      "stochastic_dp": 32348.859586585342,
+      "threshold_tuned": 32352.78030065861,
+      "threshold_evolved": 31893.637224750728
+    },
+    "2025": {
+      "perfect_foresight": 133064.47813260695,
+      "rolling_intrinsic": 106668.7381054978,
+      "stochastic_dp": 32484.998538211352,
+      "threshold_tuned": 12187.13698569422,
+      "threshold_evolved": 6117.999327864895
+    }
+  },
+  "total_usd": {
+    "perfect_foresight": 875452.0181843309,
+    "rolling_intrinsic": 659487.663314313,
+    "stochastic_dp": 225122.22764029456,
+    "threshold_tuned": 101779.119240732,
+    "threshold_evolved": 100304.62305112084
+  },
+  "bound_ratio": {
+    "perfect_foresight": 1.0,
+    "rolling_intrinsic": 0.7533110320335735,
+    "stochastic_dp": 0.2571497043403856,
+    "threshold_tuned": 0.11625893495776017,
+    "threshold_evolved": 0.11457466653529513
+  },
+  "storm_days_usd": {
+    "2021-02-15": {
+      "perfect_foresight": 1037.6003887108325,
+      "rolling_intrinsic": 726.40083503586,
+      "stochastic_dp": -735.9475000000002,
+      "threshold_tuned": -740.6890678302262,
+      "threshold_evolved": -740.6890678302262
+    },
+    "2021-02-16": {
+      "perfect_foresight": 3572.5390525115367,
+      "rolling_intrinsic": 2036.3131079692364,
+      "stochastic_dp": -861.2773780487805,
+      "threshold_tuned": -867.17175600934,
+      "threshold_evolved": -867.17175600934
+    },
+    "2021-02-17": {
+      "perfect_foresight": 3551.5095552826992,
+      "rolling_intrinsic": 3095.1904247455864,
+      "stochastic_dp": -1245.8315243902439,
+      "threshold_tuned": -1254.883188436036,
+      "threshold_evolved": -1254.883188436036
+    },
+    "2022-12-23": {
+      "perfect_foresight": 536.1551168034098,
+      "rolling_intrinsic": 400.8229731811219,
+      "stochastic_dp": -496.89981707317077,
+      "threshold_tuned": -262.07244145605125,
+      "threshold_evolved": -262.07244145605125
+    },
+    "2022-12-24": {
+      "perfect_foresight": 545.6682394714866,
+      "rolling_intrinsic": -416.67843047103815,
+      "stochastic_dp": 56.232499999999845,
+      "threshold_tuned": 55.636694376486275,
+      "threshold_evolved": 55.636694376486275
+    }
+  },
+  "perfect_foresight_daily_mean_by_parameters_usd": {
+    "efficiency 0.70, wear $0/MWh": 193.00753780317464,
+    "efficiency 0.70, wear $2/MWh": 138.54242636288885,
+    "efficiency 0.70, wear $5/MWh": 85.05392646290527,
+    "efficiency 0.82, wear $0/MWh": 292.697213636546,
+    "efficiency 0.82, wear $2/MWh": 216.56749311166635,
+    "efficiency 0.82, wear $5/MWh": 138.99005364768317,
+    "efficiency 0.90, wear $0/MWh": 368.3251085428861,
+    "efficiency 0.90, wear $2/MWh": 276.6516083077618,
+    "efficiency 0.90, wear $5/MWh": 181.69720737620284
+  },
+  "battery": {
+    "power_mw": 5.0,
+    "energy_mwh": 20.0,
+    "round_trip_efficiency": 0.82,
+    "degradation_usd_per_mwh": 2.0,
+    "hub": "ILLINOIS.HUB",
+    "days": 3858
+  },
+  "computed_on": "2026-11-07",
+  "seconds": 50.83853244781494
+}

@@ -3,10 +3,10 @@
 The documentation follows the four Diátaxis kinds (`docs/design_spec.md` §14.2). Planned documents are listed without links until they exist.
 
 ## Tutorial (learning by doing)
-- `tutorial.md`: install, build the data, run a short evolution, read a report card, export a trader. Stub at M1.5; finished and tested on a clean machine at M9.
+- [tutorial.md](tutorial.md): install, try everything on demo data, build the real data, run, read a report card, export a trader, the sealed test, paper trading, the single-file engine.
 
 ## How-to guides (a task, step by step)
-- `how_to/`, from M1.5: change default capital; add a feature; add a GP primitive; add a career preset; change colours and fonts; add a page; add a chart; add a data source; run offline; export a bot.
+- [how_to/](how_to/index.md): change default capital; add a feature; add a GP primitive; add a career preset; change colours, fonts and pages; add a chart; add a data source; run offline; export a bot; paper-trade; scale up.
 - Available now:
   - **see the capital settings:** `python -m evobots.cli capital [configs/10_miso_hubs.toml] [--starting-capital 2000000 …]`;
   - **explore them in a browser:** open `tools/capital_explorer.html`, rebuilt by `python tools/build_capital_explorer.py`;
@@ -29,4 +29,6 @@ The documentation follows the four Diátaxis kinds (`docs/design_spec.md` §14.2
 - [design_rationale.md](design_rationale.md): the logic behind every decision.
 - [decisions_log.md](decisions_log.md) and the round docs in `rounds/`: what was decided, when and by whom.
 - [change_ledger.md](change_ledger.md): one row per change.
-- Planned: `features.md` (M2), `architecture.md` (M1.5), `qd_explained.md` (M6), `report_card.md` (M7).
+- [features.md](features.md), [architecture.md](architecture.md), [qd_explained.md](qd_explained.md), [report_card.md](report_card.md).
+- [explanations/price_impact.md](explanations/price_impact.md): do our bids move prices? (O9).
+- [orfe_report/report.md](orfe_report/report.md) and [orfe_report/summary.md](orfe_report/summary.md): the ORFE write-up and its two-page summary.

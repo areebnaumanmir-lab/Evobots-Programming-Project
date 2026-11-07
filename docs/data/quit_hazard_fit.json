@@ -1,0 +1,36 @@
+{
+  "traders_scored": 400,
+  "losing_traders_used": 186,
+  "window": [
+    "2019-09-22",
+    "2023-09-21"
+  ],
+  "costs": "estimated (labelled), cost multiple 1",
+  "beta": [
+    -2.5075380806109453,
+    -5.564742744517186e-13,
+    -1.0,
+    1.0,
+    -0.3
+  ],
+  "fixed_by_assumption": {
+    "beta_recent_return": -1.0,
+    "beta_drawdown": 1.0,
+    "beta_age_per_year": -0.3
+  },
+  "standard_errors_beta0_beta1": [
+    0.0018845811553467985,
+    2.044732487714694e-11
+  ],
+  "fitted_survival": {
+    "12": 0.4427817364168407,
+    "24": 0.23874108909089084,
+    "36": 0.14798831656937564
+  },
+  "target_survival": {
+    "12": 0.44,
+    "24": 0.24,
+    "36": 0.15
+  },
+  "source_of_targets": "Barber, Lee, Liu, Odean & Zhang (2020), Taiwanese day traders"
+}

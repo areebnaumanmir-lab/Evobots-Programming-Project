@@ -36,7 +36,7 @@ import math
 import openpyxl
 import xlrd
 
-from evobots.data.periods import EVOLUTION_LAST_DAY
+from evobots.data.periods import EVOLUTION_LAST_DAY, FORWARD_FIRST_DAY
 
 # Days from an observation's date until a trader can use it at 10:30, by series name; the
 # visible() layer applies these from the start of that day (business days for gas, oil and
@@ -99,7 +99,9 @@ class SeriesFormatError(ValueError):
     """A downloaded file doesn't have the layout its reader expects."""
 
 
-def series_from_observations(name, unit, source, observations, holdout_permission=None):
+def series_from_observations(
+    name, unit, source, observations, holdout_permission=None, is_forward_included=False
+):
     """Build a `DailySeries`, keeping only evolution-period dates without permission.
 
     Args:
@@ -109,6 +111,8 @@ def series_from_observations(name, unit, source, observations, holdout_permissio
         observations: (date, value) pairs in any order; value None means "no observation".
         holdout_permission: the hold-out accessor's permission object; None keeps dates up
             to the end of the evolution period only.
+        is_forward_included: also keep forward dates (2026-09-22 on) for paper trading; the
+            hold-out's dates are still dropped.
 
     Returns:
         A DailySeries sorted by date.
@@ -130,7 +134,12 @@ def series_from_observations(name, unit, source, observations, holdout_permissio
     kept = sorted(
         (day, value)
         for day, value in observations
-        if value is not None and (holdout_permission is not None or day <= EVOLUTION_LAST_DAY)
+        if value is not None
+        and (
+            holdout_permission is not None
+            or day <= EVOLUTION_LAST_DAY
+            or (is_forward_included and day >= FORWARD_FIRST_DAY)
+        )
     )
     days = tuple(day for day, _ in kept)
     if len(set(days)) != len(days):
@@ -247,13 +256,14 @@ def eia_rows_to_series(rows, workbook_date_mode, name, unit, source_key):
     return observations
 
 
-def read_eia_daily_spot(path, source_key, holdout_permission=None):
+def read_eia_daily_spot(path, source_key, holdout_permission=None, is_forward_included=False):
     """Read an EIA daily spot-price history spreadsheet (`.xls`).
 
     Args:
         path: the downloaded file, e.g. `RNGWHHDd.xls`.
         source_key: "RNGWHHD" (Henry Hub gas, $/MMBtu) or "RWTC" (WTI oil, $/barrel).
         holdout_permission: see `series_from_observations`.
+        is_forward_included: see `series_from_observations`.
 
     Returns:
         DailySeries "henry_hub_usd_per_mmbtu" or "wti_usd_per_barrel".
@@ -267,16 +277,17 @@ def read_eia_daily_spot(path, source_key, holdout_permission=None):
     rows = [sheet.row_values(row_index) for row_index in range(sheet.nrows)]
     observations = eia_rows_to_series(rows, workbook.datemode, name, unit, source_key)
     return series_from_observations(
-        name, unit, f"EIA {source_key}", observations, holdout_permission
+        name, unit, f"EIA {source_key}", observations, holdout_permission, is_forward_included
     )
 
 
-def read_epu(path, holdout_permission=None):
+def read_epu(path, holdout_permission=None, is_forward_included=False):
     """Read the daily US Economic Policy Uncertainty CSV (Baker, Bloom & Davis).
 
     Args:
         path: the downloaded `All_Daily_Policy_Data.csv`.
         holdout_permission: see `series_from_observations`.
+        is_forward_included: see `series_from_observations`.
 
     Returns:
         DailySeries "epu_index" (index points).
@@ -294,7 +305,12 @@ def read_epu(path, holdout_permission=None):
         if row
     ]
     return series_from_observations(
-        "epu_index", "index points", "policyuncertainty.com", observations, holdout_permission
+        "epu_index",
+        "index points",
+        "policyuncertainty.com",
+        observations,
+        holdout_permission,
+        is_forward_included,
     )
 
 

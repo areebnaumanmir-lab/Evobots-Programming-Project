@@ -59,7 +59,7 @@ COMMON_ABBREVIATIONS = {
 }
 BOOLEAN_PREFIXES = ("is_", "has_", "can_")
 # Names Python or a library chooses for us.
-EXTERNAL_NAMES = {"self", "cls", "argv", "main", "tmp_path", "tmp_path_factory"}
+EXTERNAL_NAMES = {"self", "cls", "argv", "main", "tmp_path", "tmp_path_factory", "should_exit"}
 
 
 def allowed_words():

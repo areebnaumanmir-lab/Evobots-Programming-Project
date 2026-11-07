@@ -105,6 +105,12 @@ def test_volume_sample_days():
     )
 
 
-def test_cli_later_stages_not_built_yet(capsys):
-    assert cli.main(["data", "build", "--stage", "D"]) == 1
-    assert "M8" in capsys.readouterr().out
+def test_cli_builds_every_location_and_the_groups_from_whatever_is_on_disk(tmp_path, capsys):
+    """With no raw files every year is empty and has no groups; missing days stay missing."""
+    arguments = ["data", "build", "--stage", "D", "--raw", str(tmp_path / "raw")]
+    arguments += ["--store", str(tmp_path / "store"), "--workers", "1"]
+    assert cli.main(arguments) == 0
+    output = capsys.readouterr().out
+    assert "Stage C 2025: 264 days × 0 locations" in output
+    assert "Stage D 2025: 0 groups from 0 locations" in output
+    assert (tmp_path / "store" / "prices" / "2025.json").exists()

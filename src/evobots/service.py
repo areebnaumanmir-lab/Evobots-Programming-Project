@@ -131,6 +131,16 @@ MISO_DERIVED_FILES = (
     "docs/data/benchmark_full_size_daily_pnl.csv",
     "docs/data/capital_sweep.csv",
     "docs/data/claude_science_check.csv",
+    "docs/data/feature_distributions_by_year.csv",
+    "docs/data/quit_hazard_fit.json",
+    "docs/data/report_R101-29627.json",
+    "docs/data/orfe/scenarios.json",
+    "docs/data/orfe/risk.json",
+    "docs/data/orfe/battery.json",
+    "docs/data/orfe/leaderboard.json",
+    "docs/data/orfe/portfolio.json",
+    "docs/data/orfe/impact.json",
+    "docs/data/orfe/search.json",
     "docs/data/fixed_cost_capital_floor.csv",
     "docs/data/headroom_trailing.csv",
     "docs/data/hub_price_stats.csv",
@@ -509,3 +519,97 @@ def default_capital_note():
     """The capital defaults shown on the page (for the badge text)."""
     settings = CapitalSettings()
     return f"Defaults: ${settings.starting_capital_usd:,.0f}, {settings.daily_risk_budget_fraction:.0%} risk budget."
+
+
+# ----- the multi-page app (M1.5): thin wrappers over evobots.pages -----
+
+PAGE_BUILDERS = {
+    "home": "home_page",
+    "capital": "capital_page",
+    "docs": "docs_page",
+    "doc": "doc_page",
+    "gallery": "gallery_page",
+    "settings": "settings_page",
+    "data": "data_page",
+    "simulator": "simulator_page",
+    "traders": "traders_page",
+    "trader": "trader_page",
+    "evolution": "evolution_page",
+    "report": "report_page",
+    "best": "best_page",
+    "career": "career_page",
+    "orfe": "orfe_page",
+    "life": "life_page",
+    "paper": "paper_page",
+}
+ACTIONS = {
+    "run": "start_search",
+    "stop": "stop_search",
+    "resume": "resume_search",
+    "report": "start_report",
+    "refine": "start_refine",
+    "final_test": "run_final_test",
+    "life": "start_life",
+    "capital": "save_capital",
+}
+
+
+def page(page_name, **arguments):
+    """The data of one app page (plain dicts; see evobots.pages)."""
+    from evobots import pages
+
+    return getattr(pages, PAGE_BUILDERS[page_name])(**arguments)
+
+
+def navigation():
+    """The left navigation: [(group, [(title, path)])]."""
+    from evobots import pages
+
+    return pages.navigation()
+
+
+def best_bot_link():
+    """(text, url) of the Best bot link at the top right of every page."""
+    from evobots import pages
+
+    return pages.best_bot_link()
+
+
+def action(action_name, **arguments):
+    """Run an action (start a run, write a report, …); returns a status dict."""
+    from evobots import pages
+
+    return getattr(pages, ACTIONS[action_name])(**arguments)
+
+
+def job_status(name):
+    """Progress of a worker job."""
+    from evobots import pages
+
+    return pages.job_status(name)
+
+
+def trader_file(run_id, trader_id, is_demo=False):
+    """(file name, text) of a trader's generated Python file."""
+    from evobots import pages
+
+    return pages.trader_source_text(run_id, trader_id, is_demo)
+
+
+def trader_genome_file(run_id, trader_id, is_demo=False):
+    """(file name, canonical JSON) of a trader's genome."""
+    from evobots import pages
+    from evobots.bots.trader import genome_to_json
+
+    _, genome = pages.trader_genome(run_id, trader_id, is_demo)
+    return f"trader_{trader_id}.json", genome_to_json(genome)
+
+
+def report_file(run_id, trader_id):
+    """(file name, HTML) of a written report card."""
+    from evobots import pages
+
+    path = pages.RUNS_DIRECTORY / run_id / f"report_{trader_id}.html"
+    if not path.exists():
+        raise FileNotFoundError(path.name)
+    return path.name, path.read_text(encoding="utf-8")

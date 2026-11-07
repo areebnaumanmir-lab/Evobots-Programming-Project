@@ -1,0 +1,54 @@
+{
+  "budget_each": 1500,
+  "window": [
+    "2014-03-28",
+    "2019-03-27"
+  ],
+  "hypervolume": {
+    "map_elites": 0.24521612515567712,
+    "nsga2": 0.25855912785440266
+  },
+  "front_size": {
+    "map_elites": 23,
+    "nsga2": 50
+  },
+  "best_next_year_fitness": {
+    "map_elites": 0.004255280317694501,
+    "nsga2": -0.020620553974125884
+  },
+  "map_elites_cells_filled": 80,
+  "successive_halving": {
+    "cost_trader_years": 224.0,
+    "full_cost_trader_years": 320,
+    "survivor_full_rank": [
+      0,
+      1,
+      2,
+      6,
+      5,
+      8,
+      4,
+      10,
+      30,
+      3,
+      7,
+      11,
+      9,
+      12,
+      14,
+      15
+    ],
+    "successive_halving_seconds": 1.7793147563934326,
+    "full_scoring_seconds": 2.0713703632354736
+  },
+  "ocba_allocation_of_60_re_evaluations": [
+    20,
+    36,
+    1,
+    2,
+    1,
+    0
+  ],
+  "computed_on": "2026-11-07",
+  "seconds": 104.09088826179504
+}

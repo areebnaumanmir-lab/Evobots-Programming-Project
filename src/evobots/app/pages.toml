@@ -1,0 +1,47 @@
+# The app's navigation: groups of pages in order. Add a page here and a route in server.py
+# (docs/how_to/change_the_ui.md).
+
+[[group]]
+name = "Start"
+page = [
+  { title = "Home", path = "/" },
+  { title = "Quick run", path = "/quick" },
+  { title = "Capital", path = "/capital" },
+  { title = "Settings", path = "/settings" },
+]
+
+[[group]]
+name = "Evolve"
+page = [
+  { title = "Evolution", path = "/evolution" },
+  { title = "Traders", path = "/traders" },
+  { title = "Career", path = "/career" },
+  { title = "Life", path = "/life" },
+]
+
+[[group]]
+name = "Market"
+page = [
+  { title = "Data", path = "/data" },
+  { title = "Simulator", path = "/simulator" },
+  { title = "Paper trading", path = "/paper" },
+]
+
+[[group]]
+name = "ORFE"
+page = [
+  { title = "Methods leaderboard", path = "/orfe/leaderboard" },
+  { title = "Scenarios", path = "/orfe/scenarios" },
+  { title = "Risk", path = "/orfe/risk" },
+  { title = "Portfolio", path = "/orfe/portfolio" },
+  { title = "Battery", path = "/orfe/battery" },
+  { title = "Price impact", path = "/orfe/impact" },
+  { title = "Search as OR", path = "/orfe/search" },
+]
+
+[[group]]
+name = "Reference"
+page = [
+  { title = "Docs", path = "/docs" },
+  { title = "Gallery", path = "/gallery" },
+]

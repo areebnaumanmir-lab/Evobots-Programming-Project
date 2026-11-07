@@ -1,0 +1,139 @@
+{
+  "series": "always-INC at full size, 8 hubs (docs/data/benchmark_full_size_daily_pnl.csv)",
+  "rows": [
+    {
+      "estimator": "empirical",
+      "period": "2015-06 \u2192 2018",
+      "days": 1307,
+      "breach_rate": 0.011476664116296864,
+      "kupiec": 0.6001296595595499,
+      "christoffersen_independence": 0.01005801177140491,
+      "christoffersen_coverage": 0.03175526485388368,
+      "acerbi_szekely_z2": 0.3297867054308472,
+      "acerbi_szekely_significance": 0.879
+    },
+    {
+      "estimator": "empirical",
+      "period": "2019 \u2192 2021",
+      "days": 1096,
+      "breach_rate": 0.010948905109489052,
+      "kupiec": 0.7558238612131178,
+      "christoffersen_independence": 0.005295863358245555,
+      "christoffersen_coverage": 0.019523884389477664,
+      "acerbi_szekely_z2": 0.6509197449278898,
+      "acerbi_szekely_significance": 0.9605
+    },
+    {
+      "estimator": "empirical",
+      "period": "2022 \u2192 2025-09",
+      "days": 1360,
+      "breach_rate": 0.01764705882352941,
+      "kupiec": 0.010525182255997308,
+      "christoffersen_independence": 0.007374161347101406,
+      "christoffersen_coverage": 0.0010472027321378578,
+      "acerbi_szekely_z2": 1.5054830523377185,
+      "acerbi_szekely_significance": 1.0
+    },
+    {
+      "estimator": "evt_pot",
+      "period": "2015-06 \u2192 2018",
+      "days": 1307,
+      "breach_rate": 0.01224177505738332,
+      "kupiec": 0.4313246433033414,
+      "christoffersen_independence": 0.013412772918238865,
+      "christoffersen_coverage": 0.034508663023149255,
+      "acerbi_szekely_z2": 0.36293574465790734,
+      "acerbi_szekely_significance": 0.9005
+    },
+    {
+      "estimator": "evt_pot",
+      "period": "2019 \u2192 2021",
+      "days": 1096,
+      "breach_rate": 0.010036496350364963,
+      "kupiec": 0.990317102467402,
+      "christoffersen_independence": 0.09564971914514955,
+      "christoffersen_coverage": 0.24947798282239422,
+      "acerbi_szekely_z2": 0.27391406729034995,
+      "acerbi_szekely_significance": 0.2025
+    },
+    {
+      "estimator": "evt_pot",
+      "period": "2022 \u2192 2025-09",
+      "days": 1360,
+      "breach_rate": 0.016911764705882352,
+      "kupiec": 0.01973366018971795,
+      "christoffersen_independence": 0.00037618146282527144,
+      "christoffersen_coverage": 0.00011843806480807822,
+      "acerbi_szekely_z2": 1.037816183618021,
+      "acerbi_szekely_significance": 0.404
+    },
+    {
+      "estimator": "garch_fhs",
+      "period": "2015-06 \u2192 2018",
+      "days": 1307,
+      "breach_rate": 0.016067329762815608,
+      "kupiec": 0.042750985217340075,
+      "christoffersen_independence": 0.04370849048062476,
+      "christoffersen_coverage": 0.016797846475218963,
+      "acerbi_szekely_z2": 0.8737004966489152,
+      "acerbi_szekely_significance": 0.998
+    },
+    {
+      "estimator": "garch_fhs",
+      "period": "2019 \u2192 2021",
+      "days": 1096,
+      "breach_rate": 0.016423357664233577,
+      "kupiec": 0.0504608942624629,
+      "christoffersen_independence": 0.0022073510621473578,
+      "christoffersen_coverage": 0.00136399916361961,
+      "acerbi_szekely_z2": 1.8385633413511395,
+      "acerbi_szekely_significance": 0.9995
+    },
+    {
+      "estimator": "garch_fhs",
+      "period": "2022 \u2192 2025-09",
+      "days": 1360,
+      "breach_rate": 0.020588235294117647,
+      "kupiec": 0.0005941851037914538,
+      "christoffersen_independence": 0.0001579909331930951,
+      "christoffersen_coverage": 2.184109182617305e-06,
+      "acerbi_szekely_z2": 2.35403278400111,
+      "acerbi_szekely_significance": 1.0
+    },
+    {
+      "estimator": "cornish_fisher",
+      "period": "2015-06 \u2192 2018",
+      "days": 1307,
+      "breach_rate": 0.0038255547054322878,
+      "kupiec": 0.010304919621288577,
+      "christoffersen_independence": 0.8445780825435234,
+      "christoffersen_coverage": 0.03651904600531455,
+      "acerbi_szekely_z2": -0.4910803540253097,
+      "acerbi_szekely_significance": 0.031
+    },
+    {
+      "estimator": "cornish_fisher",
+      "period": "2019 \u2192 2021",
+      "days": 1096,
+      "breach_rate": 0.16058394160583941,
+      "kupiec": 1.6173374657747205e-148,
+      "christoffersen_independence": 1.360678835190834e-188,
+      "christoffersen_coverage": 0.0,
+      "acerbi_szekely_z2": -44.442160614226026,
+      "acerbi_szekely_significance": 0.073
+    },
+    {
+      "estimator": "cornish_fisher",
+      "period": "2022 \u2192 2025-09",
+      "days": 1360,
+      "breach_rate": 0.2786764705882353,
+      "kupiec": 0.0,
+      "christoffersen_independence": 3.959706697487532e-297,
+      "christoffersen_coverage": 0.0,
+      "acerbi_szekely_z2": -7297.992504204689,
+      "acerbi_szekely_significance": 0.0175
+    }
+  ],
+  "computed_on": "2026-11-07",
+  "seconds": 383.24946641921997
+}

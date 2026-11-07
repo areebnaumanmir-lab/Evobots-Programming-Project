@@ -9,6 +9,8 @@ requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.162.0",
     "jinja2>=3.1.6",
+    "markdown>=3.11.3",
+    "numba>=0.68.1",
     "numpy",
     "openpyxl>=3.1.5",
     "scipy>=1.18.1",
@@ -39,6 +41,9 @@ packages = ["src/evobots"]
 testpaths = ["tests", "src", "docs"]
 # Networking is blocked for the whole suite; only localhost is allowed (docs/design_spec.md §14.4).
 addopts = "--disable-socket --allow-unix-socket --allow-hosts=127.0.0.1,::1 --doctest-modules --doctest-glob=*.md"
+# `slow` marks searches that take minutes (the planted-signal tests); `pytest -m "not slow"`
+# skips them while iterating. The full suite (and every milestone check) runs them.
+markers = ["slow: a test that runs a real search for minutes"]
 
 [tool.ruff]
 line-length = 100

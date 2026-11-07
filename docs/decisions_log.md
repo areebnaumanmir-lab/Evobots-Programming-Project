@@ -292,3 +292,76 @@ Running record of what we have agreed. It references question numbers in decisio
 | MISO terms | "non-commercial purposes is fine as long as credit is given" | recorded; credit line in README; the separate no-automated-access clause keeps scripted MISO downloads off |
 | Rates Factors file | "give me the link and I'll do it" | navigation path given; exact URL unconfirmed |
 | Remaining milestones | "finish all of this please" | M2–M9 and the ORFE track built in order; check-in items reported together |
+
+## Round 33 (2026-11-07): M2 features; rounds/round33_m2_features.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Congestion share definition | delegated ("finish all of this") | ratio of 28-day means; missing near zero mean price |
+| Hub areas at Stage A | delegated | a hub is its own area on every day |
+| Gas volatility unit | delegated | fraction per day (code never stores percent) |
+
+## Round 34 (2026-11-07): M3 simulator; rounds/round34_m3_simulator.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Fee estimates until the rate file | delegated (D3) | admin $0.0902; DA RSG $0.05 placeholder; DDC $0 / $1.80 / $0.11 by era; all labelled |
+| Sizing input | delegated | the trader's own full-size P&L after fees, two-sided trailing p99 |
+| Limits | delegated | cut to the trader's cap and the Virtual MWh Limit on submitted MWh |
+
+## Round 35 (2026-11-07): M4 traders; rounds/round35_m4_traders.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Missing values in logic | delegated | strict: missing operands make and/or/not missing |
+| Size and risk slots | delegated | size = cap × fraction × min(1, \|score\| ÷ scale); daily cap as a fraction of the footprint |
+
+## Round 36 (2026-11-07): M5 career and O6; rounds/round36_m5_career.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Parsimony | delegated | 0.002 per node |
+| L3 identification | delegated | β₂, β₃, β₄ fixed; β₀, β₁ fitted by simulated moments |
+| L4 and presets | delegated | k = 0.5, h = 5; prop trader 10 % limit; hedge fund 14.4 %/yr withdrawals |
+
+## Round 37 (2026-11-07): M6 search and M6b Life mode; rounds/round37_m6_search.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| G2 benchmark | delegated | null variance 1/(T − 1); effective trials by participation ratio |
+| Quick gates | delegated | G1 95 % within 50 % loss; G2 DSR ≥ 0.95; G4 doubled costs; G6 next year |
+| First real run | – | R100: do nothing (G2 fails at 442 effective trials) |
+
+## Round 38 (2026-11-07): M7 report card and O7; rounds/round38_m7_report_card.md
+
+| Topic | User's input | Result |
+|---|---|---|
+| Report-card conventions | delegated | G1/G2 over the whole period, G6 the unseen year, rolling years flagged as seen |
+| First real report | – | R101: do nothing; nearest candidate fails G3 (PBO 0.76), hindsight-suspect (EPU) |
+
+## Round 39 (2026-11-07): M1.5 app and ORFE results; rounds/round39_m15_app_and_orfe.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Page data | dicts from `pages.py` through the service; templates only lay them out | delegated |
+| Long jobs from the app | logged `evobots` subprocesses | delegated |
+| Price-impact default | β = 0 (O9 finds no detectable hub-level impact) | delegated |
+| ORFE leaderboard | every strategy in the model confidence set on the unseen year; DPDS ρ = 0.002 has the best deflated Sharpe | – |
+
+## Round 40 (2026-11-07): M8 scale-up; rounds/round40_m8_scale_up.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Stage C storage | float32 DA/RT, float16 DA congestion, one file set per year, memory-mapped | delegated |
+| Stage D clustering threshold (§17.2) | Spearman, average linkage, 1 − ρ ≤ 0.25; groups of one dropped | delegated; Areeb may change |
+| Stage D representatives | hub, else last year's, else medoid; trades only in its years | delegated |
+| G5 at every location | the unseen year, 432 warm-up days | delegated |
+
+## Round 41 (2026-11-07): M9 and the ORFE write-up; rounds/round41_m9_paper_export_writeup.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Paper trading across the sealed year | its days missing, never read; sizing from the last 365 observed days | delegated; Areeb may allow reading the hold-out once a run's final test is spent |
+| Exported bot | `bot_<id>.py`, written only after the 200-day equivalence check | delegated |
+| Single-file engine | `.pyz` via shiv, code and dependencies, no data | built; shipping it is Areeb's choice (§14.6) |
+

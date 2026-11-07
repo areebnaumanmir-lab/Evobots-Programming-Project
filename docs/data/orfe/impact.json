@@ -1,0 +1,45 @@
+{
+  "coefficient": -0.0007657840344289205,
+  "clustered_standard_error": 0.004244463786743641,
+  "bootstrap_interval_90": [
+    -0.007905517409782695,
+    0.005957655063794889
+  ],
+  "observations": 12085,
+  "days": 199,
+  "implied_spread_change_for_5_mw_usd_per_mwh": -0.0038289201721446024,
+  "sample": "every 5th day with cleared-bids files, 2023-01-01 → 2025-09-17",
+  "caveats": [
+    "endogeneity: traders bid more DEC when they expect RT above DA; an association, not causation",
+    "selection: observable hub-hours only"
+  ],
+  "computed_on": "2026-11-07",
+  "seconds": 397.262757062912,
+  "sensitivity": {
+    "trader": "R101-29627",
+    "period": [
+      "2024-03-28",
+      "2025-03-27"
+    ],
+    "rows": {
+      "price-taking (β = 0)": {
+        "beta_usd_per_mwh_per_mw": 0.0,
+        "log_growth": 0.050278689074278606,
+        "fees_usd": 16972.49553999996,
+        "cleared_mwh": 84777.7000000001
+      },
+      "upper 90 % bound": {
+        "beta_usd_per_mwh_per_mw": 0.005957655063794889,
+        "log_growth": 0.0489234656252688,
+        "fees_usd": 19108.704213128898,
+        "cleared_mwh": 84777.7000000001
+      },
+      "10 × the upper bound (stress)": {
+        "beta_usd_per_mwh_per_mw": 0.05957655063794889,
+        "log_growth": 0.036643089914955004,
+        "fees_usd": 38334.582271288935,
+        "cleared_mwh": 84777.7000000001
+      }
+    }
+  }
+}

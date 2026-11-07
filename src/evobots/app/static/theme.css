@@ -106,3 +106,29 @@ svg .axis { font-size: var(--font-size-small); fill: var(--colour-secondary-text
 @media (max-width: 600px) {
   .metric + .metric { padding-left: 0; border-left: none; }
 }
+
+/* Multi-page app (M1.5): navigation groups, metrics headings, action forms, code, documents. */
+.brand { font-weight: 600; color: var(--colour-ink) !important; font-size: var(--font-size-label); padding-bottom: var(--space-3) !important; }
+.navigation-group { color: var(--colour-secondary-text); font-size: var(--font-size-small); text-transform: uppercase; letter-spacing: 0.04em; margin-top: var(--space-3); }
+.metric h3 { font-size: var(--font-size-body); font-weight: 600; margin: 0; }
+.action-form { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); align-items: flex-end; padding: var(--space-2) 0; }
+.action-form label { display: flex; flex-direction: column; gap: var(--space-1); color: var(--colour-secondary-text); font-size: var(--font-size-small); }
+.action-form input[type=text], .action-form input[type=number], .action-form input[type=date] { border: none; border-bottom: 1px solid var(--colour-hairline); font: inherit; padding: var(--space-1) 0; background: transparent; min-width: 140px; }
+.action-form input[type=range] { accent-color: var(--colour-ink); }
+.action-form button { border: none; background: none; padding: 0; font: inherit; color: var(--colour-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+pre.code { overflow-x: auto; border-left: 1px solid var(--colour-hairline); padding-left: var(--space-3); font-size: var(--font-size-small); }
+.document { max-width: 80ch; }
+.document table { margin: var(--space-3) 0; }
+.document pre { overflow-x: auto; border-left: 1px solid var(--colour-hairline); padding-left: var(--space-3); }
+@media (max-width: 800px) {
+  .layout { flex-direction: column; }
+  .navigation { width: auto; border-right: none; border-bottom: 1px solid var(--colour-hairline); }
+  .content { padding: var(--space-3); }
+}
+.content { min-width: 0; }
+.rules li, .description { overflow-wrap: anywhere; }
+.content .scroll > svg { max-width: 900px; height: auto; display: block; }
+
+/* Pages of a long list (Traders). */
+.pager { display: flex; gap: var(--space-3); align-items: baseline; margin-top: var(--space-3); }
+.action-form select { font: inherit; border: 1px solid var(--colour-hairline); background: var(--colour-background); color: inherit; padding: var(--space-1) var(--space-2); border-radius: 0; }

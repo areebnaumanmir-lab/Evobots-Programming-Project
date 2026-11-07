@@ -16,7 +16,7 @@ from evobots.sizing import NEWEST_VISIBLE_LAG_DAYS
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1] / "src" / "evobots"
 # Modules allowed to import the hold-out accessor: itself and the final-test path (M7).
-HOLDOUT_IMPORT_ALLOWLIST = {"data/holdout.py", "final_test.py"}
+HOLDOUT_IMPORT_ALLOWLIST = {"data/holdout.py", "assess/final_test.py"}
 
 
 def test_decision_sees_yesterdays_day_ahead_but_not_todays():
