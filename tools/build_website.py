@@ -10,12 +10,16 @@ Python source as a zip. All of it is served from the site itself, with no CDN at
 
 Pyodide 0.27.7 (MPL-2.0) and its three wheels are downloaded once into data/cache/
 (git-ignored), checked against the SHA-256 values below, and copied into the site. That
-download is the only step that needs internet. The site carries no MISO data (MISO's terms;
-docs/data_sources.md §3): it starts on synthetic prices, and a visitor can load their own hub
-table, which never leaves their browser.
+download is the only step that needs internet.
+
+When MISO redistribution is switched on (`configs/10_miso_hubs.toml`; MISO's written
+permission of 2026-11-06, round 42), the site carries the bundled MISO hub price table and its
+notice of source and conditions (`data/bundled/`), and the page loads it at start-up. Without
+it, the site starts on synthetic prices. Either way a visitor can load their own hub table,
+which never leaves their browser.
 
 Writes <output>/: index.html, static/, vendor/pyodide/, evobots_package.zip, evobots.zip,
-VENDORED.md, .nojekyll.
+data/ (hub_prices.csv.gz and NOTICE.md, when allowed), VENDORED.md, .nojekyll.
 """
 
 import argparse
@@ -30,6 +34,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPOSITORY_ROOT / "src"))
 import jinja2  # noqa: E402
 
+from evobots.config import load_data_settings  # noqa: E402
 from evobots.service import Service, app_zip_bytes  # noqa: E402
 
 PYODIDE_VERSION = "0.27.7"
@@ -54,6 +59,8 @@ SHA256_BY_FILE = {
     ),
 }
 APP_DIRECTORY = REPOSITORY_ROOT / "src" / "evobots" / "app"
+BUNDLED_DIRECTORY = REPOSITORY_ROOT / "data" / "bundled"
+SITE_DATA_FILES = {"hub_prices.csv.gz": "store/hub_prices.csv.gz", "NOTICE.md": "NOTICE.md"}
 SITE_STATIC_FILES = ("theme.css", "site.js", "worker.js")
 
 
@@ -90,6 +97,24 @@ def package_zip_bytes(path):
                 archive.write(file_path, file_path.relative_to(source_root).as_posix())
 
 
+def copy_site_data(output):
+    """Copy the MISO hub table and its notice into <output>/data/ when redistribution is on.
+
+    Returns:
+        True when the site carries MISO data.
+    """
+    settings = load_data_settings(REPOSITORY_ROOT / "configs" / "10_miso_hubs.toml")
+    sources = {name: BUNDLED_DIRECTORY / relative for name, relative in SITE_DATA_FILES.items()}
+    if not settings.is_miso_redistribution_allowed or not all(
+        path.exists() for path in sources.values()
+    ):
+        return False
+    (output / "data").mkdir(exist_ok=True)
+    for name, path in sources.items():
+        shutil.copy(path, output / "data" / name)
+    return True
+
+
 def render_page(service):
     environment = jinja2.Environment(
         loader=jinja2.FileSystemLoader(APP_DIRECTORY / "templates"), autoescape=True
@@ -120,6 +145,7 @@ def main():
         shutil.copy(path, output / "vendor" / "pyodide" / path.name)
     package_zip_bytes(output / "evobots_package.zip")
     (output / "evobots.zip").write_bytes(app_zip_bytes())
+    copy_site_data(output)
     (output / ".nojekyll").write_text("", encoding="utf-8")
     lines = [
         "# Vendored files",

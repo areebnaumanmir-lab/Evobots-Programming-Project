@@ -7,8 +7,9 @@ chart and paragraph, and renders the same `results.html` template as the local a
 page shows exactly what the local app shows. The JavaScript only passes messages.
 
 There are no threads in the browser, so a run is a plain function call that reports progress
-through a callback. The website starts on synthetic demo data (MISO data may not be published,
-`docs/data_sources.md` §3); a visitor can load their own hub table, which stays in their
+through a callback. The website loads the MISO hub table it carries (MISO's written
+permission, round 42; conditions in the site's data/NOTICE.md) and falls back to synthetic
+demo data without it; a visitor can also load their own hub table, which stays in their
 browser.
 
 Example:
@@ -54,36 +55,49 @@ class WebSession:
         if is_small_demo:
             self.service.market = synthetic_hub_market(days=SMALL_DEMO_DAYS)
             self.service.features = point_in_time_features(self.service.market)
+        self.is_bundled_table = False
         self.templates = jinja2.Environment(
             loader=jinja2.FileSystemLoader(TEMPLATE_DIRECTORY), autoescape=True
         )
 
     def data_status(self):
         """One line on which data the page is using."""
+        days = self.service.market.days
+        if self.service.market.source == "MISO" and self.is_bundled_table:
+            return (
+                f"MISO hub prices, {days[0]} → {days[-1]}. Source: Midcontinent Independent "
+                "System Operator, Inc. (MISO), public market reports, misoenergy.org; reproduced "
+                "with MISO's permission for this project. If you reuse them, read data/NOTICE.md "
+                "on this site for the conditions. The sealed hold-out year is never read."
+            )
         if self.service.market.source == "MISO":
             return (
-                f"Your MISO hub table, {self.service.market.days[0]} → "
-                f"{self.service.market.days[-1]}, loaded in this browser only (nothing is uploaded "
-                "to a server). The sealed hold-out year is never read."
+                f"Your MISO hub table, {days[0]} → {days[-1]}, loaded in this browser only "
+                "(nothing is uploaded to a server). The sealed hold-out year is never read."
             )
         return (
             "Demo mode: synthetic prices with a planted pattern (DA above RT by $2/MWh in hours "
-            "7–22) for the search to find. MISO's terms forbid publishing its data, so this "
-            "website can't include it. If you built the MISO hub table with the downloadable "
-            "app, load it below; it stays in your browser."
+            "7–22) for the search to find. The MISO table couldn't be loaded here; if you built "
+            "it with the downloadable app, load it below. It stays in your browser."
         )
 
-    def use_uploaded_table(self):
-        """Switch to the hub table the page wrote to UPLOADED_TABLE_PATH; return a reply."""
+    def use_uploaded_table(self, is_bundled=False):
+        """Switch to the hub table the page wrote to UPLOADED_TABLE_PATH; return a reply.
+
+        `is_bundled` marks the site's own MISO table (loaded at start-up) rather than one the
+        visitor chose.
+        """
+        UPLOADED_CACHE_PATH.unlink(missing_ok=True)
         market = read_miso_hub_market(UPLOADED_TABLE_PATH, UPLOADED_CACHE_PATH)
         if market is None:
             return {"state": "error", "message": "No table was loaded."}
         self.service.market = market
         self.service.features = point_in_time_features(market)
         self.service.result = None
+        self.is_bundled_table = is_bundled
         return {
             "state": "idle",
-            "message": "Your MISO table is loaded.",
+            "message": "MISO hub prices loaded." if is_bundled else "Your MISO table is loaded.",
             "data": self.data_status(),
         }
 

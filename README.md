@@ -7,9 +7,9 @@ Evolves small, readable trading bots for virtual bidding in MISO's day-ahead ele
 ## Open it as a website
 
 Once the repository owner has switched on GitHub Pages (below), anyone can open evobots at `https://<owner>.github.io/<repository>/`. Nothing to install:
-- the same page and sliders run evobots' Python inside the browser (Pyodide); the first visit downloads about 17 MB;
-- the website still uses synthetic demo prices (the downloadable app runs on real MISO data);
-- if you built the MISO hub table with the downloadable app, load it on the page. It is read in your browser and never uploaded anywhere.
+- the same page and sliders run evobots' Python inside the browser (Pyodide);
+- it runs on MISO's real hub prices for 2005–2025, loaded into the browser at start-up. The first visit downloads about 35 MB: Python plus the 17 MB price table. The MISO data is reproduced with MISO's permission; the site's `data/NOTICE.md` gives the conditions;
+- you can also load a hub table you built yourself. It is read in your browser and never uploaded anywhere.
 
 **Switching it on (repository owner, once):**
 1. GitHub Pages needs a public repository, or a paid GitHub plan for a private one.

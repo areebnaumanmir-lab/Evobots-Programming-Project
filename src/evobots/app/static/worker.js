@@ -20,6 +20,16 @@ async function start() {
     pyodide.runPython("import sys; sys.path.insert(0, '/home/pyodide/package')");
     self.pyodide = pyodide;
     session = pyodide.runPython("from evobots.web import WebSession\nWebSession()");
+    // The site carries MISO's hub prices (with MISO's permission, data/NOTICE.md) when the
+    // build allowed it; without the file, the page stays on synthetic demo prices.
+    const table = await fetch("../data/hub_prices.csv.gz");
+    if (table.ok) {
+      postMessage({ type: "status", message: "Loading MISO hub prices, 2005–2025 (about a minute) …" });
+      const bytes = new Uint8Array(await table.arrayBuffer());
+      pyodide.FS.mkdirTree("/tmp/evobots");
+      pyodide.FS.writeFile("/tmp/evobots/hub_prices.csv.gz", bytes);
+      plain(session.use_uploaded_table(true));
+    }
     postMessage({ type: "ready", data: session.data_status() });
   } catch (error) {
     postMessage({ type: "error", message: "Python could not start in this browser: " + error });
