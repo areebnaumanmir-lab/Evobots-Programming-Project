@@ -1,0 +1,37 @@
+{# Shared layout of every app page: left navigation (pages.toml), title, search, Best bot link.
+   Endpoints: every GET page route of server.py. Style: docs/design_spec.md §14.5; edit
+   static/theme.css to change colours, fonts and spacing. No formulas here. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}evobots{% endblock %} · evobots</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/theme.css">
+</head>
+<body>
+<div class="layout">
+  <nav class="navigation" aria-label="Pages">
+    <a href="/" class="brand">evobots</a>
+    {% for group, items in navigation %}
+    <div class="navigation-group">{{ group }}</div>
+    {% for title, url in items %}
+    <a href="{{ url }}" class="sub{% if url == path or (url != '/' and path.startswith(url)) %} is-active{% endif %}">{{ title }}</a>
+    {% endfor %}
+    {% endfor %}
+  </nav>
+  <main class="content">
+    <div class="top">
+      <h1>{% block heading %}{% endblock %}</h1>
+      <div class="actions">
+        <form action="/traders" method="get" role="search"><input class="search" name="query" placeholder="Search traders" aria-label="Search traders"></form>
+        <a href="{{ best_url }}">{{ best_text }}</a>
+      </div>
+    </div>
+    {% block body %}{% endblock %}
+  </main>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

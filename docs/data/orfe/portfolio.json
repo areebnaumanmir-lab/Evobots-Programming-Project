@@ -1,0 +1,80 @@
+{
+  "elites": 80,
+  "days": [
+    "2015-03-28",
+    "2025-03-27"
+  ],
+  "walk_forward": {
+    "mean-CVaR \u03bb=1": {
+      "out_of_sample_log_growth": 0.11406645402300368,
+      "annual_sharpe": 0.4162115485293675,
+      "worst_day_fraction": -0.0472940633582961,
+      "average_holdings": 1.7272727272727273
+    },
+    "mean-variance \u03b3=10": {
+      "out_of_sample_log_growth": 0.567555026116731,
+      "annual_sharpe": 0.9757209755195471,
+      "worst_day_fraction": -0.15778749999999908,
+      "average_holdings": 1.2121212121212122
+    },
+    "growth-optimal (half Kelly)": {
+      "out_of_sample_log_growth": 0.3011009616062244,
+      "annual_sharpe": 1.0677202399419794,
+      "worst_day_fraction": -0.06993181508176127,
+      "average_holdings": 1.0606060606060606
+    },
+    "risk parity": {
+      "out_of_sample_log_growth": 0.1835932295617283,
+      "annual_sharpe": 0.6194132416983115,
+      "worst_day_fraction": -0.037975474018196086,
+      "average_holdings": 50.24242424242424
+    },
+    "equal weight": {
+      "out_of_sample_log_growth": 0.2892294178025728,
+      "annual_sharpe": 0.8892432971629322,
+      "worst_day_fraction": -0.03890475415244576,
+      "average_holdings": 80.0
+    },
+    "best single elite (trailing)": {
+      "out_of_sample_log_growth": 0.5902588886969095,
+      "annual_sharpe": 1.0668769028830125,
+      "worst_day_fraction": -0.13986363016352138,
+      "average_holdings": 1.0
+    }
+  },
+  "frontier_last_two_years": [
+    [
+      0.0,
+      0.0002688538466204453,
+      0.003854420748989163
+    ],
+    [
+      0.5,
+      3.090766673382901e-05,
+      1.839238188966405e-06
+    ],
+    [
+      1.0,
+      1.488827706612251e-05,
+      2.611041327490303e-07
+    ],
+    [
+      2.0,
+      6.245941470515037e-06,
+      0.0
+    ],
+    [
+      5.0,
+      6.245941470515037e-06,
+      0.0
+    ],
+    [
+      10.0,
+      6.245941470515037e-06,
+      0.0
+    ]
+  ],
+  "note": "The elites were evolved through these years, so the walk-forward is out of sample for the weights, not for the elites.",
+  "computed_on": "2026-11-07",
+  "seconds": 35.49907660484314
+}

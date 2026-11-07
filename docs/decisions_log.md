@@ -338,3 +338,12 @@ Running record of what we have agreed. It references question numbers in decisio
 |---|---|---|
 | Report-card conventions | delegated | G1/G2 over the whole period, G6 the unseen year, rolling years flagged as seen |
 | First real report | – | R101: do nothing; nearest candidate fails G3 (PBO 0.76), hindsight-suspect (EPU) |
+
+## Round 39 (2026-11-07): M1.5 app and ORFE results; rounds/round39_m15_app_and_orfe.md
+
+| Topic | Decision | Status |
+|---|---|---|
+| Page data | dicts from `pages.py` through the service; templates only lay them out | delegated |
+| Long jobs from the app | logged `evobots` subprocesses | delegated |
+| Price-impact default | β = 0 (O9 finds no detectable hub-level impact) | delegated |
+| ORFE leaderboard | every strategy in the model confidence set on the unseen year; DPDS ρ = 0.002 has the best deflated Sharpe | – |

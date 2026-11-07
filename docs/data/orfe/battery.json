@@ -1,144 +1,144 @@
 {
   "revenue_by_year_usd": {
     "2015": {
-      "perfect_foresight": 41555.75566093852,
-      "rolling_intrinsic": 32883.91974936204,
-      "stochastic_dp": 13529.53499999999,
-      "threshold_tuned": 51374.79782742111,
-      "threshold_evolved": 65396.843054113546
+      "perfect_foresight": 41706.78988102966,
+      "rolling_intrinsic": 32705.636663849837,
+      "stochastic_dp": 15791.723846798757,
+      "threshold_tuned": 10834.252476490252,
+      "threshold_evolved": 10914.296408099104
     },
     "2016": {
-      "perfect_foresight": 52297.01179779903,
-      "rolling_intrinsic": 44329.27889523074,
-      "stochastic_dp": 14943.675000000001,
-      "threshold_tuned": 79433.93204179441,
-      "threshold_evolved": 81555.50383687156
+      "perfect_foresight": 52487.480752413896,
+      "rolling_intrinsic": 44252.95012505515,
+      "stochastic_dp": 13917.566750101618,
+      "threshold_tuned": 15712.793573083518,
+      "threshold_evolved": 16718.488342928504
     },
     "2017": {
-      "perfect_foresight": 50136.72391000102,
-      "rolling_intrinsic": 41688.20755088109,
-      "stochastic_dp": 20512.184999999998,
-      "threshold_tuned": 83484.68462408123,
-      "threshold_evolved": 84990.3596963714
+      "perfect_foresight": 50321.15988754667,
+      "rolling_intrinsic": 41471.96083084022,
+      "stochastic_dp": 19837.72194009145,
+      "threshold_tuned": 17601.993418386173,
+      "threshold_evolved": 18019.619115670466
     },
     "2018": {
-      "perfect_foresight": 68917.8635864344,
-      "rolling_intrinsic": 57640.46203685796,
-      "stochastic_dp": 22804.830000000013,
-      "threshold_tuned": 87939.23751598441,
-      "threshold_evolved": 88651.04226247605
+      "perfect_foresight": 69082.62359683469,
+      "rolling_intrinsic": 57022.9701185111,
+      "stochastic_dp": 24316.850013312975,
+      "threshold_tuned": 29809.288074069005,
+      "threshold_evolved": 29812.25624286934
     },
     "2019": {
-      "perfect_foresight": 38803.83761935277,
-      "rolling_intrinsic": 27556.55631124942,
-      "stochastic_dp": 9824.435,
-      "threshold_tuned": 4900.167260703453,
-      "threshold_evolved": 46254.55552399281
+      "perfect_foresight": 38961.95465381611,
+      "rolling_intrinsic": 27082.92254277439,
+      "stochastic_dp": 13889.502994156483,
+      "threshold_tuned": 4145.330111891575,
+      "threshold_evolved": 5276.040192857823
     },
     "2020": {
-      "perfect_foresight": 41440.72993903077,
-      "rolling_intrinsic": 28296.53109722026,
-      "stochastic_dp": 10923.46,
-      "threshold_tuned": 48365.52703418348,
-      "threshold_evolved": 47860.981266916475
+      "perfect_foresight": 41930.13493569284,
+      "rolling_intrinsic": 27495.79598979845,
+      "stochastic_dp": 13153.618211585353,
+      "threshold_tuned": 14905.834672447254,
+      "threshold_evolved": 14923.110422013318
     },
     "2021": {
-      "perfect_foresight": 93074.89996624088,
-      "rolling_intrinsic": 65867.37311162596,
-      "stochastic_dp": 9220.5575,
-      "threshold_tuned": 98192.10703112991,
-      "threshold_evolved": 101392.04369723162
+      "perfect_foresight": 94022.43496185643,
+      "rolling_intrinsic": 63972.81634922336,
+      "stochastic_dp": 8556.192602337367,
+      "threshold_tuned": -41079.692084640636,
+      "threshold_evolved": -38688.62271209763
     },
     "2022": {
-      "perfect_foresight": 178019.9482289431,
-      "rolling_intrinsic": 136919.72357359933,
-      "stochastic_dp": 34116.31749999998,
-      "threshold_tuned": 172402.10696063636,
-      "threshold_evolved": 177717.52345203867
+      "perfect_foresight": 179981.34044687633,
+      "rolling_intrinsic": 133327.31457749434,
+      "stochastic_dp": 30502.024459247892,
+      "threshold_tuned": -4718.892169698316,
+      "threshold_evolved": -4834.072271186138
     },
     "2023": {
-      "perfect_foresight": 77367.35568937365,
-      "rolling_intrinsic": 58910.97656087471,
-      "stochastic_dp": 15656.134999999993,
-      "threshold_tuned": -9340.002435999935,
-      "threshold_evolved": -18883.821750579154
+      "perfect_foresight": 78019.46674747215,
+      "rolling_intrinsic": 57573.98947928823,
+      "stochastic_dp": 20323.168697865833,
+      "threshold_tuned": 10028.293882350536,
+      "threshold_evolved": 10151.870757350534
     },
     "2024": {
-      "perfect_foresight": 94017.92209909322,
-      "rolling_intrinsic": 70725.7368587567,
-      "stochastic_dp": 28920.912499999988,
-      "threshold_tuned": 78649.80023694842,
-      "threshold_evolved": 82343.01058844043
+      "perfect_foresight": 95874.15418818528,
+      "rolling_intrinsic": 67912.56853198147,
+      "stochastic_dp": 32348.859586585342,
+      "threshold_tuned": 32352.78030065861,
+      "threshold_evolved": 31893.637224750728
     },
     "2025": {
-      "perfect_foresight": 129403.3508543622,
-      "rolling_intrinsic": 107534.0545666561,
-      "stochastic_dp": 31045.03750000001,
-      "threshold_tuned": 82538.69795504975,
-      "threshold_evolved": 81105.71534458746
+      "perfect_foresight": 133064.47813260695,
+      "rolling_intrinsic": 106668.7381054978,
+      "stochastic_dp": 32484.998538211352,
+      "threshold_tuned": 12187.13698569422,
+      "threshold_evolved": 6117.999327864895
     }
   },
   "total_usd": {
-    "perfect_foresight": 865035.3993515697,
-    "rolling_intrinsic": 672352.8203123142,
-    "stochastic_dp": 211497.08000000007,
-    "threshold_tuned": 777941.0560519327,
-    "threshold_evolved": 838383.7569724616
+    "perfect_foresight": 875452.0181843309,
+    "rolling_intrinsic": 659487.663314313,
+    "stochastic_dp": 225122.22764029456,
+    "threshold_tuned": 101779.119240732,
+    "threshold_evolved": 100304.62305112084
   },
   "bound_ratio": {
     "perfect_foresight": 1.0,
-    "rolling_intrinsic": 0.7772546890177092,
-    "stochastic_dp": 0.2444952890465965,
-    "threshold_tuned": 0.8993170182804971,
-    "threshold_evolved": 0.9691901136079677
+    "rolling_intrinsic": 0.7533110320335735,
+    "stochastic_dp": 0.2571497043403856,
+    "threshold_tuned": 0.11625893495776017,
+    "threshold_evolved": 0.11457466653529513
   },
   "storm_days_usd": {
     "2021-02-15": {
-      "perfect_foresight": 1037.600388710833,
-      "rolling_intrinsic": 733.5867830171634,
-      "stochastic_dp": -859.6200000000001,
-      "threshold_tuned": 803.442752079248,
-      "threshold_evolved": 803.442752079248
+      "perfect_foresight": 1037.6003887108325,
+      "rolling_intrinsic": 726.40083503586,
+      "stochastic_dp": -735.9475000000002,
+      "threshold_tuned": -740.6890678302262,
+      "threshold_evolved": -740.6890678302262
     },
     "2021-02-16": {
-      "perfect_foresight": 3572.5390525115376,
-      "rolling_intrinsic": 2036.3131079692373,
-      "stochastic_dp": -749.1974999999998,
-      "threshold_tuned": 1586.704178331893,
-      "threshold_evolved": 1586.704178331893
+      "perfect_foresight": 3572.5390525115367,
+      "rolling_intrinsic": 2036.3131079692364,
+      "stochastic_dp": -861.2773780487805,
+      "threshold_tuned": -867.17175600934,
+      "threshold_evolved": -867.17175600934
     },
     "2021-02-17": {
-      "perfect_foresight": 3551.509555282701,
-      "rolling_intrinsic": 3095.1904247455877,
-      "stochastic_dp": -636.5825,
-      "threshold_tuned": 2230.183931137768,
-      "threshold_evolved": 2230.183931137768
+      "perfect_foresight": 3551.5095552826992,
+      "rolling_intrinsic": 3095.1904247455864,
+      "stochastic_dp": -1245.8315243902439,
+      "threshold_tuned": -1254.883188436036,
+      "threshold_evolved": -1254.883188436036
     },
     "2022-12-23": {
-      "perfect_foresight": 520.9716117945777,
-      "rolling_intrinsic": 400.82297318112205,
-      "stochastic_dp": -615.285,
-      "threshold_tuned": 533.9787678036531,
-      "threshold_evolved": 533.9787678036531
+      "perfect_foresight": 536.1551168034098,
+      "rolling_intrinsic": 400.8229731811219,
+      "stochastic_dp": -496.89981707317077,
+      "threshold_tuned": -262.07244145605125,
+      "threshold_evolved": -262.07244145605125
     },
     "2022-12-24": {
-      "perfect_foresight": 534.5119762151288,
-      "rolling_intrinsic": -167.65720396093622,
-      "stochastic_dp": 199.15750000000014,
-      "threshold_tuned": 1182.4661825034611,
-      "threshold_evolved": 1182.4661825034611
+      "perfect_foresight": 545.6682394714866,
+      "rolling_intrinsic": -416.67843047103815,
+      "stochastic_dp": 56.232499999999845,
+      "threshold_tuned": 55.636694376486275,
+      "threshold_evolved": 55.636694376486275
     }
   },
   "perfect_foresight_daily_mean_by_parameters_usd": {
-    "efficiency 0.70, wear $0/MWh": 191.9272978668295,
-    "efficiency 0.70, wear $2/MWh": 137.48952993624675,
-    "efficiency 0.70, wear $5/MWh": 84.11183445259394,
-    "efficiency 0.82, wear $0/MWh": 289.0351885402928,
-    "efficiency 0.82, wear $2/MWh": 213.41217439642423,
-    "efficiency 0.82, wear $5/MWh": 136.24698103867837,
-    "efficiency 0.90, wear $0/MWh": 361.57065006181335,
-    "efficiency 0.90, wear $2/MWh": 270.5118730083987,
-    "efficiency 0.90, wear $5/MWh": 176.352366570829
+    "efficiency 0.70, wear $0/MWh": 193.00753780317464,
+    "efficiency 0.70, wear $2/MWh": 138.54242636288885,
+    "efficiency 0.70, wear $5/MWh": 85.05392646290527,
+    "efficiency 0.82, wear $0/MWh": 292.697213636546,
+    "efficiency 0.82, wear $2/MWh": 216.56749311166635,
+    "efficiency 0.82, wear $5/MWh": 138.99005364768317,
+    "efficiency 0.90, wear $0/MWh": 368.3251085428861,
+    "efficiency 0.90, wear $2/MWh": 276.6516083077618,
+    "efficiency 0.90, wear $5/MWh": 181.69720737620284
   },
   "battery": {
     "power_mw": 5.0,
@@ -149,5 +149,5 @@
     "days": 3858
   },
   "computed_on": "2026-11-07",
-  "seconds": 35.77098202705383
+  "seconds": 50.83853244781494
 }

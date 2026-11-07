@@ -1,0 +1,18 @@
+{
+  "coefficient": -0.0007657840344289205,
+  "clustered_standard_error": 0.004244463786743641,
+  "bootstrap_interval_90": [
+    -0.007905517409782695,
+    0.005957655063794889
+  ],
+  "observations": 12085,
+  "days": 199,
+  "implied_spread_change_for_5_mw_usd_per_mwh": -0.0038289201721446024,
+  "sample": "every 5th day with cleared-bids files, 2023-01-01 \u2192 2025-09-17",
+  "caveats": [
+    "endogeneity: traders bid more DEC when they expect RT above DA; an association, not causation",
+    "selection: observable hub-hours only"
+  ],
+  "computed_on": "2026-11-07",
+  "seconds": 397.262757062912
+}

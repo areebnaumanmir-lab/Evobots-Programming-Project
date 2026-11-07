@@ -110,7 +110,15 @@ def main(argv=None):
     life = commands.add_parser("life", help="run Life mode, the market-time ecology")
     life.add_argument("--seed", type=int, default=1)
     life.add_argument("--initial-random", type=int, default=60)
+    life.add_argument("--save", type=Path, help="write a JSON summary for the app")
     life.add_argument("--demo", action="store_true")
+    refine = commands.add_parser("refine", help="a new run seeded with an elite (§11.5)")
+    refine.add_argument("directory", type=Path, help="the parent run")
+    refine.add_argument("trader")
+    refine.add_argument("--run-id")
+    refine.add_argument("--evaluations", type=int, default=5000)
+    refine.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
+    refine.add_argument("--demo", action="store_true")
     report = commands.add_parser("report", help="write a run's report card (JSON and HTML)")
     report.add_argument("directory", type=Path)
     report.add_argument(
@@ -137,6 +145,8 @@ def main(argv=None):
         return resume_search(arguments)
     if arguments.command == "life":
         return run_life_mode(arguments)
+    if arguments.command == "refine":
+        return run_refine(arguments)
     if arguments.command == "serve":
         return run_serve(arguments)
     if arguments.command == "data":
@@ -171,6 +181,7 @@ def run_serve(arguments):
 
     print("Loading data …")
     server.service_holder["service"] = Service(is_synthetic=arguments.demo)
+    server.app_settings["is_demo"] = arguments.demo
     address = f"http://127.0.0.1:{arguments.port}/"
     print(f"evobots is running at {address} (close this window or press Ctrl+C to stop)")
     if not arguments.no_browser:
@@ -224,7 +235,11 @@ def run_search(arguments):
     )
     run = Run(settings, evaluator_for(arguments.demo), arguments.runs / run_id)
     deadline = None if arguments.hours is None else arguments.hours * 3600
-    run.run_until_done(deadline_seconds=deadline, progress=print_progress)
+    run.run_until_done(
+        deadline_seconds=deadline,
+        progress=print_progress,
+        should_stop=stop_requested(run.directory),
+    )
     print(f"Saved {arguments.runs / run_id}; deployable decision: {run.current_bot()['decision']}")
     return 0
 
@@ -235,19 +250,85 @@ def resume_search(arguments):
 
     run = Run.resume(arguments.directory, evaluator_for(arguments.demo))
     deadline = None if arguments.hours is None else arguments.hours * 3600
-    run.run_until_done(deadline_seconds=deadline, progress=print_progress)
+    run.run_until_done(
+        deadline_seconds=deadline,
+        progress=print_progress,
+        should_stop=stop_requested(run.directory),
+    )
     print(f"Saved {arguments.directory}; deployable decision: {run.current_bot()['decision']}")
     return 0
 
 
+def stop_requested(directory):
+    """A callable that is True once runs/<id>/stop.request exists (the app's Stop)."""
+    return lambda: (Path(directory) / "stop.request").exists()
+
+
+def run_refine(arguments):
+    """`refine`: a new run seeded with an elite of an earlier run and mutants of it (§11.5)."""
+    from evobots.assess.final_test import run_ids_with_opened_holdout
+    from evobots.bots.trader import genome_to_json
+    from evobots.qd.run import Run, SearchSettings
+
+    evaluator = evaluator_for(arguments.demo)
+    parent = Run.resume(arguments.directory, evaluator)
+    elite = next(
+        (item for item in parent.archive.values() if item.trader_id == arguments.trader), None
+    )
+    genome = elite.genome if elite is not None else parent.regenerate(arguments.trader)
+    is_holdout_used = (
+        parent.settings.is_holdout_used or parent.settings.run_id in run_ids_with_opened_holdout()
+    )
+    run_id = arguments.run_id or next_run_id(arguments.directory.parent)
+    settings = SearchSettings(
+        run_id=run_id,
+        evaluations=arguments.evaluations,
+        workers=arguments.workers,
+        seed_genomes=((arguments.trader, genome_to_json(genome)),),
+        parent_trader_ids=(arguments.trader,),
+        prior_trials=parent.lineage.distinct_behaviours() + parent.settings.prior_trials,
+        is_holdout_used=is_holdout_used,
+    )
+    run = Run(settings, evaluator, arguments.directory.parent / run_id)
+    run.lineage.attach(arguments.directory / "lineage.sqlite")
+    run.run_until_done(progress=print_progress, should_stop=stop_requested(run.directory))
+    label = " (hold-out already used)" if is_holdout_used else ""
+    print(f"Saved {run.directory}{label}; deployable decision: {run.current_bot()['decision']}")
+    return 0
+
+
 def run_life_mode(arguments):
-    """`life`: simulate the ecology and print its summary."""
+    """`life`: simulate the ecology and print (and optionally save) its summary."""
     from evobots.qd.life import LifeSettings, run_life
 
     result = run_life(
         evaluator_for(arguments.demo),
         LifeSettings(seed=arguments.seed, initial_random=arguments.initial_random),
     )
+    if arguments.save:
+        by_id = {trader.trader_id: trader for trader in result.traders}
+        roots = {}
+        for trader in result.traders:
+            root = trader
+            while root.parent_id is not None:
+                root = by_id[root.parent_id]
+            entry = roots.setdefault(
+                root.trader_id, [f"{root.trader_id} {root.name} ({root.origin})", 0, 1]
+            )
+            if trader is not root:
+                entry[1] += 1
+            entry[2] = max(entry[2], trader.generation)
+        summary = {
+            "traders": len(result.traders),
+            "deepest_generation": result.deepest_generation(),
+            "days": [day.isoformat() for day in result.days],
+            "population_by_day": result.population_by_day.tolist(),
+            "births": int(result.births_by_day.sum()),
+            "deaths": int(result.deaths_by_day.sum()),
+            "families": sorted(roots.values(), key=lambda entry: -entry[1]),
+        }
+        arguments.save.parent.mkdir(parents=True, exist_ok=True)
+        arguments.save.write_text(json.dumps(summary), encoding="utf-8")
     print(
         f"{len(result.traders)} traders lived; deepest lineage {result.deepest_generation()} "
         f"generations; {int(result.population_by_day[-1])} alive on {result.days[-1]}"

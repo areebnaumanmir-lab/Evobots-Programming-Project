@@ -1,0 +1,64 @@
+{# Every page of evobots.pages: a title, a "what happened" description, and sections of kind
+   metrics | table | chart | text | list | code | html | actions (see evobots/pages.py).
+   Data: service.page(name). Charts are SVG computed in Python; this template only places them. #}
+{% extends "base.html" %}
+{% macro inline(text) -%}
+{%- set match = text | string -%}
+{%- if match.startswith('[') and '](' in match and match.endswith(')') -%}
+<a href="{{ match.split('](')[1][:-1] }}">{{ match[1:].split('](')[0] }}</a>
+{%- else -%}{{ match | replace('`', '') }}{%- endif -%}
+{%- endmacro %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block heading %}{{ page.title }}{% endblock %}
+{% block body %}
+{% if page.description %}<p class="description">{{ page.description }}</p>{% endif %}
+{% for section in page.sections %}
+<section class="section">
+  {% if section.title %}<h2>{{ section.title }} <a class="help" href="/docs/glossary.md" title="Glossary">?</a></h2>{% endif %}
+  {% if section.description %}<p class="description">{{ section.description }}</p>{% endif %}
+  {% if section.kind == "metrics" %}
+  <div class="metrics">
+    {% for label, value, note in section["items"] %}
+    <div class="metric"><h3>{{ label }}</h3><p class="description">{{ note }}</p><div class="value">{{ value }}</div></div>
+    {% endfor %}
+  </div>
+  {% elif section.kind == "table" %}
+  <div class="scroll"><table>
+    <thead><tr>{% for header in section.headers %}<th>{{ header }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for row in section.rows %}
+    {% set link = (section.links or {}).get(loop.index0) %}
+    <tr>{% for cell in row %}<td>{% if loop.first and link %}<a href="{{ link }}">{{ cell }}</a>{% else %}{{ cell }}{% endif %}</td>{% endfor %}</tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% elif section.kind == "chart" %}
+  <div class="scroll">{{ section.svg | safe }}</div>
+  {% elif section.kind == "text" %}
+  {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+  {% elif section.kind == "list" %}
+  <ul class="rules">{% for item in section["items"] %}<li>{{ inline(item) }}</li>{% endfor %}</ul>
+  {% elif section.kind == "code" %}
+  {% if section.download %}<p class="action-words"><a href="{{ section.download }}">Download</a></p>{% endif %}
+  <pre class="code"><code>{{ section.text }}</code></pre>
+  {% elif section.kind == "html" %}
+  <div class="document">{{ section.html | safe }}</div>
+  {% elif section.kind == "actions" %}
+  {% for form in section.forms %}
+  <form class="action-form" action="{{ form.url }}" method="{{ form.method or 'post' }}"{% if (form.method or 'post') == 'post' %} data-api="true"{% endif %}{% if form.confirm %} data-confirm="{{ form.confirm }}"{% endif %}>
+    {% for field in form.fields %}
+    <label>{{ field.label }}{% if field.unit %} ({{ field.unit }}){% endif %}
+      {% if field.type == "range" %}<input type="range" name="{{ field.name }}" min="{{ field.min }}" max="{{ field.max }}" step="{{ field.step }}" value="{{ field.value }}"><output>{{ field.value }}</output>
+      {% elif field.type == "checkbox" %}<input type="checkbox" name="{{ field.name }}" value="1">
+      {% else %}<input type="{{ field.type }}" name="{{ field.name }}" value="{{ field.value }}">{% endif %}
+      {% if field.badge %}<span class="badge">{{ field.badge }}</span>{% endif %}
+    </label>
+    {% endfor %}
+    <button type="submit">{{ form.label }}</button>
+  </form>
+  {% endfor %}
+  <p class="status" role="status"></p>
+  {% endif %}
+</section>
+{% endfor %}
+{% endblock %}

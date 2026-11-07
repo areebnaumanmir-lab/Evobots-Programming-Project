@@ -31,3 +31,6 @@ test-results/
 
 # Built website (tools/build_website.py); deployed by .github/workflows/pages.yml
 site_build/
+
+# Local app settings (saved from the Capital page)
+config/*.local.toml

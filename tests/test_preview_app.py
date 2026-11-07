@@ -125,7 +125,7 @@ def wait_until_done(client):
 
 
 def test_page_run_download_and_refine(client):
-    page = client.get("/")
+    page = client.get("/quick")
     assert page.status_code == 200 and "Run simulation" in page.text
     assert "Demo mode" in page.text
     assert client.get("/download/best-bot.py").status_code == 404

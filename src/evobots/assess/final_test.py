@@ -48,6 +48,11 @@ class FinalTestRefusedError(RuntimeError):
     """The sealed test can't be run (already opened for this run, or nothing to test)."""
 
 
+def run_ids_with_opened_holdout(log_path=holdout.ACCESS_LOG_PATH):
+    """Runs whose sealed test was opened (a Refine run of their traders is "hold-out used")."""
+    return {opening["run_id"] for opening in holdout.holdout_openings(log_path)}
+
+
 def holdout_days():
     """Every hold-out operating day."""
     count = (HOLDOUT_LAST_DAY - HOLDOUT_FIRST_DAY).days + 1
