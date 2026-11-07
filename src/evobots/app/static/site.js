@@ -46,6 +46,8 @@ worker.onmessage = (event) => {
     document.getElementById("data-status").textContent = message.data;
     say("Ready. Move the sliders, then choose Run simulation.");
     setBusy(false);
+  } else if (message.type === "status") {
+    say(message.message);
   } else if (message.type === "progress") {
     say(`Searching: ${message.done.toLocaleString("en-US")} of ${message.budget.toLocaleString("en-US")} traders scored.`);
   } else if (message.type === "result") {
@@ -87,4 +89,4 @@ document.getElementById("table-file").addEventListener("change", async (event) =
   worker.postMessage({ type: "table", bytes }, [bytes]);
 });
 setBusy(true);
-say("Loading Python in your browser (about 17 MB on the first visit) …");
+say("Loading Python in your browser (about 35 MB with the MISO prices, on the first visit) …");

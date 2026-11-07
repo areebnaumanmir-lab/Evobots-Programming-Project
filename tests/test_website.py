@@ -71,8 +71,10 @@ def test_site_runs_in_a_browser_with_the_internet_blocked(tmp_path, chromium_bro
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.goto(address)
     page.wait_for_function(
-        "document.querySelector('#status').textContent.startsWith('Ready')", timeout=120000
+        "document.querySelector('#status').textContent.startsWith('Ready')", timeout=300000
     )
+    if (output / "data" / "hub_prices.csv.gz").exists():
+        assert page.inner_text("#data-status").startswith("MISO hub prices, 2005-04-01")
     page.fill("#evaluations", "100")
     page.fill("#training_years", "2")
     page.click("#run")

@@ -25,7 +25,12 @@ This changes round 25's decision ("build locally, never redistribute"), which re
 ## Not changed
 - **The sealed year** is still not in any bundle; only the final-test path reads it.
 - **No automated MISO downloads:** the permission covers using the data, not scripted access to MISO's site.
-- **The website** still uses synthetic prices. Real data there is possible now, but the browser would download the 17 MB table on first visit.
+- **The website (changed later in this round, at Areeb's request):**
+  - `tools/build_website.py` copies the hub table and `NOTICE.md` into the site's `data/` while the switch is on;
+  - the browser loads the table at start-up, about 35 MB on a first visit with Python;
+  - the page credits MISO and points to the notice;
+  - it falls back to demo prices if the table can't be loaded.
+  - **Checked:** the website's browser test, with the internet blocked, loads the table, shows the MISO line and runs a 100-trader search, all in 16 s.
 
 ## Checks
 - **A fresh copy** of the code, with no store, started on MISO data by itself (round 42 check below).
