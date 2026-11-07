@@ -30,5 +30,6 @@ The documentation follows the four Diátaxis kinds (`docs/design_spec.md` §14.2
 - [decisions_log.md](decisions_log.md) and the round docs in `rounds/`: what was decided, when and by whom.
 - [change_ledger.md](change_ledger.md): one row per change.
 - [features.md](features.md), [architecture.md](architecture.md), [qd_explained.md](qd_explained.md), [report_card.md](report_card.md).
+- [explanations/how_bots_evolve.md](explanations/how_bots_evolve.md): what every bot is made of, the 70 starting traders, how children are bred, kept and judged, and R101's best family tree.
 - [explanations/price_impact.md](explanations/price_impact.md): do our bids move prices? (O9).
 - [orfe_report/report.md](orfe_report/report.md) and [orfe_report/summary.md](orfe_report/summary.md): the ORFE write-up and its two-page summary.
